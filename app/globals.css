@@ -1,0 +1,298 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --accent: #4d6bff;
+  --subtext: #ffffff;
+}
+
+html {
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+  display: none;
+}
+
+html,
+body {
+  background: #050a30;
+  overflow-x: clip;
+}
+
+/* Lenis smooth-scroll plumbing */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+
+::selection {
+  background: var(--accent);
+  color: #050a30;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* Minimalist glassmorphism: low-opacity fill + light blur so the 3D scene
+   stays visible through the card. In @layer components so Tailwind utilities
+   (hover/focus borders, bg overrides) still win. */
+@layer components {
+  .glass {
+    background: rgba(255, 255, 255, 0.045);
+    -webkit-backdrop-filter: blur(9px) saturate(130%);
+    backdrop-filter: blur(9px) saturate(130%);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  }
+
+  /* For large panels: barely-there blur so the 3D behind stays legible. */
+  .glass-soft {
+    background: rgba(255, 255, 255, 0.03);
+    -webkit-backdrop-filter: blur(3px) saturate(120%);
+    backdrop-filter: blur(3px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  /* Full-opacity secondary/body copy. One variable to retune every subtext
+     color on the site instead of hunting down scattered text-white/NN. */
+  .subtext {
+    color: var(--subtext);
+  }
+}
+
+/* Blur over WebGL costs more on weak/mobile GPUs — keep the frosted look
+   but use a lighter, cheaper radius instead of disabling it outright.
+   Mirrors the `low` threshold in lib/utils.ts#computeQuality (pointer:coarse
+   OR width < 820) so it backs off in step with the 3D scene's own tier. */
+@media (pointer: coarse), (max-width: 820px) {
+  .glass {
+    -webkit-backdrop-filter: blur(5px) saturate(120%);
+    backdrop-filter: blur(5px) saturate(120%);
+  }
+  .glass-soft {
+    -webkit-backdrop-filter: blur(2px) saturate(110%);
+    backdrop-filter: blur(2px) saturate(110%);
+  }
+}
+
+/* Belt-and-suspenders for browsers without backdrop-filter support at all
+   (older Firefox). Without this the "glass" would render near-invisible
+   since the fill alone is only ~4% opacity. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass,
+  .glass-soft {
+    background: rgba(8, 10, 26, 0.55);
+  }
+}
+
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 0.035em rgba(242, 244, 255, 0.85);
+}
+
+.text-shadow-soft {
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.45);
+}
+
+/* Film grain overlay */
+.grain {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/></svg>");
+  background-size: 300px 300px;
+}
+
+/* ---- Animated CSS-3D service icons ----
+   Real 3D transforms (transform-style: preserve-3d) so each card gets a
+   spinning solid without spinning up its own WebGL context. --i3d-color is
+   white for strong contrast on the dark section, flipping to black when the
+   card turns white on hover. */
+.i3d {
+  --s3d: 3rem;
+  --i3d-color: #ffffff;
+  position: relative;
+  width: var(--s3d);
+  height: var(--s3d);
+  flex-shrink: 0;
+  perspective: 420px;
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+.i3d > * {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+/* Cube — 6 faces */
+.i3d__cube {
+  animation: i3d-tumble 9s linear infinite;
+}
+.i3d__cube .f {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid var(--i3d-color);
+  background: color-mix(in srgb, var(--i3d-color) 14%, transparent);
+  box-shadow: inset 0 0 14px color-mix(in srgb, var(--i3d-color) 45%, transparent);
+}
+.i3d__cube .f1 { transform: translateZ(calc(var(--s3d) / 2)); }
+.i3d__cube .f2 { transform: rotateY(90deg) translateZ(calc(var(--s3d) / 2)); }
+.i3d__cube .f3 { transform: rotateY(180deg) translateZ(calc(var(--s3d) / 2)); }
+.i3d__cube .f4 { transform: rotateY(270deg) translateZ(calc(var(--s3d) / 2)); }
+.i3d__cube .f5 { transform: rotateX(90deg) translateZ(calc(var(--s3d) / 2)); }
+.i3d__cube .f6 { transform: rotateX(-90deg) translateZ(calc(var(--s3d) / 2)); }
+
+/* Stack — layered planes floating in depth */
+.i3d__stack {
+  animation: i3d-sway 7s ease-in-out infinite;
+}
+.i3d__stack .p {
+  position: absolute;
+  inset: 12%;
+  border: 1.5px solid var(--i3d-color);
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--i3d-color) 12%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--i3d-color) 30%, transparent);
+}
+.i3d__stack .p1 { transform: translateZ(-15px); opacity: 0.45; }
+.i3d__stack .p2 { transform: translateZ(0); opacity: 0.7; }
+.i3d__stack .p3 { transform: translateZ(15px); }
+
+/* Coin — tilted ring spinning like a token */
+.i3d__coin {
+  animation: i3d-flip 5.5s linear infinite;
+}
+.i3d__coin .ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 3px solid var(--i3d-color);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--i3d-color) 45%, transparent);
+}
+.i3d__coin .ring-o { inset: 0; }
+.i3d__coin .ring-i { inset: 26%; border-width: 2px; opacity: 0.6; }
+
+/* Gyro — nested rings + glowing core (wireframe sphere / atom) */
+.i3d__gyro {
+  animation: i3d-tumble 12s linear infinite;
+}
+.i3d__gyro .r {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--i3d-color);
+}
+.i3d__gyro .r1 { transform: rotateY(0deg); }
+.i3d__gyro .r2 { transform: rotateY(60deg); }
+.i3d__gyro .r3 { transform: rotateY(120deg); }
+.i3d__gyro .core {
+  position: absolute;
+  inset: 38%;
+  border-radius: 50%;
+  background: var(--i3d-color);
+  box-shadow: 0 0 18px 4px color-mix(in srgb, var(--i3d-color) 70%, transparent);
+}
+
+/* Hover on the card scales + glows the icon and spins it faster. Card goes
+   white, so flip the icon to black to keep the contrast. */
+.service-card:hover .i3d {
+  --i3d-color: #050505;
+  transform: scale(1.14);
+  filter: drop-shadow(0 0 9px color-mix(in srgb, var(--accent) 45%, transparent));
+}
+.service-card:hover .i3d > * {
+  animation-duration: 3s;
+}
+
+@keyframes i3d-tumble {
+  0% { transform: rotateX(-18deg) rotateY(0); }
+  100% { transform: rotateX(-18deg) rotateY(360deg); }
+}
+@keyframes i3d-sway {
+  0%, 100% { transform: rotateY(-28deg) rotateX(12deg); }
+  50% { transform: rotateY(28deg) rotateX(-8deg); }
+}
+@keyframes i3d-flip {
+  0% { transform: rotateX(62deg) rotateY(0); }
+  100% { transform: rotateX(62deg) rotateY(360deg); }
+}
+
+@media (max-width: 820px) {
+  .i3d { --s3d: 2.4rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .i3d__cube,
+  .i3d__stack,
+  .i3d__coin,
+  .i3d__gyro { animation: none; }
+  .i3d__cube { transform: rotateX(-18deg) rotateY(35deg); }
+  .i3d__stack { transform: rotateY(-24deg) rotateX(10deg); }
+  .i3d__coin { transform: rotateX(62deg) rotateY(28deg); }
+  .i3d__gyro { transform: rotateX(-18deg) rotateY(30deg); }
+}
+
+/* Allow vertical touch scrolling over the fixed WebGL canvas
+   (R3F sets touch-action:none for pointer events) */
+.webgl-wrap canvas {
+  touch-action: pan-y !important;
+}
+
+/* ---- Flat 2D motion graphics for the white service-landing pages ---- */
+@keyframes svc-float {
+  0%, 100% { transform: translateY(0) rotate(var(--svc-rot, 0deg)); }
+  50% { transform: translateY(-14px) rotate(var(--svc-rot, 0deg)); }
+}
+.svc-float {
+  animation: svc-float 6s ease-in-out infinite;
+}
+
+@keyframes svc-blob {
+  0%, 100% { border-radius: 42% 58% 65% 35% / 45% 45% 55% 55%; }
+  50% { border-radius: 60% 40% 40% 60% / 55% 60% 40% 45%; }
+}
+.svc-blob {
+  animation: svc-blob 8s ease-in-out infinite;
+}
+
+@keyframes svc-pulse {
+  0%, 100% { opacity: 0.2; transform: scale(0.94); }
+  50% { opacity: 1; transform: scale(1); }
+}
+.svc-pulse {
+  animation: svc-pulse 2.6s ease-in-out infinite;
+}
+
+@keyframes svc-drift-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(60px, 40px) scale(1.15); }
+}
+@keyframes svc-drift-b {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-50px, 55px) scale(1.1); }
+}
+@keyframes svc-drift-c {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(45px, -50px) scale(1.2); }
+}
+.svc-drift-a { animation: svc-drift-a 22s ease-in-out infinite; }
+.svc-drift-b { animation: svc-drift-b 26s ease-in-out infinite; }
+.svc-drift-c { animation: svc-drift-c 30s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .svc-float,
+  .svc-blob,
+  .svc-pulse,
+  .svc-drift-a,
+  .svc-drift-b,
+  .svc-drift-c {
+    animation: none !important;
+  }
+}
