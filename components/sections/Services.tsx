@@ -61,7 +61,7 @@ export default function Services() {
       ref={sectionRef}
       id="services"
       data-scene-section
-      className="relative h-[250vh]"
+      className="relative h-[140vh]"
     >
       <div className="sticky top-0 h-screen">
         <div className="mx-auto flex h-full w-full max-w-[90rem] flex-col justify-between px-6 pt-24 pb-10 md:px-12 md:pb-8 md:pt-20">

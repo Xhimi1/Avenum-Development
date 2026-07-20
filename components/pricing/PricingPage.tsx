@@ -8,10 +8,12 @@ import SplitText from '@/components/ui/SplitText';
 import ArrowRight from '@/components/ui/ArrowRight';
 import LangToggle from '@/components/ui/LangToggle';
 import Logo from '@/components/ui/Logo';
+import PricingCountdown from '@/components/pricing/PricingCountdown';
 
 const MAIL_BASE = 'mailto:hello@avenum.studio?subject=';
 
 const BACK_LINK = { en: '← Back to the experience', sq: '← Kthehu te eksperienca' };
+const OFFER_ENDS_LABEL = { en: 'Offer ends in', sq: 'Oferta përfundon në' };
 const COPYRIGHT = {
   en: '© 2026 Avenum — All rights reserved',
   sq: '© 2026 Avenum — Të gjitha të drejtat e rezervuara',
@@ -79,6 +81,8 @@ interface Tier {
   name: string;
   desc: Bi;
   price: Bi;
+  originalPrice?: Bi;
+  discountLabel?: Bi;
   per?: Bi;
   cta: Bi;
   mailSubject: Bi;
@@ -98,7 +102,9 @@ const TIERS: Tier[] = [
       en: 'A sharp, fast online presence for your business — designed, built and live in two weeks.',
       sq: 'Një prani online e shpejtë dhe e spikatur për biznesin tënd — e dizajnuar, ndërtuar dhe online brenda dy javësh.',
     },
-    price: { en: '€490', sq: '€490' },
+    price: { en: '€120', sq: '€120' },
+    originalPrice: { en: '€490', sq: '€490' },
+    discountLabel: { en: '76% OFF', sq: '76% ZBRITJE' },
     per: { en: '/ project', sq: '/ projekt' },
     cta: { en: 'Choose this plan', sq: 'Zgjidh këtë plan' },
     mailSubject: { en: 'Starter plan', sq: 'Plani Starter' },
@@ -124,7 +130,9 @@ const TIERS: Tier[] = [
       en: 'The full Avenum treatment — custom design, motion and a site people actually remember.',
       sq: 'Trajtimi i plotë Avenum — dizajn i personalizuar, animacione dhe një faqe që njerëzit e mbajnë vërtet mend.',
     },
-    price: { en: '€1,490', sq: '€1,490' },
+    price: { en: '€300', sq: '€300' },
+    originalPrice: { en: '€1,490', sq: '€1,490' },
+    discountLabel: { en: '80% OFF', sq: '80% ZBRITJE' },
     per: { en: '/ project', sq: '/ projekt' },
     cta: { en: 'Choose this plan', sq: 'Zgjidh këtë plan' },
     mailSubject: { en: 'Signature plan', sq: 'Plani Signature' },
@@ -290,7 +298,7 @@ export default function PricingPage() {
 
       <main>
         {/* hero */}
-        <section className="relative px-6 pt-36 text-center md:px-12 md:pt-44">
+        <section className="relative px-6 pt-24 text-center md:px-12 md:pt-28">
           <div className="mx-auto max-w-3xl">
             <FadeIn className="mb-5 flex justify-center">
               <span
@@ -384,14 +392,35 @@ export default function PricingPage() {
                             {t(tier.desc)}
                           </p>
 
-                          <p className="mt-5 font-display text-4xl font-semibold md:text-[2.6rem]">
-                            {t(tier.price)}
-                            {tier.per && (
-                              <span className="ml-1.5 text-sm font-normal text-white/50">
-                                {t(tier.per)}
-                              </span>
+                          <div className="mt-5">
+                            {tier.originalPrice && (
+                              <div className="flex items-center gap-2">
+                                <span className="text-xl text-white/60 line-through">
+                                  {t(tier.originalPrice)}
+                                </span>
+                                {tier.discountLabel && (
+                                  <span className="rounded-full bg-[#f59e0b]/15 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-[#fbbf24]">
+                                    {t(tier.discountLabel)}
+                                  </span>
+                                )}
+                              </div>
                             )}
-                          </p>
+                            <p className="font-display text-4xl font-semibold md:text-[2.6rem]">
+                              {t(tier.price)}
+                              {tier.per && (
+                                <span className="ml-1.5 text-sm font-normal text-white/50">
+                                  {t(tier.per)}
+                                </span>
+                              )}
+                            </p>
+                            {tier.originalPrice && (
+                              <div className="mt-2 flex items-center gap-1.5 text-xs font-medium text-[#fbbf24]">
+                                <IconClock className="h-3.5 w-3.5" />
+                                {t(OFFER_ENDS_LABEL)}
+                                <PricingCountdown className="font-mono tabular-nums" />
+                              </div>
+                            )}
+                          </div>
 
                           <a
                             href={`${MAIL_BASE}${encodeURIComponent(t(tier.mailSubject))}`}

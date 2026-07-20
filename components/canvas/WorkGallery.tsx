@@ -9,7 +9,7 @@ import Glow from './Glow';
 import './materials/GradientMaterial';
 import type { GradientMaterialImpl } from './materials/GradientMaterial';
 import { CENTERS, CAM_POINTS } from '@/lib/path';
-import { presence, scrollState, sectionLocal } from '@/lib/scroll';
+import { presence, sectionLocal } from '@/lib/scroll';
 import { PROJECTS } from '@/lib/projects';
 import { SECTIONS } from '@/lib/palette';
 import { useStore } from '@/lib/store';

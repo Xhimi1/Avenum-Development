@@ -1,19 +1,12 @@
 import type { Metadata, Viewport } from 'next';
-import { Outfit, Space_Grotesk } from 'next/font/google';
+import { Plus_Jakarta_Sans } from 'next/font/google';
 import PageWash from '@/components/ui/PageWash';
 import './globals.css';
 
-const outfit = Outfit({
-  subsets: ['latin'],
-  weight: ['400', '600'],
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ['latin', 'latin-ext'],
+  weight: ['300', '400', '500', '600'],
   variable: '--font-display',
-  display: 'swap',
-});
-
-const grotesk = Space_Grotesk({
-  subsets: ['latin'],
-  weight: ['300', '400', '500'],
-  variable: '--font-body',
   display: 'swap',
 });
 
@@ -39,7 +32,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${outfit.variable} ${grotesk.variable}`}>
+    <html lang="en" className={jakarta.variable}>
       <body className="bg-[#050a30] font-body text-[#f2f4ff] antialiased">
         <PageWash />
         {children}
