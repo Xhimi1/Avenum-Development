@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float } from '@react-three/drei';
-import Glow from '@/components/canvas/Glow';
 
 const CYAN = '#00e5ff';
 const ACCENT = '#4d6bff';
@@ -83,7 +82,7 @@ const FRAGMENT = /* glsl */ `
  * orbited by two thin rings carrying glowing message dots — data circling
  * the brain. The whole cluster tilts toward the cursor.
  */
-function Orb({ x, y, R, isDesktop }: { x: number; y: number; R: number; isDesktop: boolean }) {
+function Orb({ x, y, R }: { x: number; y: number; R: number }) {
   const group = useRef<THREE.Group>(null);
   const ringA = useRef<THREE.Group>(null);
   const ringB = useRef<THREE.Group>(null);
@@ -182,14 +181,6 @@ function Orb({ x, y, R, isDesktop }: { x: number; y: number; R: number; isDeskto
         </mesh>
       </group>
 
-      {isDesktop ? (
-        <>
-          <Glow color={ACCENT} scale={R * 5.6} opacity={0.35} />
-          <Glow color={CYAN} scale={R * 9} opacity={0.12} />
-        </>
-      ) : (
-        <Glow color={ACCENT} scale={R * 2.4} opacity={0.1} />
-      )}
       <pointLight color={CYAN} intensity={110} distance={26} position={[3, 3, 4]} />
       <pointLight color={ACCENT} intensity={50} distance={22} position={[-4, -2, 2]} />
     </group>
@@ -207,7 +198,7 @@ export default function AssistantOrb() {
         gl={{ alpha: true, antialias: true }}
       >
         <ambientLight intensity={0.7} />
-        <Orb x={isDesktop ? 2.4 : 0} y={isDesktop ? 0 : -1.8} R={R} isDesktop={isDesktop} />
+        <Orb x={isDesktop ? 2.4 : 0} y={isDesktop ? 0 : -1.8} R={R} />
       </Canvas>
     </div>
   );

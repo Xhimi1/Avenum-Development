@@ -79,7 +79,6 @@ interface Tier {
   mailSubject: Bi;
   featured?: boolean;
   meta: Array<{ icon: (p: { className?: string }) => JSX.Element; label: Bi }>;
-  includes?: Bi;
   features: Bi[];
 }
 
@@ -98,7 +97,6 @@ const TIERS: Tier[] = [
     cta: { en: 'Choose this plan', sq: 'Zgjidh këtë plan' },
     mailSubject: { en: 'Starter plan', sq: 'Plani Starter' },
     meta: [
-      { icon: IconClock, label: { en: '2 week delivery', sq: 'Dorëzim në 2 javë' } },
       { icon: IconLayers, label: { en: 'Up to 3 pages', sq: 'Deri në 3 faqe' } },
     ],
     features: [
@@ -124,10 +122,8 @@ const TIERS: Tier[] = [
     mailSubject: { en: 'Signature plan', sq: 'Plani Signature' },
     featured: true,
     meta: [
-      { icon: IconClock, label: { en: '4–6 week delivery', sq: 'Dorëzim në 4–6 javë' } },
       { icon: IconLayers, label: { en: 'Up to 10 pages', sq: 'Deri në 10 faqe' } },
     ],
-    includes: { en: 'EVERYTHING IN STARTER +', sq: 'GJITHÇKA NË STARTER +' },
     features: [
       { en: 'Advanced motion & animations', sq: 'Animacione & lëvizje të avancuara' },
       { en: '3D / WebGL on request', sq: '3D / WebGL sipas kërkesës' },
@@ -151,7 +147,6 @@ const TIERS: Tier[] = [
       { icon: IconClock, label: { en: 'Dedicated team', sq: 'Ekip i dedikuar' } },
       { icon: IconLayers, label: { en: 'Unlimited scope', sq: 'Fushëveprim i pakufizuar' } },
     ],
-    includes: { en: 'EVERYTHING IN SIGNATURE +', sq: 'GJITHÇKA NË SIGNATURE +' },
     features: [
       { en: 'Web apps & e-commerce', sq: 'Aplikacione web & e-commerce' },
       { en: 'AI chatbot for bookings', sq: 'AI chatbot për rezervime' },
@@ -231,17 +226,7 @@ function TierMetaFeatures({ tier, t }: { tier: Tier; t: (bi: Bi) => string }) {
         ))}
       </ul>
 
-      {tier.includes ? (
-        <div className="my-5 flex items-center gap-3 text-[10px] tracking-[0.18em] text-black">
-          <span className="h-px flex-1 bg-black/10" />
-          {t(tier.includes)}
-          <span className="h-px flex-1 bg-black/10" />
-        </div>
-      ) : (
-        <div aria-hidden className="my-5 h-px bg-black/10" />
-      )}
-
-      <ul className="space-y-3">
+      <ul className="mt-5 space-y-3">
         {tier.features.map((f, fi) => (
           <li key={fi} className="flex items-start gap-3 text-sm text-black">
             <span className="mt-0.5 flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full bg-black">
@@ -396,7 +381,7 @@ export default function PricingPage() {
                 >
                   <div className="h-full">
                     <div className="h-full">
-                      <div className="relative flex h-full flex-col overflow-hidden rounded-xl bg-white shadow-[0_25px_60px_-20px_rgba(0,0,0,0.55)]">
+                      <div className="relative flex h-full flex-col overflow-hidden rounded-3xl bg-white shadow-[0_25px_60px_-20px_rgba(0,0,0,0.55)]">
                         {tier.id === 'starter' ? (
                           <div className="flex flex-1 flex-col p-6 md:p-7">
                             <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#6367FF] text-white shadow-lg">
@@ -425,7 +410,7 @@ export default function PricingPage() {
                           </div>
                         ) : (
                           <>
-                            <div className="relative mx-2 mt-2 rounded-lg bg-gradient-to-t from-[#4f52e0] to-[#6367FF] p-6 md:mx-3 md:mt-3 md:p-7">
+                            <div className="relative mx-2 mt-2 rounded-2xl bg-gradient-to-t from-[#4f52e0] to-[#6367FF] p-6 md:mx-3 md:mt-3 md:p-7">
                               <div className="flex items-start justify-between">
                                 <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-[#6367FF]">
                                   <IconSpark className="h-5 w-5" />

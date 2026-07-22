@@ -178,9 +178,28 @@ const STATS: Array<[string, { en: string; sq: string }]> = [
   ['30+', { en: 'Languages spoken', sq: 'Gjuhë të folura' }],
 ];
 
+// Background gradient's purple family — change BG_ACCENT to retint the whole page.
+// Same family as the Pricing page's background, darkened a notch.
+const BG_ACCENT = '#22124D';
+const BG_ACCENT_MID = '#160C31';
+const BG_ACCENT_DEEP = '#100826';
+const BG_GLOW = 'rgba(112, 88, 204, 0.28)';
+
+const STARS: Array<{ top: string; left: string; size: number; delay: string }> = [
+  { top: '12%', left: '8%', size: 2, delay: '0s' },
+  { top: '22%', left: '85%', size: 3, delay: '0.6s' },
+  { top: '35%', left: '72%', size: 2, delay: '1.2s' },
+  { top: '48%', left: '12%', size: 2, delay: '0.9s' },
+  { top: '62%', left: '92%', size: 2, delay: '0.3s' },
+  { top: '75%', left: '20%', size: 3, delay: '1.5s' },
+  { top: '85%', left: '65%', size: 2, delay: '0.7s' },
+  { top: '8%', left: '45%', size: 2, delay: '1.1s' },
+];
+
 export default function ChatbotsPage() {
   const buildSectionRef = useRef<HTMLElement>(null);
   const buildLineRef = useRef<HTMLDivElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
   const t = useT();
   const mailto = `${MAIL_BASE}${encodeURIComponent(t(MAIL_SUBJECT))}`;
 
@@ -188,6 +207,22 @@ export default function ChatbotsPage() {
     e.preventDefault();
     document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  // On load the heading/subheading reveal first (SplitText/FadeIn), then the
+  // decorative background — gradient, light stripes, glow — fades in over the
+  // flat base color a beat later.
+  useLayoutEffect(() => {
+    const bg = bgRef.current;
+    if (!bg || prefersReducedMotion()) return;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        bg,
+        { opacity: 0 },
+        { opacity: 1, duration: 2.6, ease: 'power2.out', delay: 0.7 }
+      );
+    });
+    return () => ctx.revert();
+  }, []);
 
   // The build-steps line draws itself in as the timeline scrolls into view.
   useLayoutEffect(() => {
@@ -214,7 +249,38 @@ export default function ChatbotsPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#07070c] text-[#f2f4ff]">
+    <div className="isolate min-h-screen overflow-x-clip bg-black text-[#f2f4ff]">
+      {/* deep-purple base, diagonal light stripes and a soft center glow */}
+      <div ref={bgRef} aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        {/* base purple gradient */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `linear-gradient(160deg, ${BG_ACCENT} 0%, ${BG_ACCENT_MID} 45%, ${BG_ACCENT_DEEP} 100%)`,
+          }}
+        />
+        {/* diagonal white light stripes */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'repeating-linear-gradient(125deg, transparent 0px, transparent 130px, rgba(255,255,255,0.04) 175px, rgba(255,255,255,0.10) 210px, rgba(255,255,255,0.04) 245px, transparent 300px, transparent 430px)',
+          }}
+        />
+        {/* soft radial glow toward the top */}
+        <div
+          className="absolute -top-40 left-1/2 h-[42rem] w-[42rem] -translate-x-1/2 rounded-full blur-3xl"
+          style={{ background: `radial-gradient(circle, ${BG_GLOW}, transparent 70%)` }}
+        />
+        {STARS.map((s, i) => (
+          <span
+            key={i}
+            className="svc-pulse absolute rounded-full bg-white/60"
+            style={{ top: s.top, left: s.left, width: s.size, height: s.size, animationDelay: s.delay }}
+          />
+        ))}
+      </div>
+
       {/* minimal header — this page lives outside the main 3D experience */}
       <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-4 py-3 md:px-8 md:py-4">
         <Logo className="text-3xl md:text-4xl" />
