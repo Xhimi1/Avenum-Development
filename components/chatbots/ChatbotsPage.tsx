@@ -217,7 +217,7 @@ export default function ChatbotsPage() {
     <div className="min-h-screen bg-[#07070c] text-[#f2f4ff]">
       {/* minimal header — this page lives outside the main 3D experience */}
       <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-4 py-3 md:px-8 md:py-4">
-        <Logo className="text-sm md:text-base" />
+        <Logo className="text-3xl md:text-4xl" />
         <div className="flex items-center gap-4">
           <Link
             href="/"

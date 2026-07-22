@@ -61,109 +61,107 @@ export default function Services() {
       ref={sectionRef}
       id="services"
       data-scene-section
-      className="relative h-[140vh]"
+      className="relative py-24 md:py-32"
     >
-      <div className="sticky top-0 h-screen">
-        <div className="mx-auto flex h-full w-full max-w-[90rem] flex-col justify-between px-6 pt-24 pb-10 md:px-12 md:pb-8 md:pt-20">
-          <div className="max-w-2xl">
-            <SplitText
-              as="h2"
-              className="text-shadow-soft font-display text-[clamp(2.1rem,5.5vw,4.6rem)] font-semibold leading-[0.95]"
+      <div className="mx-auto flex w-full max-w-[90rem] flex-col gap-10 px-6 md:px-12">
+        <div className="max-w-2xl">
+          <SplitText
+            as="h2"
+            className="text-shadow-soft font-display text-[clamp(2.1rem,5.5vw,4.6rem)] font-semibold leading-[0.95]"
+          >
+            {t(HEADING)}
+          </SplitText>
+        </div>
+
+        <div>
+          <div className="mb-3 flex justify-end gap-2">
+            <button
+              type="button"
+              data-cursor
+              aria-label="Previous"
+              onClick={() => scrollByCards(-1)}
+              className="glass pointer-events-auto flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white shadow-lg backdrop-blur-2xl md:h-10 md:w-10"
             >
-              {t(HEADING)}
-            </SplitText>
+              <ArrowRight className="h-4 w-4 rotate-180" />
+            </button>
+            <button
+              type="button"
+              data-cursor
+              aria-label="Next"
+              onClick={() => scrollByCards(1)}
+              className="glass pointer-events-auto flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white shadow-lg backdrop-blur-2xl md:h-10 md:w-10"
+            >
+              <ArrowRight className="h-4 w-4" />
+            </button>
           </div>
 
-          <div className="mt-6 md:mt-0">
-            <div className="mb-3 flex justify-end gap-2">
-              <button
-                type="button"
-                data-cursor
-                aria-label="Previous"
-                onClick={() => scrollByCards(-1)}
-                className="glass pointer-events-auto flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white shadow-lg backdrop-blur-2xl md:h-10 md:w-10"
-              >
-                <ArrowRight className="h-4 w-4 rotate-180" />
-              </button>
-              <button
-                type="button"
-                data-cursor
-                aria-label="Next"
-                onClick={() => scrollByCards(1)}
-                className="glass pointer-events-auto flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white shadow-lg backdrop-blur-2xl md:h-10 md:w-10"
-              >
-                <ArrowRight className="h-4 w-4" />
-              </button>
-            </div>
-
-            <ul
-              ref={scrollerRef}
-              data-lenis-prevent
-              className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] md:gap-5 [&::-webkit-scrollbar]:hidden"
-            >
-              {SERVICES.map((s) => {
-                const inner = (
-                  <>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-display text-lg font-semibold md:text-xl">
-                          {t(s.title)}
-                        </h3>
-                        {s.tag && (
-                          <span className="rounded-full bg-gradient-to-r from-[#1c3fae] via-[#00d9a3] to-[#ffb84d] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
-                            {t(s.tag)}
-                          </span>
-                        )}
-                      </div>
-                      <p className="subtext mt-1 max-w-md text-xs md:mt-2">
-                        {t(s.desc)}
-                      </p>
+          <ul
+            ref={scrollerRef}
+            data-hscroll
+            className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] md:gap-5 [&::-webkit-scrollbar]:hidden"
+          >
+            {SERVICES.map((s) => {
+              const inner = (
+                <>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-display text-lg font-semibold md:text-xl">
+                        {t(s.title)}
+                      </h3>
+                      {s.tag && (
+                        <span className="rounded-full bg-gradient-to-r from-[#1c3fae] via-[#00d9a3] to-[#ffb84d] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
+                          {t(s.tag)}
+                        </span>
+                      )}
                     </div>
-                    {s.href && (
-                      <span
-                        aria-hidden
-                        className="inline-flex h-5 w-5 flex-shrink-0 items-center justify-center text-white"
-                      >
-                        <ArrowRight className="h-5 w-5" />
-                      </span>
-                    )}
-                  </>
-                );
-                const card = s.href ? (
-                  <Link href={s.href} data-cursor className={CARD_CLASSES}>
-                    {inner}
-                  </Link>
-                ) : (
-                  <div data-cursor className={CARD_CLASSES}>
-                    {inner}
+                    <p className="subtext mt-1 max-w-md text-xs md:mt-2">
+                      {t(s.desc)}
+                    </p>
                   </div>
-                );
-                return (
-                  <li
-                    key={s.title.en}
-                    data-service-row
-                    className="relative h-44 w-72 flex-shrink-0 snap-start md:h-40 md:w-72"
-                  >
-                    {card}
-                    {s.tag && (
-                      <span
-                        aria-hidden
-                        className="pointer-events-none absolute inset-0 rounded-2xl p-[1.5px]"
-                        style={{
-                          background:
-                            'linear-gradient(to bottom right, #1c3fae, #00d9a3, #ffb84d)',
-                          WebkitMask:
-                            'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                          WebkitMaskComposite: 'xor',
-                          maskComposite: 'exclude',
-                        }}
-                      />
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
+                  {s.href && (
+                    <span
+                      aria-hidden
+                      className="inline-flex h-5 w-5 flex-shrink-0 items-center justify-center text-white"
+                    >
+                      <ArrowRight className="h-5 w-5" />
+                    </span>
+                  )}
+                </>
+              );
+              const card = s.href ? (
+                <Link href={s.href} data-cursor className={CARD_CLASSES}>
+                  {inner}
+                </Link>
+              ) : (
+                <div data-cursor className={CARD_CLASSES}>
+                  {inner}
+                </div>
+              );
+              return (
+                <li
+                  key={s.title.en}
+                  data-service-row
+                  className="relative h-44 w-72 flex-shrink-0 snap-start md:h-40 md:w-72"
+                >
+                  {card}
+                  {s.tag && (
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute inset-0 rounded-2xl p-[1.5px]"
+                      style={{
+                        background:
+                          'linear-gradient(to bottom right, #1c3fae, #00d9a3, #ffb84d)',
+                        WebkitMask:
+                          'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                        WebkitMaskComposite: 'xor',
+                        maskComposite: 'exclude',
+                      }}
+                    />
+                  )}
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </div>
     </section>

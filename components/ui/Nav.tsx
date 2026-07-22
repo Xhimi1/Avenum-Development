@@ -82,7 +82,7 @@ export default function Nav() {
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <div className="pointer-events-none relative z-50 flex items-center justify-between px-4 py-4 md:px-10 md:py-6">
-        <Logo onClick={() => go(0)} className="pointer-events-auto text-base md:text-lg" />
+        <Logo onClick={() => go(0)} className="pointer-events-auto text-3xl md:text-4xl" />
 
         {/* Desktop inline nav */}
         <nav

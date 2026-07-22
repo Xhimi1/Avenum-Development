@@ -5,7 +5,6 @@
 :root {
   --accent: #4d6bff;
   --subtext: #ffffff;
-  --font-body: var(--font-display);
 }
 
 html {

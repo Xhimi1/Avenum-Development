@@ -9,33 +9,33 @@ interface LogoProps {
   className?: string;
 }
 
-/** The brand mark — sits just above the "AV" in the wordmark, everywhere the wordmark appears. */
-export function Mark() {
+/** The full brand lockup (icon + wordmark) as one vector — the icon stays
+ * brand-blue, the wordmark uses currentColor so it reads on both the dark
+ * pages and the white service-page headers. */
+export function BrandLogo({ className }: { className?: string }) {
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src="/images/logo.svg"
-      alt=""
-      aria-hidden
-      className="pointer-events-none absolute left-0 w-[1.9em]"
-      style={{ top: '-0.35em', height: 'auto' }}
-    />
+    <svg viewBox="0 0 69 15" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden className={className}>
+      <mask id="avnGapMask" maskUnits="userSpaceOnUse" x="0" y="0" width="67" height="15">
+        <rect x="0" y="0" width="67" height="15" fill="white" />
+        <circle cx="11" cy="8" r="5" fill="black" />
+      </mask>
+      <path d="M5.5 4L10.2631 12.25H0.73686L5.5 4Z" fill="#6367FF" mask="url(#avnGapMask)" />
+      <circle cx="11" cy="8" r="4" fill="#6367FF" />
+      <g transform="translate(2,0)">
+        <path
+          fill="currentColor"
+          d="M15.27 12L18.666 3.408H20.034L23.418 12H21.906L19.728 6.192L19.356 5.088H19.314L18.954 6.192L16.764 12H15.27ZM16.764 10.02L17.178 8.82H21.39L21.822 10.02H16.764ZM25.4984 12L22.9364 5.676H24.4004L25.9544 9.792L26.1764 10.458H26.2184L26.4524 9.792L28.0124 5.676H29.4464L26.8604 12H25.4984ZM33.1186 12.204C32.1306 12.204 31.3286 11.894 30.7126 11.274C30.0966 10.65 29.7886 9.838 29.7886 8.838C29.7886 7.894 30.0866 7.098 30.6826 6.45C31.2826 5.798 32.0786 5.472 33.0706 5.472C33.9906 5.472 34.7346 5.754 35.3026 6.318C35.8706 6.878 36.1546 7.584 36.1546 8.436V9.18H30.5446V8.244H34.8226C34.7986 7.784 34.6326 7.4 34.3246 7.092C34.0206 6.78 33.6026 6.624 33.0706 6.624C32.5146 6.624 32.0566 6.82 31.6966 7.212C31.3406 7.604 31.1626 8.142 31.1626 8.826C31.1626 9.542 31.3546 10.092 31.7386 10.476C32.1266 10.86 32.6186 11.052 33.2146 11.052C33.4746 11.052 33.7046 11.02 33.9046 10.956C34.1086 10.892 34.2966 10.802 34.4686 10.686C34.6446 10.566 34.8426 10.378 35.0626 10.122L35.9626 10.818C35.7026 11.182 35.4406 11.456 35.1766 11.64C34.9126 11.82 34.6206 11.958 34.3006 12.054C33.9806 12.154 33.5866 12.204 33.1186 12.204ZM37.5563 12V5.676H38.8823V6.792L38.7143 6.576H38.9243C39.1323 6.248 39.4283 5.982 39.8123 5.778C40.2003 5.574 40.6303 5.472 41.1023 5.472C41.8343 5.472 42.4023 5.676 42.8063 6.084C43.2103 6.492 43.4123 7.052 43.4123 7.764V12H42.0203V8.082C42.0203 7.618 41.9083 7.264 41.6843 7.02C41.4603 6.772 41.1063 6.648 40.6223 6.648C40.1383 6.648 39.7383 6.81 39.4223 7.134C39.1063 7.458 38.9483 7.862 38.9483 8.346V12H37.5563ZM47.3823 12.204C46.6423 12.204 46.0703 11.998 45.6663 11.586C45.2663 11.17 45.0663 10.582 45.0663 9.822V5.676H46.4523V9.558C46.4523 10.07 46.5683 10.448 46.8003 10.692C47.0323 10.932 47.3823 11.052 47.8503 11.052C48.3063 11.052 48.6903 10.89 49.0023 10.566C49.3143 10.238 49.4703 9.824 49.4703 9.324V5.676H50.8623V12H49.5363V10.482L50.1783 11.118H49.5003C49.3043 11.43 49.0223 11.69 48.6543 11.898C48.2863 12.102 47.8623 12.204 47.3823 12.204ZM52.6617 12V5.676H53.9877V6.738L53.8737 6.57H54.0297C54.2257 6.25 54.5097 5.988 54.8817 5.784C55.2577 5.576 55.6657 5.472 56.1057 5.472C56.5937 5.472 57.0097 5.578 57.3537 5.79C57.7017 6.002 57.9477 6.312 58.0917 6.72C58.3117 6.332 58.6177 6.028 59.0097 5.808C59.4057 5.584 59.8457 5.472 60.3297 5.472C61.0497 5.472 61.5997 5.676 61.9797 6.084C62.3637 6.492 62.5557 7.062 62.5557 7.794V12H61.1697V8.094C61.1697 7.606 61.0577 7.244 60.8337 7.008C60.6137 6.768 60.2857 6.648 59.8497 6.648C59.4217 6.648 59.0557 6.81 58.7517 7.134C58.4517 7.458 58.3017 7.87 58.3017 8.37V12H56.9157V8.088C56.9157 7.592 56.7997 7.228 56.5677 6.996C56.3397 6.764 56.0137 6.648 55.5897 6.648C55.1657 6.648 54.8037 6.814 54.5037 7.146C54.2037 7.474 54.0537 7.872 54.0537 8.34V12H52.6617Z"
+        />
+      </g>
+    </svg>
   );
 }
 
-/** The "AVENUM" wordmark, used identically across the homepage nav and every standalone page header. */
+/** The brand lockup, used identically across the homepage nav and every standalone page header. */
 export default function Logo({ href = '/', onClick, className }: LogoProps) {
-  const content = (
-    <>
-      <span className="relative inline-block">
-        <Mark />
-        AV
-      </span>
-      ENUM
-    </>
-  );
+  const content = <BrandLogo className="h-[1.1em] w-auto" />;
 
-  const classes = cn('font-display font-semibold tracking-normal', className);
+  const classes = cn('inline-flex items-center text-current', className);
 
   if (onClick) {
     return (
@@ -52,7 +52,7 @@ export default function Logo({ href = '/', onClick, className }: LogoProps) {
   }
 
   return (
-    <Link href={href} data-cursor className={classes}>
+    <Link href={href} data-cursor aria-label="Avenum — home" className={classes}>
       {content}
     </Link>
   );

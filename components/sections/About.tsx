@@ -8,8 +8,8 @@ import { useT } from '@/lib/i18n';
 import { prefersReducedMotion } from '@/lib/utils';
 
 const MANIFESTO = {
-  en: 'The web is not a page. It is a place. We design worlds, engineer feelings and ship experiences people remember with their hands — at sixty frames per second, on every screen.',
-  sq: 'Interneti nuk është faqe. Është vend. Ne dizajnojmë botë, krijojmë ndjenja dhe ofrojmë përvoja që njerëzit i mbajnë mend me duart e tyre — me gjashtëdhjetë kuadro në sekondë, në çdo ekran.',
+  en: 'The web is not a page. It is a place. We design worlds, engineer feelings and ship experiences people remember with their hands — pixel by pixel, on every screen.',
+  sq: 'Interneti nuk është faqe. Është vend. Ne dizajnojmë botë, krijojmë ndjenja dhe ofrojmë përvoja që njerëzit i mbajnë mend me duart e tyre — piksel pas pikseli, në çdo ekran.',
 };
 
 const STATS: Array<[string, { en: string; sq: string }]> = [
@@ -57,13 +57,13 @@ export default function About() {
       data-scene-section
       className="relative h-[250vh]"
     >
-      <div className="sticky top-0 flex h-screen items-center">
+      <div className="sticky top-0 flex h-screen items-center pt-24 md:pt-20">
         <div className="mx-auto w-full max-w-5xl px-6 md:px-12">
           {/* barely-there glass keeps the manifesto readable while the orbit stays visible */}
           <div className="glass-soft -translate-y-10 rounded-3xl p-5 md:translate-y-0 md:p-10">
             <p
               aria-label={manifesto}
-              className="text-shadow-soft font-display text-[clamp(1.9rem,3.8vw,3.2rem)] font-normal leading-[1.2]"
+              className="text-shadow-soft font-display text-[clamp(1.9rem,3.8vw,3.2rem)] font-medium leading-[1.2]"
             >
               {manifesto.split(' ').map((word, i) => (
                 <span key={i} aria-hidden data-about-word className="opacity-20">

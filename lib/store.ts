@@ -9,8 +9,6 @@ interface AppState {
   reducedMotion: boolean;
   /** index into SECTIONS of the section nearest the viewport */
   section: number;
-  /** active project index in the work gallery */
-  activeWork: number;
   /** site language — persisted to localStorage by <LangToggle> */
   locale: Locale;
   /** color-wash navigation, installed by <ColorWash> */
@@ -25,7 +23,6 @@ export const useStore = create<AppState>()((set) => ({
   quality: 'high',
   reducedMotion: false,
   section: 0,
-  activeWork: 0,
   locale: 'en',
   navigate: () => {},
   pageNavigate: () => {},

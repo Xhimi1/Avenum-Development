@@ -111,7 +111,7 @@ export default function ServiceLandingPage({
     <div className="min-h-screen bg-white text-[#0a0a0a]" style={accentVar}>
       <AuroraBackdrop accent={accent} accent2={accent2} />
       <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-4 py-3 md:px-8 md:py-4">
-        <Logo className="text-sm md:text-base" />
+        <Logo className="text-3xl md:text-4xl" />
         <div className="flex items-center gap-4">
           <Link href="/" data-cursor className="text-xs text-black">
             {t(BACK_LINK)}

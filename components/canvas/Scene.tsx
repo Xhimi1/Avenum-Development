@@ -7,7 +7,6 @@ import CameraRig from './CameraRig';
 import Atmosphere from './Atmosphere';
 import HeroBlob from './HeroBlob';
 import ServicesCluster from './ServicesCluster';
-import WorkGallery from './WorkGallery';
 import AboutOrbit from './AboutOrbit';
 import Globe from './Globe';
 import Particles from './Particles';
@@ -44,7 +43,6 @@ export default function Scene() {
           <CameraRig />
           <HeroBlob />
           <ServicesCluster />
-          <WorkGallery />
           <AboutOrbit />
           <Globe />
           <Particles />

@@ -58,6 +58,19 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
         duration: 1.15,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         touchMultiplier: 1.6,
+        // Elements marked [data-hscroll] (e.g. the Services card row) manage
+        // their own horizontal scrolling natively. Only yield to them for
+        // gestures that are actually horizontal — a plain vertical wheel
+        // scroll while the cursor happens to be hovering the row should
+        // still scroll the page, not get silently swallowed.
+        virtualScroll: (data) => {
+          const target = data.event.target as HTMLElement | null;
+          const horizontalEl = target?.closest?.('[data-hscroll]');
+          if (horizontalEl && Math.abs(data.deltaX) > Math.abs(data.deltaY)) {
+            return false;
+          }
+          return true;
+        },
       });
       scrollState.lenis = lenis;
 

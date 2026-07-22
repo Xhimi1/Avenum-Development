@@ -5,15 +5,16 @@ import { gsap } from '@/lib/gsap';
 import { useStore } from '@/lib/store';
 import { SECTIONS } from '@/lib/palette';
 import { prefersReducedMotion } from '@/lib/utils';
-import { Mark } from '@/components/ui/Logo';
+import { BrandLogo } from '@/components/ui/Logo';
 
 /**
- * Intro overlay: staggers the wordmark in, runs a progress bar, then lifts
+ * Intro overlay: reveals the brand logo, runs a progress bar, then lifts
  * away and flips `ready` (which unlocks scrolling and cues the hero reveal).
  */
 export default function Loader() {
   const [gone, setGone] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -31,9 +32,9 @@ export default function Loader() {
         },
       });
       tl.fromTo(
-        '[data-loader-char]',
-        { yPercent: 120 },
-        { yPercent: 0, stagger: 0.055, duration: 0.7, ease: 'power4.out' },
+        logoRef.current,
+        { yPercent: 120, opacity: 0 },
+        { yPercent: 0, opacity: 1, duration: 0.7, ease: 'power4.out' },
         0.1
       )
         .fromTo(
@@ -43,8 +44,8 @@ export default function Loader() {
           0.2
         )
         .to(
-          '[data-loader-char]',
-          { yPercent: -120, stagger: 0.04, duration: 0.5, ease: 'power4.in' },
+          logoRef.current,
+          { yPercent: -120, opacity: 0, duration: 0.5, ease: 'power4.in' },
           1.15
         )
         .to(el, { yPercent: -100, duration: 0.75, ease: 'power4.inOut' }, 1.35);
@@ -62,16 +63,9 @@ export default function Loader() {
       className="fixed inset-0 z-[95] flex flex-col items-center justify-center gap-8"
       style={{ background: SECTIONS[0].bg }}
     >
-      <div className="relative">
-        <Mark />
-        <div className="overflow-hidden">
-          <div className="flex font-display text-4xl font-semibold tracking-normal md:text-6xl">
-            {'AVENUM'.split('').map((c, i) => (
-              <span key={i} data-loader-char className="inline-block will-change-transform">
-                {c}
-              </span>
-            ))}
-          </div>
+      <div className="overflow-hidden">
+        <div ref={logoRef} className="will-change-transform">
+          <BrandLogo className="h-10 w-auto text-white md:h-14" />
         </div>
       </div>
       <div className="h-px w-44 overflow-hidden bg-white/15">
