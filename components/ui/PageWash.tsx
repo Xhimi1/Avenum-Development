@@ -38,6 +38,19 @@ export default function PageWash() {
           return;
         }
 
+        // Navigation is the last step of the sweep animation below, but that
+        // animation can be interrupted (a second click killing this tween, a
+        // backgrounded tab throttling rAF, a Fast Refresh mid-transition) —
+        // in which case router.push would silently never fire. This timeout
+        // is a safety net so the route change always happens regardless.
+        let navigated = false;
+        const go = () => {
+          if (navigated) return;
+          navigated = true;
+          router.push(href);
+        };
+        const fallback = window.setTimeout(go, 900);
+
         pendingRef.current = true;
         gsap.killTweensOf([accent, dark]);
         gsap
@@ -46,7 +59,10 @@ export default function PageWash() {
           .set(dark, { backgroundColor: colors?.bg ?? DEFAULT_DARK })
           .fromTo(accent, { yPercent: 100 }, { yPercent: 0, duration: 0.45, ease: 'power3.in' }, 0)
           .fromTo(dark, { yPercent: 100 }, { yPercent: 0, duration: 0.45, ease: 'power3.in' }, 0.09)
-          .add(() => router.push(href), '+=0.05');
+          .add(() => {
+            window.clearTimeout(fallback);
+            go();
+          }, '+=0.05');
       },
     });
     return () => {

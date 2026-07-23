@@ -59,6 +59,12 @@ export default function Particles() {
     const accents = SECTIONS.map((s) => new THREE.Color(s.accent));
     const glows = SECTIONS.map((s) => new THREE.Color(s.glow));
 
+    // Keep the particle field out of the Services section's stretch of the
+    // path — that location gets the plain brand-purple shapes instead.
+    const servicesIndex = SECTIONS.findIndex((s) => s.id === 'services');
+    const bandStart = servicesIndex / (SECTIONS.length - 1);
+    const bandEnd = (servicesIndex + 1) / (SECTIONS.length - 1);
+
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
     const scales = new Float32Array(count);
@@ -69,7 +75,8 @@ export default function Particles() {
     const color = new THREE.Color();
 
     for (let i = 0; i < count; i++) {
-      const u = Math.random();
+      let u = Math.random();
+      while (u >= bandStart && u <= bandEnd) u = Math.random();
       curve.getPoint(u, point);
       offset
         .set(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5)

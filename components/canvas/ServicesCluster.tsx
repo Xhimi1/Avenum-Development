@@ -3,15 +3,18 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
-import { Float } from '@react-three/drei';
+import { Float, MeshDistortMaterial } from '@react-three/drei';
 import Glow from './Glow';
 import { CENTERS, CAM_POINTS } from '@/lib/path';
 import { presence } from '@/lib/scroll';
-import { SECTIONS } from '@/lib/palette';
 
 /** Card copy is left-aligned on desktop, so the cluster shifts screen-right to clear it. */
 const DESKTOP_QUERY = '(min-width: 1024px)';
 const DESKTOP_SHIFT = 4.2;
+
+/** Brand-logo purple — the two shapes stand in for the logo's triangle + circle. */
+const BRAND_PURPLE = '#6367FF';
+const BRAND_PURPLE_DEEP = '#4f52e0';
 
 function useIsDesktop() {
   const [isDesktop, setIsDesktop] = useState(false);
@@ -25,36 +28,9 @@ function useIsDesktop() {
   return isDesktop;
 }
 
-interface ShapeDef {
-  kind: 'torusKnot' | 'icosahedron' | 'octahedron' | 'torus';
-  position: [number, number, number];
-  color: string;
-}
-
-/** One floating shape per service — hover makes it swell, glow and spin faster. */
-const SHAPES: ShapeDef[] = [
-  { kind: 'torusKnot', position: [-2.0, 1.0, 0.3], color: '#ff2da6' },
-  { kind: 'icosahedron', position: [1.7, 1.4, -0.7], color: '#ff5acf' },
-  { kind: 'octahedron', position: [2.0, -1.0, 0.5], color: '#d948ff' },
-  { kind: 'torus', position: [-1.5, -1.3, -0.3], color: '#ff2d6b' },
-];
-
-function ShapeGeometry({ kind }: { kind: ShapeDef['kind'] }) {
-  switch (kind) {
-    case 'torusKnot':
-      return <torusKnotGeometry args={[0.55, 0.2, 110, 20]} />;
-    case 'icosahedron':
-      return <icosahedronGeometry args={[0.7, 0]} />;
-    case 'octahedron':
-      return <octahedronGeometry args={[0.75, 0]} />;
-    case 'torus':
-      return <torusGeometry args={[0.58, 0.22, 20, 56]} />;
-  }
-}
-
-function Shape({ def }: { def: ShapeDef }) {
+/** Shared float + hover behavior: hovering swells the shape and brightens its glow. */
+function useHoverShape(swell: number, spin: number) {
   const mesh = useRef<THREE.Mesh>(null);
-  const mat = useRef<THREE.MeshStandardMaterial>(null);
   const hovered = useRef(false);
   const scale = useRef(1);
 
@@ -63,35 +39,88 @@ function Shape({ def }: { def: ShapeDef }) {
     if (!m) return;
     const { damp } = THREE.MathUtils;
     const h = hovered.current ? 1 : 0;
-    scale.current = damp(scale.current, 1 + h * 0.3, 5, delta);
+    scale.current = damp(scale.current, 1 + h * swell, 5, delta);
     m.scale.setScalar(scale.current);
-    m.rotation.x += delta * (0.25 + h * 0.9);
-    m.rotation.y += delta * (0.35 + h * 1.1);
-    if (mat.current) {
-      mat.current.emissiveIntensity = damp(mat.current.emissiveIntensity, 0.5 + h * 1.8, 5, delta);
-    }
+    m.rotation.x += delta * (0.2 + h * 0.7);
+    m.rotation.y += delta * (0.3 + h * spin);
+  });
+
+  const handlers = {
+    onPointerOver: (e: THREE.Event) => {
+      (e as unknown as { stopPropagation: () => void }).stopPropagation();
+      hovered.current = true;
+    },
+    onPointerOut: () => {
+      hovered.current = false;
+    },
+  };
+
+  return { mesh, hovered, handlers };
+}
+
+/** The "circle" of the logo — the distorted core reused from the About orbit, in brand purple. */
+function CoreSphere({ position }: { position: [number, number, number] }) {
+  const { mesh, hovered, handlers } = useHoverShape(0.25, 0.9);
+  const mat = useRef<THREE.MeshStandardMaterial>(null);
+
+  useFrame((_, delta) => {
+    if (!mat.current) return;
+    const h = hovered.current ? 1 : 0;
+    mat.current.emissiveIntensity = THREE.MathUtils.damp(
+      mat.current.emissiveIntensity,
+      0.5 + h * 1.6,
+      5,
+      delta
+    );
+  });
+
+  return (
+    <Float speed={2} rotationIntensity={0.4} floatIntensity={1.1}>
+      <mesh ref={mesh} position={position} {...handlers}>
+        <icosahedronGeometry args={[0.95, 5]} />
+        <MeshDistortMaterial
+          ref={mat as never}
+          color={BRAND_PURPLE}
+          emissive={BRAND_PURPLE_DEEP}
+          emissiveIntensity={0.5}
+          roughness={0.15}
+          metalness={0.4}
+          distort={0.28}
+          speed={1.6}
+        />
+      </mesh>
+    </Float>
+  );
+}
+
+/** The "triangle" of the logo — a shiny purple pyramid. */
+function Pyramid({ position }: { position: [number, number, number] }) {
+  const { mesh, hovered, handlers } = useHoverShape(0.3, 1.1);
+  const mat = useRef<THREE.MeshStandardMaterial>(null);
+
+  useFrame((_, delta) => {
+    if (!mat.current) return;
+    const h = hovered.current ? 1 : 0;
+    mat.current.emissiveIntensity = THREE.MathUtils.damp(
+      mat.current.emissiveIntensity,
+      0.5 + h * 1.8,
+      5,
+      delta
+    );
   });
 
   return (
     <Float speed={2} rotationIntensity={0.5} floatIntensity={1.2}>
-      <mesh
-        ref={mesh}
-        position={def.position}
-        onPointerOver={(e) => {
-          e.stopPropagation();
-          hovered.current = true;
-        }}
-        onPointerOut={() => (hovered.current = false)}
-      >
-        <ShapeGeometry kind={def.kind} />
+      <mesh ref={mesh} position={position} {...handlers}>
+        <tetrahedronGeometry args={[1.05, 0]} />
         <meshStandardMaterial
           ref={mat}
-          color={def.color}
-          emissive={def.color}
+          color={BRAND_PURPLE}
+          emissive={BRAND_PURPLE}
           emissiveIntensity={0.5}
-          metalness={0.35}
-          roughness={0.25}
-          flatShading={def.kind === 'icosahedron' || def.kind === 'octahedron'}
+          metalness={0.4}
+          roughness={0.2}
+          flatShading
         />
       </mesh>
     </Float>
@@ -124,12 +153,16 @@ export default function ServicesCluster() {
 
   return (
     <group ref={group} position={position}>
-      {SHAPES.map((def) => (
-        <Shape key={def.kind} def={def} />
-      ))}
-      <Glow color={SECTIONS[1].accent} scale={9} opacity={0.28} />
-      <pointLight color={SECTIONS[1].accent} intensity={140} distance={28} position={[0, 2, 4]} />
-      <pointLight color={SECTIONS[1].glow} intensity={60} distance={22} position={[-3, -2, 2]} />
+      {/* triangle + circle of the brand logo, alternating so no two of the
+          same shape sit on the same side */}
+      <Pyramid position={[-2.6, 1.5, 0.3]} /> {/* top-left */}
+      <CoreSphere position={[2.5, 1.7, -0.4]} /> {/* top-right */}
+      <CoreSphere position={[-2.0, -1.7, -0.3]} /> {/* bottom-left */}
+      <Pyramid position={[2.2, -1.5, 0.4]} /> {/* bottom-right */}
+
+      <Glow color={BRAND_PURPLE} scale={11} opacity={0.3} />
+      <pointLight color={BRAND_PURPLE} intensity={140} distance={28} position={[0, 2, 4]} />
+      <pointLight color={BRAND_PURPLE_DEEP} intensity={60} distance={22} position={[-3, -2, 2]} />
     </group>
   );
 }
