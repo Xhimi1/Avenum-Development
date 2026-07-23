@@ -11,11 +11,11 @@ import { useStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { prefersReducedMotion } from '@/lib/utils';
 
-const HEADING_LINE_1 = { en: 'Websites for', sq: 'Faqe interneti' };
-const HEADING_LINE_2 = { en: 'restaurants', sq: 'për restorante' };
+const HEADING_LINE_1 = { en: 'We build', sq: 'Ne ndërtojmë' };
+const HEADING_LINE_2 = { en: 'growth', sq: 'rritje' };
 const SUBTEXT = {
-  en: 'We build beautiful, fast websites — mainly for restaurants — designed to stand out from the competition and bring in more customers.',
-  sq: 'Ndërtojmë faqe interneti të bukura dhe të shpejta — kryesisht për restorante — që dallohen nga konkurrenca dhe sjellin më shumë klientë.',
+  en: "We at Avenum believe a website isn't a business card — it's your best salesperson.",
+  sq: 'Ne, Avenum, besojmë se një faqe interneti nuk është kartëvizitë — është shitësi yt më i mirë.',
 };
 const CTA_LABEL = { en: 'See our work', sq: 'Shiko punën' };
 const QUOTE = {
