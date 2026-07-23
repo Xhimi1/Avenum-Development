@@ -23,7 +23,7 @@ export const useStore = create<AppState>()((set) => ({
   quality: 'high',
   reducedMotion: false,
   section: 0,
-  locale: 'en',
+  locale: 'sq',
   navigate: () => {},
   pageNavigate: () => {},
   setLocale: (locale) => set({ locale }),

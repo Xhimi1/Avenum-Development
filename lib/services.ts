@@ -10,13 +10,6 @@ export interface ServiceLink {
 /** The services shown as horizontally-scrollable cards on the homepage. */
 export const SERVICES: ServiceLink[] = [
   {
-    title: { en: 'Immersive Websites', sq: 'Faqe Interneti Imersive' },
-    desc: {
-      en: 'Story-driven marketing sites and 3D worlds that make brands unforgettable.',
-      sq: 'Faqe marketingu me histori dhe botë 3D që i bëjnë markat të paharrueshme.',
-    },
-  },
-  {
     title: { en: 'Web Apps & Platforms', sq: 'Aplikacione & Platforma Web' },
     desc: {
       en: 'Design systems, dashboards and products engineered to scale without losing soul.',
@@ -26,8 +19,8 @@ export const SERVICES: ServiceLink[] = [
   {
     title: { en: 'AI Chatbots', sq: 'AI Chatbots' },
     desc: {
-      en: 'Concierge AI for restaurants & gyms — answers guests, books tables and signs up members 24/7.',
-      sq: 'AI konsierzh për restorante & palestra — u përgjigjet mysafirëve, rezervon tavolina dhe regjistron anëtarë 24/7.',
+      en: 'Concierge AI for restaurants — answers guests and books tables, 24/7.',
+      sq: 'AI konsierzh për restorante — u përgjigjet mysafirëve dhe rezervon tavolina, 24/7.',
     },
     href: '/ai-chatbots',
     tag: { en: 'Hot', sq: 'Hot' },
@@ -35,8 +28,8 @@ export const SERVICES: ServiceLink[] = [
   {
     title: { en: 'Creative Development', sq: 'Zhvillim Kreativ' },
     desc: {
-      en: 'WebGL, shaders and motion. The details people screenshot.',
-      sq: 'WebGL, shaders dhe animacione. Detajet që njerëzit bëjnë screenshot.',
+      en: 'Motion and detail that make a site feel premium — the parts people notice.',
+      sq: 'Animacione dhe detaje që e bëjnë faqen të ndihet premium — pjesët që njerëzit i vërejnë.',
     },
   },
   {

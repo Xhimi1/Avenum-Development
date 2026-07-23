@@ -11,20 +11,20 @@ import { useStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { prefersReducedMotion } from '@/lib/utils';
 
-const HEADING_LINE_1 = { en: 'We build', sq: 'Ne ndërtojmë' };
-const HEADING_LINE_2 = { en: 'worlds', sq: 'botë' };
+const HEADING_LINE_1 = { en: 'Websites for', sq: 'Faqe interneti' };
+const HEADING_LINE_2 = { en: 'restaurants', sq: 'për restorante' };
 const SUBTEXT = {
-  en: "Websites you don't scroll — you travel through. Avenum designs and engineers immersive products for brands that refuse to be forgotten.",
-  sq: 'Faqet e internetit nuk i shfletoni — i përjetoni. Avenum dizajnon dhe zhvillon produkte imersive për marka që refuzojnë të harrohen.',
+  en: 'We build beautiful, fast websites — mainly for restaurants — designed to stand out from the competition and bring in more customers.',
+  sq: 'Ndërtojmë faqe interneti të bukura dhe të shpejta — kryesisht për restorante — që dallohen nga konkurrenca dhe sjellin më shumë klientë.',
 };
-const CTA_LABEL = { en: 'Enter the work', sq: 'Shiko punën' };
+const CTA_LABEL = { en: 'See our work', sq: 'Shiko punën' };
 const QUOTE = {
-  en: "Wherever you are, we're already building there.",
-  sq: 'Kudo që të jeni, ne tashmë po ndërtojmë atje.',
+  en: 'Based in Tirana, building for every city.',
+  sq: 'Me bazë në Tiranë, ndërtojmë për çdo qytet.',
 };
 const SUBQUOTE = {
-  en: 'One studio. Every timezone. One connected world.',
-  sq: 'Një studio. Çdo zonë orare. Një botë e lidhur.',
+  en: 'Wherever your business is, we can work together.',
+  sq: 'Kudo që të jetë biznesi yt, mund të punojmë bashkë.',
 };
 
 export default function Hero() {

@@ -10,8 +10,7 @@ import SplitText from '@/components/ui/SplitText';
 import ArrowRight from '@/components/ui/ArrowRight';
 import LangToggle from '@/components/ui/LangToggle';
 import Logo from '@/components/ui/Logo';
-
-const MAIL_BASE = 'mailto:hello@avenum.studio?subject=';
+import { whatsappHref } from '@/lib/contact';
 
 const BACK_LINK = { en: '← Back to the experience', sq: '← Kthehu te eksperienca' };
 const COPYRIGHT = {
@@ -76,7 +75,8 @@ interface Tier {
   discountLabel?: Bi;
   per?: Bi;
   cta: Bi;
-  mailSubject: Bi;
+  /** pre-filled message for this tier's WhatsApp CTA */
+  waMessage: Bi;
   featured?: boolean;
   meta: Array<{ icon: (p: { className?: string }) => JSX.Element; label: Bi }>;
   features: Bi[];
@@ -95,15 +95,19 @@ const TIERS: Tier[] = [
     discountLabel: { en: '76% OFF', sq: '76% ZBRITJE' },
     per: { en: '/ project', sq: '/ projekt' },
     cta: { en: 'Choose this plan', sq: 'Zgjidh këtë plan' },
-    mailSubject: { en: 'Starter plan', sq: 'Plani Starter' },
+    waMessage: {
+      en: "Hi! I'm interested in the Starter plan.",
+      sq: 'Përshëndetje! Jam i interesuar për planin Starter.',
+    },
     meta: [
       { icon: IconLayers, label: { en: 'Up to 3 pages', sq: 'Deri në 3 faqe' } },
     ],
     features: [
-      { en: 'Custom design — no templates', sq: 'Dizajn i personalizuar — pa shabllone' },
-      { en: 'Mobile-first & lightning fast', sq: 'Mobile-first & shpejtësi maksimale' },
-      { en: 'Contact & WhatsApp integration', sq: 'Integrim kontakti & WhatsApp' },
-      { en: 'SEO essentials & analytics', sq: 'Bazat e SEO & analitika' },
+      { en: 'Custom design, not a template', sq: 'Dizajn i personalizuar, jo shabllon' },
+      { en: 'Looks great on every phone & is fast', sq: 'Duket shkëlqyeshëm në telefon & është e shpejtë' },
+      { en: 'Direct WhatsApp button for orders', sq: 'Buton direkt në WhatsApp për porosi' },
+      { en: 'Photos & menu presented professionally', sq: 'Foto & menu të vendosura në mënyrë profesionale' },
+      { en: 'Ready for Google (basic SEO)', sq: 'E gatshme për Google (SEO bazë)' },
       { en: '1 month of free support', sq: '1 muaj mbështetje falas' },
     ],
   },
@@ -119,17 +123,20 @@ const TIERS: Tier[] = [
     discountLabel: { en: '80% OFF', sq: '80% ZBRITJE' },
     per: { en: '/ project', sq: '/ projekt' },
     cta: { en: 'Choose this plan', sq: 'Zgjidh këtë plan' },
-    mailSubject: { en: 'Signature plan', sq: 'Plani Signature' },
+    waMessage: {
+      en: "Hi! I'm interested in the Signature plan.",
+      sq: 'Përshëndetje! Jam i interesuar për planin Signature.',
+    },
     featured: true,
     meta: [
       { icon: IconLayers, label: { en: 'Up to 10 pages', sq: 'Deri në 10 faqe' } },
     ],
     features: [
-      { en: 'Advanced motion & animations', sq: 'Animacione & lëvizje të avancuara' },
-      { en: '3D / WebGL on request', sq: '3D / WebGL sipas kërkesës' },
-      { en: 'CMS — edit content yourself', sq: 'CMS — modifiko përmbajtjen vetë' },
-      { en: 'Multilingual (AL · EN · IT)', sq: 'Shumëgjuhësh (AL · EN · IT)' },
-      { en: 'Booking & payment integrations', sq: 'Integrime rezervimesh & pagesash' },
+      { en: 'Custom design plus modern animations', sq: 'Dizajn i personalizuar plus animacione moderne' },
+      { en: 'Edit your own text & photos, no code needed', sq: 'Modifiko vetë tekstin & foton, pa kod' },
+      { en: 'Multilingual (Albanian · English · Italian)', sq: 'Shumëgjuhësh (Shqip · Anglisht · Italisht)' },
+      { en: 'Online reservations & payments', sq: 'Rezervime & pagesa online' },
+      { en: 'Advanced SEO — get found on Google', sq: 'SEO i avancuar — të gjejnë klientët në Google' },
       { en: '3 months of free support', sq: '3 muaj mbështetje falas' },
     ],
   },
@@ -142,17 +149,21 @@ const TIERS: Tier[] = [
     },
     price: { en: 'Custom', sq: 'Sipas kërkesës' },
     cta: { en: 'Contact us', sq: 'Na kontakto' },
-    mailSubject: { en: 'Partner plan', sq: 'Plani Partner' },
+    waMessage: {
+      en: "Hi! I'm interested in the Partner plan.",
+      sq: 'Përshëndetje! Jam i interesuar për planin Partner.',
+    },
     meta: [
       { icon: IconClock, label: { en: 'Dedicated team', sq: 'Ekip i dedikuar' } },
       { icon: IconLayers, label: { en: 'Unlimited scope', sq: 'Fushëveprim i pakufizuar' } },
     ],
     features: [
-      { en: 'Web apps & e-commerce', sq: 'Aplikacione web & e-commerce' },
-      { en: 'AI chatbot for bookings', sq: 'AI chatbot për rezervime' },
-      { en: 'Monthly retainer or per-project', sq: 'Pagesë mujore ose për projekt' },
-      { en: 'Priority support & SLAs', sq: 'Mbështetje prioritare & SLA' },
-      { en: 'Strategy, analytics & growth', sq: 'Strategji, analitika & rritje' },
+      { en: 'Web apps & online store (e-commerce)', sq: 'Aplikacione web & dyqan online (e-commerce)' },
+      { en: 'AI chatbot that takes reservations for you', sq: 'AI Chatbot që merr rezervimet për ty' },
+      { en: 'Monthly payment or per-project, your choice', sq: 'Pagesë mujore ose për projekt, si të duash' },
+      { en: 'Priority support, always available', sq: 'Mbështetje prioritare, gjithmonë e disponueshme' },
+      { en: 'We analyze your site & predict what grows it', sq: 'Analizojmë faqen tënde & parashikojmë çfarë e rrit' },
+      { en: 'Strategy first, then design & growth', sq: 'Strategji e para, pastaj dizajn & rritje' },
     ],
   },
 ];
@@ -173,13 +184,7 @@ const COMPARE_ROWS: Array<[Bi, CompareValue, CompareValue, CompareValue]> = [
     { en: 'Advanced', sq: 'Të avancuara' },
     { en: 'Bespoke', sq: 'Të personalizuara' },
   ],
-  [
-    { en: '3D / WebGL', sq: '3D / WebGL' },
-    false,
-    { en: 'On request', sq: 'Sipas kërkesës' },
-    true,
-  ],
-  [{ en: 'CMS — edit it yourself', sq: 'CMS — modifiko vetë' }, false, true, true],
+  [{ en: 'Edit content yourself, no code', sq: 'Modifiko vetë përmbajtjen, pa kod' }, false, true, true],
   [
     { en: 'E-commerce', sq: 'E-commerce' },
     false,
@@ -362,8 +367,8 @@ export default function PricingPage() {
             <FadeIn delay={0.4}>
               <p className="subtext mx-auto mt-6 max-w-xl text-sm font-light md:text-base">
                 {t({
-                  en: 'World-class web experiences at prices that make sense in Tirana — clear packages, honest scope, no hidden costs.',
-                  sq: 'Eksperienca web të nivelit botëror me çmime që kanë kuptim në Tiranë — paketa të qarta, fushëveprim i sinqertë, pa kosto të fshehura.',
+                  en: 'Premium websites at prices that make sense in Albania — clear packages, honest scope, no hidden costs.',
+                  sq: 'Faqe interneti premium me çmime që kanë kuptim në Shqipëri — paketa të qarta, fushëveprim i sinqertë, pa kosto të fshehura.',
                 })}
               </p>
             </FadeIn>
@@ -396,7 +401,7 @@ export default function PricingPage() {
                             </p>
 
                             <a
-                              href={`${MAIL_BASE}${encodeURIComponent(t(tier.mailSubject))}`}
+                              href={whatsappHref(t(tier.waMessage))}
                               data-cursor
                               className="mt-6 flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-t from-[#4f52e0] to-[#6367FF] py-3.5 text-center text-sm font-medium tracking-normal text-white transition-opacity duration-300 hover:opacity-90"
                             >
@@ -430,7 +435,7 @@ export default function PricingPage() {
                               </p>
 
                               <a
-                                href={`${MAIL_BASE}${encodeURIComponent(t(tier.mailSubject))}`}
+                                href={whatsappHref(t(tier.waMessage))}
                                 data-cursor
                                 className="mt-6 flex items-center justify-center gap-1.5 rounded-xl bg-white py-3.5 text-center text-sm font-medium tracking-normal text-black transition-colors duration-300 hover:bg-white/90"
                               >
@@ -547,7 +552,7 @@ export default function PricingPage() {
           </FadeIn>
           <FadeIn delay={0.3} className="mt-10">
             <a
-              href={`${MAIL_BASE}${encodeURIComponent(t({ en: 'Quote request', sq: 'Kërkesë oferte' }))}`}
+              href={whatsappHref(t({ en: "Hi! I'd like a free quote.", sq: 'Përshëndetje! Do të doja një ofertë falas.' }))}
               data-cursor
               className="inline-flex items-center gap-3 rounded-full bg-white px-12 py-6 text-base font-medium tracking-normal text-black"
             >
@@ -559,14 +564,22 @@ export default function PricingPage() {
       </main>
 
       <footer className="border-t border-white/10 px-6 py-8 md:px-12">
-        <div className="mx-auto flex w-full max-w-[90rem] flex-col gap-3 text-xs text-white/50 md:flex-row md:items-center md:justify-between">
+        <div className="mx-auto flex w-full max-w-[90rem] flex-col gap-4 text-xs text-white/50 md:flex-row md:items-center md:justify-between">
           <p>{t(COPYRIGHT)}</p>
+          <div className="flex gap-5">
+            <Link href="/privacy-policy" data-cursor className="transition-colors duration-300 hover:text-white">
+              {t({ en: 'Privacy Policy', sq: 'Privatësia' })}
+            </Link>
+            <Link href="/terms-of-service" data-cursor className="transition-colors duration-300 hover:text-white">
+              {t({ en: 'Terms of Service', sq: 'Kushtet' })}
+            </Link>
+          </div>
           <Link
             href="/"
             data-cursor
             className="w-fit text-white/50 transition-colors duration-300 hover:text-white"
           >
-            avenum.studio
+            avenum.website
           </Link>
         </div>
       </footer>

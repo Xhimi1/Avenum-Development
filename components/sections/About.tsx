@@ -8,15 +8,15 @@ import { useT } from '@/lib/i18n';
 import { prefersReducedMotion } from '@/lib/utils';
 
 const MANIFESTO = {
-  en: 'The web is not a page. It is a place. We design worlds, engineer feelings and ship experiences people remember with their hands — pixel by pixel, on every screen.',
-  sq: 'Interneti nuk është faqe. Është vend. Ne dizajnojmë botë, krijojmë ndjenja dhe ofrojmë përvoja që njerëzit i mbajnë mend me duart e tyre — piksel pas pikseli, në çdo ekran.',
+  en: 'We build beautiful, fast, unique websites — the kind that make your business stand out from the competition and bring in more customers.',
+  sq: 'Ne ndërtojmë faqe interneti të bukura, të shpejta dhe unike — që e dallojnë biznesin tënd nga konkurrenca dhe sjellin më shumë klientë.',
 };
 
 const STATS: Array<[string, { en: string; sq: string }]> = [
-  ['120+', { en: 'Projects shipped', sq: 'Projekte të përfunduara' }],
-  ['31', { en: 'International awards', sq: 'Çmime ndërkombëtare' }],
-  ['9', { en: 'Countries', sq: 'Vende' }],
-  ['60fps', { en: 'Non-negotiable', sq: "S'diskutohet" }],
+  ['3+', { en: 'Years of experience', sq: 'Vite përvojë' }],
+  ['20+', { en: 'Projects delivered', sq: 'Projekte të realizuara' }],
+  ['100%', { en: 'Client satisfaction', sq: 'Klientë të kënaqur' }],
+  ['SEO', { en: 'Included, every time', sq: 'E përfshirë, gjithmonë' }],
 ];
 
 export default function About() {

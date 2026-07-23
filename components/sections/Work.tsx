@@ -39,14 +39,7 @@ export default function Work() {
           {PROJECTS.map((project, i) => (
             <li key={project.name}>
               <FadeIn delay={0.1 * i}>
-                <div className="overflow-hidden rounded-2xl bg-black/5">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={project.image}
-                    alt={project.name}
-                    className="aspect-[4/3] w-full object-cover"
-                  />
-                </div>
+                <div aria-hidden className="aspect-[4/3] w-full rounded-2xl bg-black/10" />
                 <h3 className="mt-5 font-display text-2xl font-semibold md:text-3xl">
                   {project.name}
                 </h3>

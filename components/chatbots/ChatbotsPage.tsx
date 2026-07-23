@@ -11,12 +11,12 @@ import SplitText from '@/components/ui/SplitText';
 import ArrowRight from '@/components/ui/ArrowRight';
 import LangToggle from '@/components/ui/LangToggle';
 import Logo from '@/components/ui/Logo';
+import { whatsappHref } from '@/lib/contact';
 
 const AssistantOrb = dynamic(() => import('./AssistantOrb'), { ssr: false });
 const ChatDemo = dynamic(() => import('./ChatDemo'), { ssr: false });
 
-const MAIL_BASE = 'mailto:hello@avenum.studio?subject=';
-const MAIL_SUBJECT = { en: 'AI chatbot for my business', sq: 'AI chatbot për biznesin tim' };
+const MAIL_SUBJECT = { en: 'AI chatbot for my restaurant', sq: 'AI chatbot për restorantin tim' };
 
 const BACK_LINK = { en: '← Back to the experience', sq: '← Kthehu te eksperienca' };
 const COPYRIGHT = {
@@ -24,10 +24,10 @@ const COPYRIGHT = {
   sq: '© 2026 Avenum — Të gjitha të drejtat e rezervuara',
 };
 
-const HERO_HEADING = { en: 'Chatbots that never miss a booking.', sq: 'Chatbot që nuk humbasin asnjë rezervim.' };
+const HERO_HEADING = { en: 'A chatbot that never misses a table.', sq: 'Një chatbot që nuk humbet asnjë rezervim.' };
 const HERO_SUB = {
-  en: 'We design and train AI assistants for restaurants and gyms — they answer guests, reserve tables and sign up members around the clock, in any language.',
-  sq: 'Ne dizajnojmë dhe trajnojmë asistentë AI për restorante dhe palestra — u përgjigjen mysafirëve, rezervojnë tavolina dhe regjistrojnë anëtarë gjatë gjithë kohës, në çdo gjuhë.',
+  en: 'We build AI assistants for restaurants — they answer guests and reserve tables around the clock, in any language.',
+  sq: 'Ne ndërtojmë asistentë AI për restorante — u përgjigjen mysafirëve dhe rezervojnë tavolina gjatë gjithë kohës, në çdo gjuhë.',
 };
 const CTA_PRIMARY = { en: 'Get your chatbot', sq: 'Merr chatbot-in tënd' };
 const CTA_SECONDARY = { en: 'See it in action', sq: 'Shiko si funksionon' };
@@ -49,14 +49,14 @@ const STEP_LABEL = { en: 'Step', sq: 'Hapi' };
 const BUILD_EYEBROW = { en: 'The process', sq: 'Procesi' };
 const BUILD_HEADING = { en: 'How we build it.', sq: 'Si e ndërtojmë.' };
 const BUILD_SUB = {
-  en: 'A working demo of your own bot within a week, live in your business within a month.',
-  sq: 'Një demo funksionale e bot-it tënd brenda një jave, online në biznesin tënd brenda një muaji.',
+  en: 'A working demo of your own bot within a week, live in your restaurant within a month.',
+  sq: 'Një demo funksionale e bot-it tënd brenda një jave, online në restorantin tënd brenda një muaji.',
 };
 
 const CTA_HEADING = { en: 'Your front desk, automated.', sq: 'Recepsioni yt, i automatizuar.' };
 const CTA_SUB = {
-  en: "Tell us about your restaurant or gym — we'll reply with a plan and a working demo of your own assistant.",
-  sq: 'Na trego për restorantin apo palestrën tënde — do të përgjigjemi me një plan dhe një demo funksionale të asistentit tënd.',
+  en: "Tell us about your restaurant — we'll reply with a plan and a working demo of your own assistant.",
+  sq: 'Na trego për restorantin tënd — do të përgjigjemi me një plan dhe një demo funksionale të asistentit tënd.',
 };
 const CTA_FINAL = { en: 'Start your chatbot', sq: 'Nis chatbot-in tënd' };
 
@@ -115,24 +115,24 @@ const HOW_IT_WORKS = [
     icon: IconBrain,
     title: { en: 'The AI understands intent', sq: 'AI kupton qëllimin' },
     desc: {
-      en: 'Trained on your menu, class schedule, prices, policies and tone of voice.',
-      sq: 'I trajnuar me menunë tënde, orarin e klasave, çmimet, rregullat dhe tonin e zërit.',
+      en: 'Trained on your menu, hours, prices, policies and tone of voice.',
+      sq: 'I trajnuar me menunë tënde, orarin, çmimet, rregullat dhe tonin e zërit.',
     },
   },
   {
     icon: IconPlug,
     title: { en: 'It connects to your tools', sq: 'Lidhet me mjetet e tua' },
     desc: {
-      en: 'Reservation systems, class calendars, CRMs and payments — wired in securely.',
-      sq: 'Sisteme rezervimesh, kalendarë klasash, CRM dhe pagesa — të lidhura në mënyrë të sigurt.',
+      en: 'Reservation systems, CRMs and payments — wired in securely.',
+      sq: 'Sisteme rezervimesh, CRM dhe pagesa — të lidhura në mënyrë të sigurt.',
     },
   },
   {
     icon: IconBolt,
     title: { en: 'It answers & takes action', sq: 'Përgjigjet & vepron' },
     desc: {
-      en: 'Replies in seconds, books the table or the trial, upsells — and hands tricky cases to a human.',
-      sq: 'Përgjigjet në sekonda, rezervon tavolinën apo seancën provë, ofron shtesa — dhe ia kalon rastet e vështira një njeriu.',
+      en: 'Replies in seconds, books the table, upsells — and hands tricky cases to a human.',
+      sq: 'Përgjigjet në sekonda, rezervon tavolinën, ofron shtesa — dhe ia kalon rastet e vështira një njeriu.',
     },
   },
 ];
@@ -158,8 +158,8 @@ const BUILD_STEPS = [
     phase: '03',
     title: { en: 'Wired into your tools', sq: 'I lidhur me mjetet e tua' },
     desc: {
-      en: 'Reservations, class calendars, CRM, payments. Every action the bot takes lands in the systems you already trust.',
-      sq: 'Rezervime, kalendarë klasash, CRM, pagesa. Çdo veprim i bot-it përfundon në sistemet që tashmë u beson.',
+      en: 'Reservations, CRM, payments. Every action the bot takes lands in the systems you already trust.',
+      sq: 'Rezervime, CRM, pagesa. Çdo veprim i bot-it përfundon në sistemet që tashmë u beson.',
     },
   },
   {
@@ -201,7 +201,7 @@ export default function ChatbotsPage() {
   const buildLineRef = useRef<HTMLDivElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
   const t = useT();
-  const mailto = `${MAIL_BASE}${encodeURIComponent(t(MAIL_SUBJECT))}`;
+  const waLink = whatsappHref(t(MAIL_SUBJECT));
 
   const scrollToDemo = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -320,7 +320,7 @@ export default function ChatbotsPage() {
 
               <FadeIn delay={0.7} className="mt-10 flex flex-wrap items-center gap-4">
                 <a
-                  href={mailto}
+                  href={waLink}
                   data-cursor
                   className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-xs font-medium tracking-normal text-black"
                 >
@@ -474,7 +474,7 @@ export default function ChatbotsPage() {
             </FadeIn>
             <FadeIn delay={0.3} className="mt-10">
               <a
-                href={mailto}
+                href={waLink}
                 data-cursor
                 className="inline-flex items-center gap-3 rounded-full bg-white px-12 py-6 text-base font-medium tracking-normal text-black"
               >
@@ -487,10 +487,18 @@ export default function ChatbotsPage() {
       </main>
 
       <footer className="border-t border-white/10 px-6 py-8 md:px-12">
-        <div className="mx-auto flex w-full max-w-[90rem] flex-col gap-3 text-xs text-white/50 md:flex-row md:items-center md:justify-between">
+        <div className="mx-auto flex w-full max-w-[90rem] flex-col gap-4 text-xs text-white/50 md:flex-row md:items-center md:justify-between">
           <p>{t(COPYRIGHT)}</p>
+          <div className="flex gap-5">
+            <Link href="/privacy-policy" data-cursor className="transition-colors duration-300 hover:text-white">
+              {t({ en: 'Privacy Policy', sq: 'Privatësia' })}
+            </Link>
+            <Link href="/terms-of-service" data-cursor className="transition-colors duration-300 hover:text-white">
+              {t({ en: 'Terms of Service', sq: 'Kushtet' })}
+            </Link>
+          </div>
           <Link href="/" data-cursor className="w-fit text-white/50 transition-colors duration-300 hover:text-white">
-            avenum.studio
+            avenum.website
           </Link>
         </div>
       </footer>

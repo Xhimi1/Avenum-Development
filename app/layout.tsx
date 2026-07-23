@@ -18,13 +18,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Avenum — We build worlds on the web',
+  title: 'Avenum — Faqe interneti për restorante & biznese',
   description:
-    'Avenum is a web development agency crafting immersive, interactive digital experiences — 3D worlds, kinetic interfaces and products that feel alive.',
+    'Avenum është një agjenci web që ndërton faqe interneti të bukura, të shpejta dhe unike — kryesisht për restorante, që i dallojnë nga konkurrenca dhe u sjellin më shumë klientë.',
   openGraph: {
-    title: 'Avenum — We build worlds on the web',
+    title: 'Avenum — Faqe interneti për restorante & biznese',
     description:
-      'Immersive websites, web apps and e-commerce with 3D, motion and craft.',
+      'Faqe interneti, aplikacione web dhe AI chatbot — ndërtuar me strategji, dizajn premium dhe SEO të përfshirë.',
     type: 'website',
   },
 };
@@ -39,7 +39,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${jakarta.variable} ${inter.variable}`}>
+    <html lang="sq" className={`${jakarta.variable} ${inter.variable}`}>
       <body className="bg-[#050a30] font-body text-[#f2f4ff] antialiased">
         <PageWash />
         {children}

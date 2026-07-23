@@ -10,9 +10,13 @@ import { useT } from '@/lib/i18n';
 import { cn, prefersReducedMotion } from '@/lib/utils';
 import LangToggle from '@/components/ui/LangToggle';
 import Logo from '@/components/ui/Logo';
+import { EMAIL } from '@/lib/contact';
 
 const PRICING_LABEL = { en: 'Pricing', sq: 'Çmimet' };
-const REMOTE_LINE = { en: 'Tirana · Berlin · Remote', sq: 'Tiranë · Berlin · Në distancë' };
+const REMOTE_LINE = {
+  en: 'Tirana · we build for other cities too',
+  sq: 'Tiranë · punojmë edhe për qytete të tjera',
+};
 const PRICING_WASH = { accent: '#8b5cf6', bg: '#1c0f36' };
 
 export default function Nav() {
@@ -198,10 +202,10 @@ export default function Nav() {
           )}
         >
           <a
-            href="mailto:hello@avenum.studio"
+            href={`mailto:${EMAIL}`}
             className="w-fit transition-colors hover:text-[var(--accent)]"
           >
-            hello@avenum.studio
+            {EMAIL}
           </a>
           <p>{t(REMOTE_LINE)}</p>
           <LangToggle className="mt-1 w-fit" />

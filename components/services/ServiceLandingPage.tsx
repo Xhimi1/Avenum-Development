@@ -11,6 +11,7 @@ import ArrowRight from '@/components/ui/ArrowRight';
 import LangToggle from '@/components/ui/LangToggle';
 import Logo from '@/components/ui/Logo';
 import AuroraBackdrop from './graphics/AuroraBackdrop';
+import { whatsappHref } from '@/lib/contact';
 
 export interface ServiceFeature {
   icon: (props: { className?: string }) => JSX.Element;
@@ -50,7 +51,6 @@ const COPYRIGHT = {
   sq: '© 2026 Avenum — Të gjitha të drejtat e rezervuara',
 };
 
-const MAIL_BASE = 'mailto:hello@avenum.studio?subject=';
 
 /**
  * Shared skeleton for the light, no-3D service pages (hero → features →
@@ -77,7 +77,7 @@ export default function ServiceLandingPage({
   const buildSectionRef = useRef<HTMLElement>(null);
   const buildLineRef = useRef<HTMLDivElement>(null);
   const t = useT();
-  const mailto = `${MAIL_BASE}${encodeURIComponent(t(mailSubject))}`;
+  const waLink = whatsappHref(t(mailSubject));
   const accentVar = {
     '--svc-accent': accent,
     '--svc-accent2': accent2,
@@ -138,7 +138,7 @@ export default function ServiceLandingPage({
 
               <FadeIn delay={0.5} className="mt-10">
                 <a
-                  href={mailto}
+                  href={waLink}
                   data-cursor
                   className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[var(--svc-accent)] to-[var(--svc-accent2)] px-8 py-4 text-xs font-medium tracking-normal text-white"
                 >
@@ -253,7 +253,7 @@ export default function ServiceLandingPage({
             </FadeIn>
             <FadeIn delay={0.3} className="mt-10">
               <a
-                href={mailto}
+                href={waLink}
                 data-cursor
                 className="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[var(--svc-accent)] to-[var(--svc-accent2)] px-12 py-6 text-base font-medium tracking-normal text-white"
               >
@@ -266,14 +266,22 @@ export default function ServiceLandingPage({
       </main>
 
       <footer className="border-t border-black/10 px-6 py-8 md:px-12">
-        <div className="mx-auto flex w-full max-w-[90rem] flex-col gap-3 text-xs text-black md:flex-row md:items-center md:justify-between">
+        <div className="mx-auto flex w-full max-w-[90rem] flex-col gap-4 text-xs text-black md:flex-row md:items-center md:justify-between">
           <p>{t(COPYRIGHT)}</p>
+          <div className="flex gap-5">
+            <Link href="/privacy-policy" data-cursor className="transition-colors duration-300 hover:text-black/70">
+              {t({ en: 'Privacy Policy', sq: 'Privatësia' })}
+            </Link>
+            <Link href="/terms-of-service" data-cursor className="transition-colors duration-300 hover:text-black/70">
+              {t({ en: 'Terms of Service', sq: 'Kushtet' })}
+            </Link>
+          </div>
           <Link
             href="/"
             data-cursor
             className="w-fit text-black"
           >
-            avenum.studio
+            avenum.website
           </Link>
         </div>
       </footer>
