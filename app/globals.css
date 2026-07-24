@@ -153,6 +153,38 @@ html.lenis body {
 .svc-drift-b { animation: svc-drift-b 26s ease-in-out infinite; }
 .svc-drift-c { animation: svc-drift-c 30s ease-in-out infinite; }
 
+/* A light sweep across a glossy surface. */
+@keyframes svc-sheen {
+  0% { transform: translateX(-130%) skewX(-16deg); }
+  55%, 100% { transform: translateX(320%) skewX(-16deg); }
+}
+.svc-sheen { animation: svc-sheen 5.5s ease-in-out infinite; }
+
+/* Blinking cursor / live dot. */
+@keyframes svc-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+.svc-blink { animation: svc-blink 1.4s ease-in-out infinite; }
+
+/* Gentle sway for pinned chips. */
+@keyframes svc-sway {
+  0%, 100% { transform: translateY(0) rotate(var(--svc-rot, 0deg)); }
+  50% { transform: translateY(-8px) rotate(calc(var(--svc-rot, 0deg) + 2deg)); }
+}
+.svc-sway { animation: svc-sway 7s ease-in-out infinite; }
+
+/* Dashed ring spin (support / processing). */
+@keyframes svc-spin { to { transform: rotate(360deg); } }
+.svc-spin { animation: svc-spin 14s linear infinite; }
+
+/* Typing dots. */
+@keyframes svc-dot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+.svc-dot { animation: svc-dot 1.3s ease-in-out infinite; }
+
 /* ---- Stripe-style morphing gradient blobs (AI-chatbot service card) ---- */
 .chatbot-blob {
   position: absolute;
@@ -210,6 +242,11 @@ html.lenis body {
   .svc-drift-a,
   .svc-drift-b,
   .svc-drift-c,
+  .svc-sheen,
+  .svc-blink,
+  .svc-sway,
+  .svc-spin,
+  .svc-dot,
   .chatbot-blob-1,
   .chatbot-blob-2,
   .chatbot-blob-3,

@@ -8,6 +8,8 @@ export default function EmailAutomationPage() {
     <ServicePage
       accent="#D99500"
       accent2="#FFC85A"
+      heroGradient="linear-gradient(140deg, #FFC24B 0%, #F2971E 50%, #FF7A4D 100%)"
+      heroBlobs={['#FFE08A', '#FFB25A', '#FF8F6B']}
       heading={{ en: 'Emails that send themselves.', sq: 'Email-e që nisen vetë.' }}
       subheading={{
         en: 'Confirmations and follow-ups go out on their own — hands-free.',

@@ -8,7 +8,8 @@ export default function MultiLanguagePage() {
     <ServicePage
       accent="#7A3CE0"
       accent2="#FF6FA5"
-      vividHero
+      heroGradient="linear-gradient(140deg, #2BB8F0 0%, #7A3CE0 50%, #FF6FA5 100%)"
+      heroBlobs={['#5FD2FF', '#A57BFF', '#FF64A6']}
       heading={{ en: 'One site, every language.', sq: 'Një faqe, çdo gjuhë.' }}
       subheading={{
         en: 'Every visitor reads your site in the language they speak.',

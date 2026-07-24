@@ -1,14 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
 import { useT, type Bi } from '@/lib/i18n';
 import FadeIn from '@/components/ui/FadeIn';
 import SplitText from '@/components/ui/SplitText';
 import ArrowRight from '@/components/ui/ArrowRight';
 import LangToggle from '@/components/ui/LangToggle';
 import Logo from '@/components/ui/Logo';
-import AuroraBackdrop from './graphics/AuroraBackdrop';
 import { whatsappHref } from '@/lib/contact';
 
 export interface ServiceTile {
@@ -21,8 +20,10 @@ interface ServicePageProps {
   accent: string;
   /** second hue for gradients */
   accent2: string;
-  /** paint the hero with the animated chatbot gradient instead of white */
-  vividHero?: boolean;
+  /** three-stop CSS gradient painted behind the hero (in this page's palette) */
+  heroGradient: string;
+  /** three colors for the slowly-drifting hero blobs */
+  heroBlobs: [string, string, string];
   heading: Bi;
   subheading: Bi;
   ctaLabel: Bi;
@@ -47,7 +48,8 @@ const COPYRIGHT = {
 export default function ServicePage({
   accent,
   accent2,
-  vividHero = false,
+  heroGradient,
+  heroBlobs,
   heading,
   subheading,
   ctaLabel,
@@ -64,51 +66,47 @@ export default function ServicePage({
     '--svc-accent2': accent2,
   } as CSSProperties;
 
+  // Header rides on the colored hero (white text) then flips to dark once the
+  // page scrolls into the white sections below.
+  const [onHero, setOnHero] = useState(true);
+  useEffect(() => {
+    const onScroll = () => setOnHero(window.scrollY < window.innerHeight * 0.82);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const blob = (c: string) => `radial-gradient(circle at center, ${c} 0%, ${c}00 62%)`;
+
   return (
     <div className="min-h-screen bg-white text-[#0a0a0a]" style={accentVar}>
-      {!vividHero && <AuroraBackdrop accent={accent} accent2={accent2} />}
-
       <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-4 py-3 md:px-8 md:py-4">
-        <Logo className="text-3xl md:text-4xl" />
+        <Logo className={`text-3xl transition-colors duration-300 md:text-4xl ${onHero ? 'text-white' : 'text-black'}`} />
         <div className="flex items-center gap-4">
-          <Link href="/" data-cursor className={vividHero ? 'text-xs text-white' : 'text-xs text-black'}>
+          <Link
+            href="/"
+            data-cursor
+            className={`text-xs transition-colors duration-300 ${onHero ? 'text-white' : 'text-black'}`}
+          >
             {t(BACK_LINK)}
           </Link>
-          <LangToggle light={!vividHero} />
+          <LangToggle light={onHero} />
         </div>
       </header>
 
       <main>
-        {/* hero */}
+        {/* hero — vivid animated gradient in this page's palette */}
         <section
-          className={`relative flex min-h-dvh items-center overflow-hidden pt-28 pb-20 md:pt-32 ${
-            vividHero ? 'text-white' : ''
-          }`}
-          style={
-            vividHero
-              ? {
-                  backgroundImage:
-                    'radial-gradient(120% 120% at 15% 12%, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0) 42%), linear-gradient(140deg, #2BB8F0 0%, #7A3CE0 50%, #FF6FA5 100%)',
-                }
-              : undefined
-          }
+          className="relative flex min-h-dvh items-center overflow-hidden pt-28 pb-20 text-white md:pt-32"
+          style={{
+            backgroundImage: `radial-gradient(120% 120% at 15% 12%, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0) 42%), ${heroGradient}`,
+          }}
         >
-          {vividHero && (
-            <span aria-hidden className="pointer-events-none absolute inset-0 z-0">
-              <span
-                className="chatbot-blob chatbot-blob-1"
-                style={{ left: '-14%', top: '-18%', background: 'radial-gradient(circle at center, #5FD2FF 0%, rgba(95,210,255,0) 62%)' }}
-              />
-              <span
-                className="chatbot-blob chatbot-blob-2"
-                style={{ right: '-16%', top: '-10%', background: 'radial-gradient(circle at center, #FF64A6 0%, rgba(255,100,166,0) 62%)' }}
-              />
-              <span
-                className="chatbot-blob chatbot-blob-3"
-                style={{ left: '8%', bottom: '-24%', background: 'radial-gradient(circle at center, #A57BFF 0%, rgba(165,123,255,0) 62%)' }}
-              />
-            </span>
-          )}
+          <span aria-hidden className="pointer-events-none absolute inset-0 z-0">
+            <span className="chatbot-blob chatbot-blob-1" style={{ left: '-14%', top: '-18%', background: blob(heroBlobs[0]) }} />
+            <span className="chatbot-blob chatbot-blob-2" style={{ right: '-16%', top: '-10%', background: blob(heroBlobs[1]) }} />
+            <span className="chatbot-blob chatbot-blob-3" style={{ left: '8%', bottom: '-24%', background: blob(heroBlobs[2]) }} />
+          </span>
 
           <div className="relative z-10 mx-auto grid w-full max-w-[90rem] items-center gap-14 px-6 md:grid-cols-2 md:gap-10 md:px-12">
             <div className="max-w-xl">
@@ -120,11 +118,7 @@ export default function ServicePage({
                 {t(heading)}
               </SplitText>
               <FadeIn delay={0.35}>
-                <p
-                  className={`mt-6 max-w-md text-base tracking-normal md:text-lg ${
-                    vividHero ? 'text-white' : 'text-black'
-                  }`}
-                >
+                <p className="mt-6 max-w-md text-base tracking-normal text-white md:text-lg">
                   {t(subheading)}
                 </p>
               </FadeIn>
@@ -133,11 +127,7 @@ export default function ServicePage({
                 <a
                   href={waLink}
                   data-cursor
-                  className={`group inline-flex items-center gap-2 rounded-full px-8 py-4 text-sm font-medium tracking-normal transition-transform duration-300 hover:-translate-y-0.5 ${
-                    vividHero
-                      ? 'bg-white text-black shadow-lg'
-                      : 'bg-gradient-to-r from-[var(--svc-accent)] to-[var(--svc-accent2)] text-white shadow-lg'
-                  }`}
+                  className="group inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-medium tracking-normal text-black shadow-lg transition-transform duration-300 hover:-translate-y-0.5"
                 >
                   {t(ctaLabel)}
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />

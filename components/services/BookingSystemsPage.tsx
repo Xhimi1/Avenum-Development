@@ -8,6 +8,8 @@ export default function BookingSystemsPage() {
     <ServicePage
       accent="#2FA76A"
       accent2="#7FD8AC"
+      heroGradient="linear-gradient(140deg, #22C3B0 0%, #22A76A 52%, #8FD45E 100%)"
+      heroBlobs={['#6FE6CE', '#4CD48C', '#BEE86F']}
       heading={{ en: 'Reservations while you sleep.', sq: 'Rezervime edhe kur fle.' }}
       subheading={{
         en: 'Guests book straight from your site — no calls, no missed tables.',

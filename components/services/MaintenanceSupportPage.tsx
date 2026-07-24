@@ -8,6 +8,8 @@ export default function MaintenanceSupportPage() {
     <ServicePage
       accent="#E07B34"
       accent2="#FFB36B"
+      heroGradient="linear-gradient(140deg, #FFB65C 0%, #E67A32 52%, #FF6F5C 100%)"
+      heroBlobs={['#FFD08A', '#FF9E63', '#FF8A78']}
       heading={{ en: 'We keep it running.', sq: 'Ne e mbajmë në punë.' }}
       subheading={{
         en: 'Fast, secure and up to date — so you never think about it.',

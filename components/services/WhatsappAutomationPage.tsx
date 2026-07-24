@@ -8,6 +8,8 @@ export default function WhatsappAutomationPage() {
     <ServicePage
       accent="#16A97C"
       accent2="#5FD8B0"
+      heroGradient="linear-gradient(140deg, #24C9C0 0%, #16A97C 52%, #54C85E 100%)"
+      heroBlobs={['#6FE6D8', '#3ED89E', '#8FE07A']}
       heading={{ en: 'Reply on WhatsApp, instantly.', sq: 'Përgjigju në WhatsApp, menjëherë.' }}
       subheading={{
         en: 'Meet customers where they already chat — answered automatically.',

@@ -8,6 +8,8 @@ export default function BusinessWebsitesPage() {
     <ServicePage
       accent="#3B6BFF"
       accent2="#7AA2FF"
+      heroGradient="linear-gradient(140deg, #2FA0F5 0%, #3E63F0 52%, #8A5CFF 100%)"
+      heroBlobs={['#7FD8FF', '#5B7CFF', '#B58BFF']}
       heading={{ en: 'Websites that win clients.', sq: 'Faqe që sjellin klientë.' }}
       subheading={{
         en: 'Fast, unique sites that make your business look premium.',
