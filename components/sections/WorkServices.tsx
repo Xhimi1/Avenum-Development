@@ -1,10 +1,11 @@
 'use client';
 
-import { useRef, type ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import ArrowRight from '@/components/ui/ArrowRight';
 import FadeIn from '@/components/ui/FadeIn';
 import SplitText from '@/components/ui/SplitText';
 import { useStore } from '@/lib/store';
+import { prefersReducedMotion } from '@/lib/utils';
 import { useT } from '@/lib/i18n';
 import type { Bi } from '@/lib/i18n';
 
@@ -12,9 +13,6 @@ const EYEBROW: Bi = { en: 'What we do', sq: 'Çfarë ofrojmë' };
 const HEADING: Bi = { en: 'Everything your business needs online.', sq: 'Gjithçka që i duhet biznesit tënd online.' };
 const LEARN_MORE: Bi = { en: 'Learn more', sq: 'Mëso më shumë' };
 const HOT_LABEL: Bi = { en: 'Popular', sq: 'Popullor' };
-
-/** Purple color-wash used when routing to the AI-chatbots page. */
-const CHATBOT_WASH = { accent: '#6367FF', bg: '#0b0a1f' };
 
 /* ── custom line icons: just the inner paths, drawn with currentColor ── */
 const ICON_PATHS: Record<string, ReactNode> = {
@@ -100,6 +98,8 @@ interface Service {
   rotate: number;
   /** desktop bento span classes */
   span: string;
+  /** route this card links to */
+  href: string;
   /** the AI-chatbot card is the featured/"hot" one and links to its page */
   hot?: boolean;
 }
@@ -116,6 +116,7 @@ const SERVICES: Service[] = [
     grad: ['#6E9BFF', '#2F5FE0'],
     rotate: -7,
     span: 'md:col-span-2',
+    href: '/business-websites',
   },
   {
     id: 'chatbot',
@@ -127,6 +128,7 @@ const SERVICES: Service[] = [
     iconColor: '#6367FF',
     rotate: -4,
     span: 'md:col-span-2 md:row-span-2',
+    href: '/ai-chatbots',
     hot: true,
   },
   {
@@ -140,6 +142,7 @@ const SERVICES: Service[] = [
     grad: ['#57CE8B', '#219155'],
     rotate: 6,
     span: 'md:col-span-2',
+    href: '/booking-systems',
   },
   {
     id: 'email',
@@ -152,6 +155,7 @@ const SERVICES: Service[] = [
     grad: ['#F5BE55', '#D08A00'],
     rotate: -5,
     span: 'md:col-span-2',
+    href: '/email-automation',
   },
   {
     id: 'whatsapp',
@@ -164,6 +168,7 @@ const SERVICES: Service[] = [
     grad: ['#41CE9A', '#128F69'],
     rotate: 7,
     span: 'md:col-span-2',
+    href: '/whatsapp-automation',
   },
   {
     id: 'multilang',
@@ -176,6 +181,7 @@ const SERVICES: Service[] = [
     grad: ['#EC85AF', '#C24C7E'],
     rotate: -4,
     span: 'md:col-span-3',
+    href: '/multi-language-websites',
   },
   {
     id: 'maintenance',
@@ -188,6 +194,7 @@ const SERVICES: Service[] = [
     grad: ['#F29E63', '#D06A22'],
     rotate: 5,
     span: 'md:col-span-3',
+    href: '/maintenance-support',
   },
 ];
 
@@ -241,10 +248,37 @@ export default function WorkServices() {
     }
   };
 
-  const goToChatbot = () => {
+  const goToService = (href: string, accent: string) => {
     if (dragRef.current.moved) return;
-    pageNavigate('/ai-chatbots', CHATBOT_WASH);
+    pageNavigate(href, { accent, bg: '#0b0a16' });
   };
+
+  // Pop each card's icon as it swipes/scrolls into view (mobile slider and
+  // desktop grid both — IntersectionObserver against the viewport covers
+  // horizontal scroll too). Class is pulled off on animation end so a card
+  // that leaves and returns pops again.
+  useEffect(() => {
+    const root = scrollerRef.current;
+    if (!root || prefersReducedMotion()) return;
+    const icons = Array.from(root.querySelectorAll<HTMLElement>('[data-svc-icon]'));
+    const clear = (e: AnimationEvent) => (e.currentTarget as HTMLElement).classList.remove('pop');
+    icons.forEach((el) => el.addEventListener('animationend', clear));
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const el = entry.target as HTMLElement;
+          if (entry.isIntersecting) el.classList.add('pop');
+          else el.classList.remove('pop');
+        });
+      },
+      { threshold: 0.6 }
+    );
+    icons.forEach((el) => io.observe(el));
+    return () => {
+      io.disconnect();
+      icons.forEach((el) => el.removeEventListener('animationend', clear));
+    };
+  }, []);
 
   return (
     <div className="mt-28 md:mt-36">
@@ -272,7 +306,7 @@ export default function WorkServices() {
           onPointerLeave={handlePointerUp}
           onPointerCancel={handlePointerUp}
           onClickCapture={handleClickCapture}
-          className="pointer-events-auto flex gap-4 overflow-x-auto px-[5%] snap-x snap-mandatory cursor-grab active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:cursor-default md:auto-rows-[13rem] md:grid-cols-6 md:gap-5 md:overflow-visible md:px-0"
+          className="pointer-events-auto flex gap-4 overflow-x-auto px-[5%] snap-x snap-mandatory cursor-grab active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:cursor-default md:auto-rows-[15rem] md:grid-cols-6 md:gap-5 md:overflow-visible md:px-0"
         >
           {SERVICES.map((s, i) => {
             const isHot = s.hot;
@@ -289,9 +323,10 @@ export default function WorkServices() {
 
                 {isHot ? (
                   <span
-                    className="relative z-10 flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-[1.4rem] border border-white/40 bg-white/20 text-white backdrop-blur-sm md:h-[4rem] md:w-[4rem]"
+                    data-svc-icon
+                    className="svc-icon-tile relative z-10 flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-[1.4rem] border border-white/40 bg-white/20 text-white backdrop-blur-sm md:h-[4rem] md:w-[4rem]"
                     style={{
-                      transform: `rotate(${s.rotate}deg)`,
+                      ['--rot' as string]: `${s.rotate}deg`,
                       boxShadow:
                         'inset 0 2px 0 rgba(255,255,255,0.5), inset 0 -3px 6px rgba(0,0,0,0.2), 0 10px 22px -8px rgba(0,0,0,0.4)',
                     }}
@@ -303,10 +338,11 @@ export default function WorkServices() {
                   </span>
                 ) : (
                   <span
-                    className="relative z-10 flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-[1.4rem] border border-white/30 text-white md:h-[3.75rem] md:w-[3.75rem] md:rounded-[1.15rem]"
+                    data-svc-icon
+                    className="svc-icon-tile relative z-10 flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-[1.4rem] border border-white/30 text-white md:h-[3.75rem] md:w-[3.75rem] md:rounded-[1.15rem]"
                     style={{
+                      ['--rot' as string]: `${s.rotate}deg`,
                       background: `linear-gradient(150deg, ${s.grad![0]}, ${s.grad![1]})`,
-                      transform: `rotate(${s.rotate}deg)`,
                       boxShadow: `inset 0 2px 0 rgba(255,255,255,0.5), inset 0 -3px 6px rgba(0,0,0,0.18), 0 12px 22px -8px ${s.iconColor}99`,
                     }}
                   >
@@ -338,12 +374,13 @@ export default function WorkServices() {
                   </p>
                 </div>
 
-                {isHot ? (
-                  <span className="relative z-10 inline-flex items-center gap-2 pt-6 text-sm font-medium text-white md:pt-5">
-                    {t(LEARN_MORE)}
-                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                  </span>
-                ) : null}
+                <span
+                  className="relative z-10 mt-5 inline-flex items-center gap-2 pt-1 text-sm font-medium md:mt-4"
+                  style={isHot ? { color: 'white' } : { color: s.iconColor }}
+                >
+                  {t(LEARN_MORE)}
+                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </span>
               </>
             );
 
@@ -375,7 +412,7 @@ export default function WorkServices() {
                     <button
                       type="button"
                       data-cursor
-                      onClick={goToChatbot}
+                      onClick={() => goToService(s.href, s.iconColor)}
                       aria-label={t(s.title)}
                       style={cardStyle}
                       className={`${baseCard} ${skin} pointer-events-auto h-full w-full overflow-hidden transition-shadow duration-300 hover:shadow-2xl`}
@@ -401,9 +438,16 @@ export default function WorkServices() {
                       {content}
                     </button>
                   ) : (
-                    <div className={`${baseCard} ${skin} h-full`} style={cardStyle}>
+                    <button
+                      type="button"
+                      data-cursor
+                      onClick={() => goToService(s.href, s.iconColor)}
+                      aria-label={t(s.title)}
+                      style={cardStyle}
+                      className={`${baseCard} ${skin} pointer-events-auto h-full w-full transition-shadow duration-300 hover:shadow-lg`}
+                    >
                       {content}
-                    </div>
+                    </button>
                   )}
                 </FadeIn>
               </li>

@@ -188,6 +188,21 @@ html.lenis body {
 .chatbot-blob-2 { animation: chatbot-drift-2 24s ease-in-out infinite; }
 .chatbot-blob-3 { animation: chatbot-drift-3 21s ease-in-out infinite; }
 
+/* Service-card icon pop — fired when a card is swiped/scrolled into view.
+   Rotation is fed in per-card via --rot so the tile's resting tilt is kept. */
+.svc-icon-tile {
+  transform: rotate(var(--rot, 0deg));
+}
+@keyframes svc-icon-pop {
+  0%   { transform: rotate(var(--rot, 0deg)) scale(1); }
+  40%  { transform: rotate(calc(var(--rot, 0deg) + 7deg)) scale(1.18); }
+  70%  { transform: rotate(calc(var(--rot, 0deg) - 3deg)) scale(0.96); }
+  100% { transform: rotate(var(--rot, 0deg)) scale(1); }
+}
+.svc-icon-tile.pop {
+  animation: svc-icon-pop 0.7s ease-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .svc-float,
   .svc-blob,
@@ -197,7 +212,8 @@ html.lenis body {
   .svc-drift-c,
   .chatbot-blob-1,
   .chatbot-blob-2,
-  .chatbot-blob-3 {
+  .chatbot-blob-3,
+  .svc-icon-tile.pop {
     animation: none !important;
   }
 }
