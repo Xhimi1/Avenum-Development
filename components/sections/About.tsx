@@ -16,8 +16,68 @@ const STATS: Array<[string, { en: string; sq: string }]> = [
   ['3+', { en: 'Years of experience', sq: 'Vite përvojë' }],
   ['20+', { en: 'Projects delivered', sq: 'Projekte të realizuara' }],
   ['100%', { en: 'Client satisfaction', sq: 'Klientë të kënaqur' }],
-  ['SEO', { en: 'Included, every time', sq: 'E përfshirë, gjithmonë' }],
+  ['2', { en: 'Languages, always', sq: 'Gjuhë, gjithmonë' }],
 ];
+
+/** Mechanical-odometer digit reveal: each digit is a 0–9 reel that spins to
+ * land on its value; non-digit characters (+, %) just sit in place. */
+function OdometerValue({ value }: { value: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const reels = el.querySelectorAll<HTMLElement>('[data-reel]');
+
+    if (prefersReducedMotion()) {
+      reels.forEach((reel) => {
+        gsap.set(reel, { yPercent: -Number(reel.dataset.digit) * 10 });
+      });
+      return;
+    }
+
+    const ctx = gsap.context(() => {
+      reels.forEach((reel, i) => {
+        gsap.fromTo(
+          reel,
+          { yPercent: 0 },
+          {
+            yPercent: -Number(reel.dataset.digit) * 10,
+            duration: 1.1,
+            delay: i * 0.06,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 88%',
+              toggleActions: 'play none none reverse',
+            },
+          }
+        );
+      });
+    }, el);
+    return () => ctx.revert();
+  }, [value]);
+
+  return (
+    <span ref={ref} className="inline-flex">
+      {value.split('').map((char, i) =>
+        /[0-9]/.test(char) ? (
+          <span key={i} className="inline-block h-[1em] overflow-hidden align-top leading-[1em]">
+            <span data-reel data-digit={char} className="block">
+              {Array.from({ length: 10 }, (_, d) => (
+                <span key={d} className="block h-[1em] leading-[1em]">
+                  {d}
+                </span>
+              ))}
+            </span>
+          </span>
+        ) : (
+          <span key={i}>{char}</span>
+        )
+      )}
+    </span>
+  );
+}
 
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -76,7 +136,7 @@ export default function About() {
               {STATS.map(([value, label], i) => (
                 <FadeIn key={value} delay={i * 0.08}>
                   <p className="font-display text-4xl font-semibold text-white md:text-5xl">
-                    {value}
+                    <OdometerValue value={value} />
                   </p>
                   <p className="subtext mt-2 text-xs tracking-normal">
                     {t(label)}

@@ -153,13 +153,51 @@ html.lenis body {
 .svc-drift-b { animation: svc-drift-b 26s ease-in-out infinite; }
 .svc-drift-c { animation: svc-drift-c 30s ease-in-out infinite; }
 
+/* ---- Stripe-style morphing gradient blobs (AI-chatbot service card) ---- */
+.chatbot-blob {
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  filter: blur(34px);
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+/* Each blob drifts along its own looping path, scaling and turning as it
+   goes so the light never settles into a fixed pattern. */
+@keyframes chatbot-drift-1 {
+  0%   { transform: translate(-6%, -8%) scale(1) rotate(0deg); }
+  25%  { transform: translate(32%, 12%) scale(1.25) rotate(40deg); }
+  50%  { transform: translate(14%, 34%) scale(0.92) rotate(90deg); }
+  75%  { transform: translate(-22%, 18%) scale(1.16) rotate(140deg); }
+  100% { transform: translate(-6%, -8%) scale(1) rotate(180deg); }
+}
+@keyframes chatbot-drift-2 {
+  0%   { transform: translate(34%, -12%) scale(1.1) rotate(0deg); }
+  30%  { transform: translate(-12%, 22%) scale(0.9) rotate(-55deg); }
+  60%  { transform: translate(22%, 40%) scale(1.32) rotate(-110deg); }
+  100% { transform: translate(34%, -12%) scale(1.1) rotate(-180deg); }
+}
+@keyframes chatbot-drift-3 {
+  0%   { transform: translate(8%, 30%) scale(1.2) rotate(0deg); }
+  40%  { transform: translate(42%, 4%) scale(0.85) rotate(75deg); }
+  70%  { transform: translate(-16%, -12%) scale(1.18) rotate(150deg); }
+  100% { transform: translate(8%, 30%) scale(1.2) rotate(220deg); }
+}
+.chatbot-blob-1 { animation: chatbot-drift-1 18s ease-in-out infinite; }
+.chatbot-blob-2 { animation: chatbot-drift-2 24s ease-in-out infinite; }
+.chatbot-blob-3 { animation: chatbot-drift-3 21s ease-in-out infinite; }
+
 @media (prefers-reduced-motion: reduce) {
   .svc-float,
   .svc-blob,
   .svc-pulse,
   .svc-drift-a,
   .svc-drift-b,
-  .svc-drift-c {
+  .svc-drift-c,
+  .chatbot-blob-1,
+  .chatbot-blob-2,
+  .chatbot-blob-3 {
     animation: none !important;
   }
 }

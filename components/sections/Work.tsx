@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import ArrowRight from '@/components/ui/ArrowRight';
 import FadeIn from '@/components/ui/FadeIn';
 import SplitText from '@/components/ui/SplitText';
+import WorkServices from '@/components/sections/WorkServices';
 import { PROJECTS } from '@/lib/projects';
 import { useT } from '@/lib/i18n';
 import type { Bi } from '@/lib/i18n';
@@ -121,7 +122,7 @@ export default function Work() {
           {PROJECTS.map((project, i) => (
             <li key={project.name} data-work-card className="md:flex md:w-[40rem] md:flex-shrink-0 md:snap-start">
               <FadeIn delay={0.1 * i} className="md:flex md:h-full md:w-full md:flex-col">
-                <div className="overflow-hidden rounded-2xl border-8 border-[#EEF0FF] bg-white pt-5 px-5 md:flex md:h-full md:flex-col md:pt-7 md:px-7">
+                <div className="overflow-hidden rounded-2xl border-8 border-[#E2E5FA] bg-white pt-5 px-5 md:flex md:h-full md:flex-col md:pt-7 md:px-7">
                   <span className="inline-block w-fit rounded-full bg-[#EEF0FF] px-3 py-1 text-[0.8rem] font-medium text-[#6367FF]">
                     {t(project.category)}
                   </span>
@@ -144,7 +145,7 @@ export default function Work() {
                     }}
                   >
                     {project.image ? (
-                      <div className="flex h-full items-center justify-center pt-6 px-2 md:items-end md:pt-8 md:px-8">
+                      <div className="flex h-full items-center justify-center pt-6 px-5 md:items-end md:pt-8 md:px-8">
                         <div className="h-full w-full overflow-hidden rounded-t-lg md:rounded-t-md">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
@@ -166,6 +167,8 @@ export default function Work() {
           ))}
         </ul>
       </div>
+
+      <WorkServices />
     </section>
   );
 }
