@@ -24,7 +24,7 @@ export function MaintenanceHero() {
       </div>
 
       {/* uptime chip */}
-      <div className="svc-sway absolute -left-3 top-6 rounded-2xl bg-white px-4 py-3" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD, ['--svc-rot' as string]: '-4deg' }}>
+      <div className="svc-sway absolute -left-3 top-6 rounded-xl bg-white px-4 py-3" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD, ['--svc-rot' as string]: '-4deg' }}>
         <div className="font-display text-lg font-semibold text-[var(--svc-accent)]">99.9%</div>
         <div className="mt-1 flex items-end gap-0.5">
           {[6, 9, 7, 11, 8, 12].map((h, i) => (
@@ -34,7 +34,7 @@ export function MaintenanceHero() {
       </div>
 
       {/* gear chip */}
-      <div className="svc-float absolute -bottom-2 -right-2 flex h-16 w-16 items-center justify-center rounded-2xl bg-white" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD + ', ' + GLOSS, animationDelay: '-3s' }}>
+      <div className="svc-float absolute -bottom-2 -right-2 flex h-16 w-16 items-center justify-center rounded-xl bg-white" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD + ', ' + GLOSS, animationDelay: '-3s' }}>
         <svg viewBox="0 0 24 24" className="svc-spin h-9 w-9" fill="none" stroke="var(--svc-accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="3" />
           <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1" />
@@ -56,7 +56,7 @@ export function TileUptime() {
       {[42, 64, 52, 80, 68, 90, 74].map((h, i) => (
         <span
           key={i}
-          className="svc-pulse w-5 rounded-lg"
+          className="svc-pulse w-5 rounded-md"
           style={{ height: `${h}%`, background: `linear-gradient(180deg, ${soft(30 + (i % 3) * 10)}, ${soft(12)})`, border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_SM, animationDelay: `${i * 0.15}s` }}
         />
       ))}
@@ -67,9 +67,9 @@ export function TileUptime() {
 export function TileSecure() {
   return (
     <div aria-hidden className="flex h-full w-full items-center justify-center">
-      <div className="svc-float flex h-28 w-28 items-center justify-center rounded-[1.6rem] bg-white" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD + ', ' + GLOSS }}>
+      <div className="svc-float flex h-28 w-28 items-center justify-center rounded-2xl bg-white" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD + ', ' + GLOSS }}>
         <svg viewBox="0 0 24 24" className="h-12 w-12" fill="none" stroke="var(--svc-accent)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="5" y="11" width="14" height="9" rx="2" fill={soft(14)} />
+          <rect x="5" y="11" width="14" height="9" rx="1.2" fill={soft(14)} />
           <path d="M8 11V8a4 4 0 0 1 8 0v3" />
           <circle cx="12" cy="15.5" r="1.4" fill="var(--svc-accent)" stroke="none" />
         </svg>

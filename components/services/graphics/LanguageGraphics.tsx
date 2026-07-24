@@ -23,16 +23,16 @@ export function LanguageHero() {
       </div>
 
       {/* floating language chips */}
-      <div className="svc-sway absolute -left-2 top-9 rounded-2xl bg-white px-4 py-2.5 font-display text-sm font-semibold" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD, color: 'var(--svc-accent)', ['--svc-rot' as string]: '-5deg' }}>
+      <div className="svc-sway absolute -left-2 top-9 rounded-xl bg-white px-4 py-2.5 font-display text-sm font-semibold" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD, color: 'var(--svc-accent)', ['--svc-rot' as string]: '-5deg' }}>
         Shqip
       </div>
-      <div className="svc-float absolute -right-1 bottom-12 rounded-2xl bg-white px-4 py-2.5 font-display text-sm font-semibold" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD, animationDelay: '-3s' }}>
+      <div className="svc-float absolute -right-1 bottom-12 rounded-xl bg-white px-4 py-2.5 font-display text-sm font-semibold" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD, animationDelay: '-3s' }}>
         English
       </div>
-      <div className="svc-sway absolute right-9 top-2 rounded-xl px-3 py-2 font-display text-xs font-semibold text-white" style={{ background: 'var(--svc-accent)', boxShadow: chip('var(--svc-accent)'), ['--svc-rot' as string]: '4deg' }}>
+      <div className="svc-sway absolute right-9 top-2 rounded-lg px-3 py-2 font-display text-xs font-semibold text-white" style={{ background: 'var(--svc-accent)', boxShadow: chip('var(--svc-accent)'), ['--svc-rot' as string]: '4deg' }}>
         Italiano
       </div>
-      <div className="svc-float absolute -bottom-1 left-10 rounded-xl bg-white px-3 py-2 font-display text-xs font-semibold" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_SM, color: deep(15), animationDelay: '-1.5s' }}>
+      <div className="svc-float absolute -bottom-1 left-10 rounded-lg bg-white px-3 py-2 font-display text-xs font-semibold" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_SM, color: deep(15), animationDelay: '-1.5s' }}>
         Deutsch
       </div>
     </div>
@@ -58,8 +58,8 @@ export function TileMirror() {
         { label: 'Mirë se vini', pct: 24 },
         { label: 'Welcome', pct: 12 },
       ].map((c, i) => (
-        <div key={i} className="svc-float w-28 overflow-hidden rounded-2xl bg-white p-3" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD, animationDelay: `${i * 0.5}s` }}>
-          <div className="relative mb-2 h-12 overflow-hidden rounded-lg" style={{ background: `linear-gradient(135deg,${soft(c.pct + 12)},${soft(c.pct - 4 < 0 ? 4 : c.pct - 4)})`, boxShadow: GLOSS }}>
+        <div key={i} className="svc-float w-28 overflow-hidden rounded-xl bg-white p-3" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD, animationDelay: `${i * 0.5}s` }}>
+          <div className="relative mb-2 h-12 overflow-hidden rounded-md" style={{ background: `linear-gradient(135deg,${soft(c.pct + 12)},${soft(c.pct - 4 < 0 ? 4 : c.pct - 4)})`, boxShadow: GLOSS }}>
             <div className="svc-sheen absolute -inset-y-2 left-0 w-6 bg-white/40 blur-md" />
           </div>
           <div className="text-[0.72rem] font-semibold text-[var(--svc-accent)]">{c.label}</div>
@@ -73,7 +73,7 @@ export function TileMirror() {
 export function TileReach() {
   return (
     <div aria-hidden className="flex h-full w-full items-center justify-center">
-      <div className="flex h-28 w-28 flex-col items-center justify-center rounded-[1.6rem] bg-white" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD + ', ' + GLOSS }}>
+      <div className="flex h-28 w-28 flex-col items-center justify-center rounded-2xl bg-white" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD + ', ' + GLOSS }}>
         <svg viewBox="0 0 24 24" className="h-11 w-11" fill="none" stroke="var(--svc-accent)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="9" /><path d="M3 12h18" /><path d="M12 3c2.6 2.4 2.6 15.6 0 18M12 3c-2.6 2.4-2.6 15.6 0 18" />
         </svg>

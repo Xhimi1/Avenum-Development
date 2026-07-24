@@ -18,7 +18,7 @@ export default function CreativeGraphic() {
         style={{ animationDelay: '0.3s' }}
       />
       <div
-        className="svc-float absolute bottom-6 right-4 h-14 w-14 rounded-2xl border-2 border-black/10 bg-white shadow-[0_10px_25px_-10px_rgba(0,0,0,0.3)]"
+        className="svc-float absolute bottom-6 right-4 h-14 w-14 rounded-xl border-2 border-black/10 bg-white shadow-[0_10px_25px_-10px_rgba(0,0,0,0.3)]"
         style={{ ['--svc-rot' as string]: '18deg', animationDelay: '0.9s' } as React.CSSProperties}
       />
       <div className="svc-float absolute right-8 top-8 h-6 w-6 rounded-full bg-[var(--svc-accent)]" style={{ animationDelay: '1.3s' }} />
