@@ -86,6 +86,11 @@ export default function Nav() {
     }
   };
 
+  // "Work" is the one nav item that opens its own page instead of scrolling
+  // to a homepage section.
+  const workSection = SECTIONS.find((s) => s.id === 'work')!;
+  const goToWork = () => pageNavigate('/portfolio', { accent: workSection.accent, bg: workSection.bg });
+
   // Stagger the links in on open, and quick-fade them out on close.
   useEffect(() => {
     const container = linksRef.current;
@@ -204,7 +209,7 @@ export default function Nav() {
                 key={s.id}
                 type="button"
                 data-cursor
-                onClick={() => goToSection(s.id === 'about' ? 1 : i + 1)}
+                onClick={() => (s.id === 'work' ? goToWork() : goToSection(s.id === 'about' ? 1 : i + 1))}
                 className={cn(
                   'text-xs tracking-normal transition-colors duration-300',
                   'text-[#BFC9D1] hover:text-white'
@@ -364,7 +369,11 @@ export default function Nav() {
                 key={s.id}
                 type="button"
                 data-nav-link
-                onClick={() => go(s.id === 'about' ? 1 : i)}
+                onClick={() => {
+                  setOpen(false);
+                  if (s.id === 'work') goToWork();
+                  else goToSection(s.id === 'about' ? 1 : i);
+                }}
                 className="flex items-baseline gap-4 py-4 text-left text-white"
               >
                 <span className="font-display text-4xl font-semibold leading-none">{t(s.label)}</span>

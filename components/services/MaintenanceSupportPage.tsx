@@ -9,8 +9,8 @@ export default function MaintenanceSupportPage() {
       currentHref="/maintenance-support"
       accent="#E07B34"
       accent2="#FFB36B"
-      heroGradient="linear-gradient(140deg, #FFB65C 0%, #E67A32 52%, #FF6F5C 100%)"
-      heroBlobs={['#FFD08A', '#FF9E63', '#FF8A78']}
+      heroGradient="linear-gradient(140deg, #2FA0F5 0%, #3E63F0 52%, #8A5CFF 100%)"
+      heroBlobs={['#7FD8FF', '#5B7CFF', '#B58BFF']}
       eyebrow={{ en: 'Maintenance & Support', sq: 'Mirëmbajtje & Suport' }}
       heading={{ en: 'We keep it running.', sq: 'Ne e mbajmë në punë.' }}
       subheading={{

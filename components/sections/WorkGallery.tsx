@@ -5,6 +5,7 @@ import ArrowRight from '@/components/ui/ArrowRight';
 import FadeIn from '@/components/ui/FadeIn';
 import SplitText from '@/components/ui/SplitText';
 import { PROJECTS } from '@/lib/projects';
+import { useStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import type { Bi } from '@/lib/i18n';
 
@@ -23,9 +24,19 @@ const CASE_STUDY_LABEL: Bi = { en: 'See case study', sq: 'Shiko studimin e rasti
  * can be dropped into other pages too. `mobileSlider` opts into a horizontal
  * drag-slider with visible arrows on mobile as well as desktop; the
  * homepage keeps its original stacked-cards mobile layout by leaving it off.
+ * `grid` drops the heading/subheading and the slider entirely, laying every
+ * card out in a static responsive grid instead (used on the portfolio page,
+ * which has its own hero heading already).
  */
-export default function WorkGallery({ mobileSlider = false }: { mobileSlider?: boolean }) {
+export default function WorkGallery({
+  mobileSlider = false,
+  grid = false,
+}: {
+  mobileSlider?: boolean;
+  grid?: boolean;
+}) {
   const t = useT();
+  const pageNavigate = useStore((s) => s.pageNavigate);
   const scrollerRef = useRef<HTMLUListElement>(null);
   const dragRef = useRef({ isDown: false, startX: 0, scrollLeft: 0, moved: false });
 
@@ -40,6 +51,10 @@ export default function WorkGallery({ mobileSlider = false }: { mobileSlider?: b
   const handlePointerDown = (e: React.PointerEvent<HTMLUListElement>) => {
     const el = scrollerRef.current;
     if (!el || el.scrollWidth <= el.clientWidth) return;
+    // A press starting on a real button (e.g. "See case study") is a click,
+    // not a drag — don't grab pointer capture, or a few px of natural mouse
+    // jitter gets misread as a drag and the click never reaches the button.
+    if ((e.target as HTMLElement).closest('button')) return;
     dragRef.current = { isDown: true, startX: e.clientX, scrollLeft: el.scrollLeft, moved: false };
     el.style.scrollSnapType = 'none';
     el.setPointerCapture(e.pointerId);
@@ -75,44 +90,46 @@ export default function WorkGallery({ mobileSlider = false }: { mobileSlider?: b
 
   return (
     <>
-      <div className="mx-auto w-full max-w-6xl px-4 md:px-12">
-        <div className="flex items-end justify-between gap-6 px-2 md:px-0">
-          <div className="max-w-2xl">
-            <SplitText
-              as="h2"
-              className="font-display text-[clamp(2.1rem,5.5vw,4.6rem)] font-semibold leading-[0.95]"
-            >
-              {t(HEADING)}
-            </SplitText>
-            <FadeIn delay={0.15}>
-              <p className="mt-4 max-w-xl text-sm text-black md:text-base">{t(SUBHEADING)}</p>
-            </FadeIn>
-          </div>
+      {!grid && (
+        <div className="mx-auto w-full max-w-6xl px-4 md:px-12">
+          <div className="flex items-end justify-between gap-6 px-2 md:px-0">
+            <div className="max-w-2xl">
+              <SplitText
+                as="h2"
+                className="font-display text-[clamp(2.1rem,5.5vw,4.6rem)] font-semibold leading-[0.95]"
+              >
+                {t(HEADING)}
+              </SplitText>
+              <FadeIn delay={0.15}>
+                <p className="mt-4 max-w-xl text-sm text-black md:text-base">{t(SUBHEADING)}</p>
+              </FadeIn>
+            </div>
 
-          <div className={`mb-2 flex-shrink-0 gap-2 ${mobileSlider ? 'flex' : 'hidden md:flex'}`}>
-            <button
-              type="button"
-              data-cursor
-              aria-label="Previous"
-              onClick={() => scrollByCards(-1)}
-              className="pointer-events-auto flex h-10 w-14 items-center justify-center rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-300 hover:bg-gray-300"
-            >
-              <ArrowRight className="h-4 w-4 rotate-180 text-black" />
-            </button>
-            <button
-              type="button"
-              data-cursor
-              aria-label="Next"
-              onClick={() => scrollByCards(1)}
-              className="pointer-events-auto flex h-10 w-14 items-center justify-center rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-300 hover:bg-gray-300"
-            >
-              <ArrowRight className="h-4 w-4 text-black" />
-            </button>
+            <div className={`mb-2 flex-shrink-0 gap-2 ${mobileSlider ? 'flex' : 'hidden md:flex'}`}>
+              <button
+                type="button"
+                data-cursor
+                aria-label="Previous"
+                onClick={() => scrollByCards(-1)}
+                className="pointer-events-auto flex h-10 w-14 items-center justify-center rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-300 hover:bg-gray-300"
+              >
+                <ArrowRight className="h-4 w-4 rotate-180 text-black" />
+              </button>
+              <button
+                type="button"
+                data-cursor
+                aria-label="Next"
+                onClick={() => scrollByCards(1)}
+                className="pointer-events-auto flex h-10 w-14 items-center justify-center rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-300 hover:bg-gray-300"
+              >
+                <ArrowRight className="h-4 w-4 text-black" />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
-      <div className={mobileSlider ? 'w-full md:px-12' : 'w-full px-1.5 md:px-12'}>
+      <div className={grid || mobileSlider ? 'w-full md:px-12' : 'w-full px-1.5 md:px-12'}>
         <ul
           ref={scrollerRef}
           data-hscroll
@@ -123,7 +140,9 @@ export default function WorkGallery({ mobileSlider = false }: { mobileSlider?: b
           onPointerCancel={handlePointerUp}
           onClickCapture={handleClickCapture}
           className={
-            mobileSlider
+            grid
+              ? 'grid grid-cols-1 gap-y-10 gap-x-8 sm:grid-cols-2'
+              : mobileSlider
               ? 'pointer-events-auto mt-14 flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory cursor-grab active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mt-20 md:gap-8'
               : 'pointer-events-auto mt-14 flex flex-col gap-y-10 md:mt-20 md:flex-row md:gap-8 md:overflow-x-auto md:pb-4 md:snap-x md:snap-mandatory md:cursor-grab md:active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] md:[&::-webkit-scrollbar]:hidden'
           }
@@ -133,15 +152,17 @@ export default function WorkGallery({ mobileSlider = false }: { mobileSlider?: b
               key={project.name}
               data-work-card
               className={
-                mobileSlider
+                grid
+                  ? 'flex w-full'
+                  : mobileSlider
                   ? 'flex w-full shrink-0 snap-center md:w-[40rem] md:snap-start'
                   : 'md:flex md:w-[40rem] md:flex-shrink-0 md:snap-start'
               }
             >
-              <div className={mobileSlider ? 'flex h-full w-full flex-col' : 'md:flex md:h-full md:w-full md:flex-col'}>
+              <div className={grid || mobileSlider ? 'flex h-full w-full flex-col' : 'md:flex md:h-full md:w-full md:flex-col'}>
                 <div
                   className={
-                    mobileSlider
+                    grid || mobileSlider
                       ? 'flex h-full flex-col overflow-hidden rounded-2xl border-8 border-[#E2E5FA] bg-white px-5 pt-5 md:px-7 md:pt-7'
                       : 'overflow-hidden rounded-2xl border-8 border-[#E2E5FA] bg-white px-5 pt-5 md:flex md:h-full md:flex-col md:px-7 md:pt-7'
                   }
@@ -156,6 +177,10 @@ export default function WorkGallery({ mobileSlider = false }: { mobileSlider?: b
                     type="button"
                     data-cursor
                     aria-label={t(CASE_STUDY_LABEL)}
+                    onClick={() => {
+                      if (dragRef.current.moved) return;
+                      pageNavigate(`/portfolio/${project.slug}`, { accent: project.tagColor, bg: '#0b0a16' });
+                    }}
                     className="group pointer-events-auto mt-5 flex h-12 w-20 items-center justify-center rounded-full border-2 border-[#6367FF] bg-[#6367FF] transition-colors duration-300 hover:bg-[#4f52e0]"
                   >
                     <ArrowRight className="h-4 w-4 text-white transition-transform duration-300 group-hover:translate-x-1" />

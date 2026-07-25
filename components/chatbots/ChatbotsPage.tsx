@@ -252,42 +252,46 @@ export default function ChatbotsPage() {
 
   return (
     <div className="isolate min-h-screen overflow-x-clip bg-black text-[#f2f4ff]">
-      {/* deep-purple base, diagonal light stripes and a soft center glow */}
-      <div ref={bgRef} aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        {/* base purple gradient */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `linear-gradient(160deg, ${BG_ACCENT} 0%, ${BG_ACCENT_MID} 45%, ${BG_ACCENT_DEEP} 100%)`,
-          }}
-        />
-        {/* diagonal white light stripes */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'repeating-linear-gradient(125deg, transparent 0px, transparent 130px, rgba(255,255,255,0.04) 175px, rgba(255,255,255,0.10) 210px, rgba(255,255,255,0.04) 245px, transparent 300px, transparent 430px)',
-          }}
-        />
-        {/* soft radial glow toward the top */}
-        <div
-          className="absolute -top-40 left-1/2 h-[42rem] w-[42rem] -translate-x-1/2 rounded-full blur-3xl"
-          style={{ background: `radial-gradient(circle, ${BG_GLOW}, transparent 70%)` }}
-        />
-        {STARS.map((s, i) => (
-          <span
-            key={i}
-            className="svc-pulse absolute rounded-full bg-white/60"
-            style={{ top: s.top, left: s.left, width: s.size, height: s.size, animationDelay: s.delay }}
-          />
-        ))}
-      </div>
-
       <Nav />
 
       <main>
         {/* hero */}
         <section className="relative flex min-h-dvh items-start overflow-hidden pt-[6.5rem] md:h-auto md:items-center md:pt-28">
+          {/* deep-purple base, diagonal light stripes and a soft center glow —
+              scoped to the hero only; the rest of the page is plain black.
+              A black fade at the bottom blends the two smoothly. */}
+          <div ref={bgRef} aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+            {/* base purple gradient */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background: `linear-gradient(160deg, ${BG_ACCENT} 0%, ${BG_ACCENT_MID} 45%, ${BG_ACCENT_DEEP} 100%)`,
+              }}
+            />
+            {/* diagonal white light stripes */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  'repeating-linear-gradient(125deg, transparent 0px, transparent 130px, rgba(255,255,255,0.04) 175px, rgba(255,255,255,0.10) 210px, rgba(255,255,255,0.04) 245px, transparent 300px, transparent 430px)',
+              }}
+            />
+            {/* soft radial glow toward the top */}
+            <div
+              className="absolute -top-40 left-1/2 h-[42rem] w-[42rem] -translate-x-1/2 rounded-full blur-3xl"
+              style={{ background: `radial-gradient(circle, ${BG_GLOW}, transparent 70%)` }}
+            />
+            {STARS.map((s, i) => (
+              <span
+                key={i}
+                className="svc-pulse absolute rounded-full bg-white/60"
+                style={{ top: s.top, left: s.left, width: s.size, height: s.size, animationDelay: s.delay }}
+              />
+            ))}
+            {/* fade into the black body below */}
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-black" />
+          </div>
+
           <AssistantOrb />
           <div className="relative mx-auto w-full max-w-[90rem] px-6 md:px-12">
             <div className="max-w-2xl">

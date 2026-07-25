@@ -12,6 +12,17 @@ const HEADING: Bi = { en: 'Everything your business needs online.', sq: 'Gjithç
 const LEARN_MORE: Bi = { en: 'Learn more', sq: 'Mëso më shumë' };
 const HOT_LABEL: Bi = { en: 'Popular', sq: 'Popullor' };
 
+/* ── frosted-glass illustrations swapped in for these service tiles,
+ *  in place of the plain line icon below ── */
+const IMAGE_ICONS: Record<string, string> = {
+  websites: '/images/frosted-glass-website-icon.png',
+  booking: '/images/frosted-glass-calendar-icon.png',
+  whatsapp: '/images/frosted-glass-chat-icon.png',
+  email: '/images/frosted-glass-email-icon.png',
+  multilang: '/images/frosted-glass-heart-icon.png',
+  maintenance: '/images/frosted-glass-settings-icon.png',
+};
+
 /* ── custom line icons: just the inner paths, drawn with currentColor ── */
 const ICON_PATHS: Record<string, ReactNode> = {
   websites: (
@@ -67,7 +78,20 @@ const ICON_PATHS: Record<string, ReactNode> = {
   ),
 };
 
-function Icon({ id, className }: { id: string; className: string }) {
+function Icon({
+  id,
+  className,
+  style,
+}: {
+  id: string;
+  className: string;
+  style?: React.CSSProperties;
+}) {
+  const image = IMAGE_ICONS[id];
+  if (image) {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={image} alt="" aria-hidden style={style} className={`${className} object-contain`} />;
+  }
   return (
     <svg
       viewBox="0 0 24 24"
@@ -77,6 +101,7 @@ function Icon({ id, className }: { id: string; className: string }) {
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden
+      style={style}
       className={className}
     >
       {ICON_PATHS[id]}
@@ -320,59 +345,36 @@ export default function WorkServices() {
                   </span>
                 ) : null}
 
-                {isHot ? (
-                  <span
-                    className="svc-icon-tile relative z-10 flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-[1.4rem] border border-white/40 bg-white/20 text-white backdrop-blur-sm md:h-[4rem] md:w-[4rem]"
-                    style={{
-                      ['--rot' as string]: `${s.rotate}deg`,
-                      boxShadow:
-                        'inset 0 2px 0 rgba(255,255,255,0.5), inset 0 -3px 6px rgba(0,0,0,0.2), 0 10px 22px -8px rgba(0,0,0,0.4)',
-                    }}
-                  >
-                    <Icon
-                      id={s.id}
-                      className="h-9 w-9 drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)] md:h-8 md:w-8"
-                    />
-                  </span>
-                ) : (
-                  <span
-                    className="svc-icon-tile relative z-10 flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-[1.4rem] border border-white/30 text-white md:h-[3.75rem] md:w-[3.75rem] md:rounded-[1.15rem]"
-                    style={{
-                      ['--rot' as string]: `${s.rotate}deg`,
-                      background: `linear-gradient(150deg, ${s.grad![0]}, ${s.grad![1]})`,
-                      boxShadow: `inset 0 2px 0 rgba(255,255,255,0.5), inset 0 -3px 6px rgba(0,0,0,0.18), 0 12px 22px -8px ${s.iconColor}99`,
-                    }}
-                  >
-                    <Icon
-                      id={s.id}
-                      className="h-9 w-9 drop-shadow-[0_1px_1px_rgba(0,0,0,0.28)] md:h-7 md:w-7"
-                    />
-                  </span>
-                )}
+                <h3
+                  className={
+                    isHot
+                      ? 'relative z-10 order-1 font-display text-5xl font-semibold text-white md:order-2 md:mt-5 md:text-3xl'
+                      : 'relative z-10 order-1 font-display text-4xl font-bold text-black md:order-2 md:mt-5 md:text-xl md:font-semibold'
+                  }
+                >
+                  {t(s.title)}
+                </h3>
 
-                <div className="relative z-10 mt-6 md:mt-5">
-                  <h3
-                    className={
-                      isHot
-                        ? 'font-display text-3xl font-semibold text-white md:text-3xl'
-                        : 'font-display text-2xl font-semibold text-black md:text-xl'
-                    }
-                  >
-                    {t(s.title)}
-                  </h3>
-                  <p
-                    className={
-                      isHot
-                        ? 'mt-2 text-sm leading-relaxed text-white md:text-xs'
-                        : 'mt-2 text-sm leading-relaxed text-black md:text-xs md:text-black'
-                    }
-                  >
-                    {t(s.desc)}
-                  </p>
-                </div>
+                <Icon
+                  id={s.id}
+                  style={{ ['--rot' as string]: `${s.rotate}deg`, color: isHot ? '#fff' : s.iconColor }}
+                  className={`svc-icon-tile relative z-10 order-2 mt-6 h-36 w-36 self-center drop-shadow-[0_2px_8px_rgba(0,0,0,0.2)] md:order-1 md:mt-0 md:h-14 md:w-14 ${
+                    isHot ? '' : 'md:self-start'
+                  }`}
+                />
+
+                <p
+                  className={
+                    isHot
+                      ? 'relative z-10 order-3 mt-16 text-sm leading-relaxed text-white md:mt-2 md:text-xs'
+                      : 'relative z-10 order-3 mt-10 text-sm leading-relaxed text-black md:mt-2 md:text-xs md:text-black'
+                  }
+                >
+                  {t(s.desc)}
+                </p>
 
                 <span
-                  className={`relative z-10 mt-5 inline-flex items-center gap-1 border-b pb-0 text-sm font-bold leading-none md:mt-4 ${
+                  className={`relative z-10 order-4 mt-5 inline-flex items-center gap-1 border-b pb-0 text-sm font-bold leading-none md:mt-4 ${
                     isHot ? 'border-white text-white' : 'border-black text-black'
                   }`}
                 >
@@ -385,13 +387,13 @@ export default function WorkServices() {
               </>
             );
 
-            // hot card stays centered everywhere; the rest center on mobile
-            // and align left in the desktop bento
+            // hot card aligns left on mobile (icon stays centered via its own
+            // self-center) but reverts to centered on desktop; the rest align
+            // left at every breakpoint
             const align = isHot
-              ? 'items-center justify-center text-center'
-              : 'items-center justify-center text-center md:items-start md:justify-start md:text-left';
-            const baseCard = `group relative flex min-h-[26rem] flex-col rounded-2xl p-8 md:h-full md:min-h-0 md:p-6 ${align}`;
-            const skin = isHot ? '' : 'border';
+              ? 'items-start justify-start text-left md:items-center md:justify-center md:text-center'
+              : 'items-start justify-start text-left';
+            const baseCard = `group relative flex min-h-[26rem] flex-col rounded-lg p-8 md:h-full md:min-h-0 md:p-6 ${align}`;
             const cardStyle = isHot
               ? {
                   // three-stop: sky-blue → purple → coral, with a soft radial
@@ -399,8 +401,8 @@ export default function WorkServices() {
                   backgroundImage:
                     'radial-gradient(120% 120% at 15% 12%, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0) 42%), linear-gradient(140deg, #2BB8F0 0%, #7A3CE0 50%, #FF6FA5 100%)',
                 }
-              : // non-hot cards just get a border tinted with their own icon color
-                { borderColor: `${s.iconColor}33` };
+              : // non-hot cards get the site's soft lavender wash, no border
+                { backgroundColor: '#EEF0FF' };
 
             return (
               <li
@@ -416,7 +418,7 @@ export default function WorkServices() {
                       onClick={() => goToService(s.href, s.iconColor)}
                       aria-label={t(s.title)}
                       style={cardStyle}
-                      className={`${baseCard} ${skin} pointer-events-auto h-full w-full overflow-hidden`}
+                      className={`${baseCard} pointer-events-auto h-full w-full overflow-hidden`}
                     >
                       <span aria-hidden className="pointer-events-none absolute inset-0 z-0">
                         <span
@@ -445,7 +447,7 @@ export default function WorkServices() {
                       onClick={() => goToService(s.href, s.iconColor)}
                       aria-label={t(s.title)}
                       style={cardStyle}
-                      className={`${baseCard} ${skin} pointer-events-auto h-full w-full transition-colors duration-300 hover:bg-[#F3EEFF]`}
+                      className={`${baseCard} pointer-events-auto h-full w-full transition-colors duration-300 hover:bg-[#F3EEFF]`}
                     >
                       {content}
                     </button>

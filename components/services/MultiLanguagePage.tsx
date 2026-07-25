@@ -9,8 +9,8 @@ export default function MultiLanguagePage() {
       currentHref="/multi-language-websites"
       accent="#7A3CE0"
       accent2="#FFC93C"
-      heroGradient="linear-gradient(140deg, #2BB8F0 0%, #7A3CE0 50%, #FFC93C 100%)"
-      heroBlobs={['#5FD2FF', '#A57BFF', '#FFD666']}
+      heroGradient="linear-gradient(140deg, #2FA0F5 0%, #3E63F0 52%, #8A5CFF 100%)"
+      heroBlobs={['#7FD8FF', '#5B7CFF', '#B58BFF']}
       eyebrow={{ en: 'Multi-Language Websites', sq: 'Faqe Shumëgjuhëshe' }}
       heading={{ en: 'One site, every language.', sq: 'Një faqe, çdo gjuhë.' }}
       subheading={{

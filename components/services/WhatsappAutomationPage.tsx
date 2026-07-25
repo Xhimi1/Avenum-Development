@@ -9,8 +9,8 @@ export default function WhatsappAutomationPage() {
       currentHref="/whatsapp-automation"
       accent="#16A97C"
       accent2="#5FD8B0"
-      heroGradient="linear-gradient(140deg, #24C9C0 0%, #16A97C 52%, #54C85E 100%)"
-      heroBlobs={['#6FE6D8', '#3ED89E', '#8FE07A']}
+      heroGradient="linear-gradient(140deg, #2FA0F5 0%, #3E63F0 52%, #8A5CFF 100%)"
+      heroBlobs={['#7FD8FF', '#5B7CFF', '#B58BFF']}
       eyebrow={{ en: 'WhatsApp Automation', sq: 'Automatizim WhatsApp' }}
       heading={{ en: 'Reply on WhatsApp, instantly.', sq: 'Përgjigju në WhatsApp, menjëherë.' }}
       subheading={{

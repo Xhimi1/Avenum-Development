@@ -166,13 +166,14 @@ export default function ServicePage({
 
         <OtherServices currentHref={currentHref} />
 
-        {/* closing CTA — soft radial wash of the page's own accent, colored
-            at the bottom, fading to transparent (white) toward the top */}
+        {/* closing CTA — soft radial wash in the same blue used on Business
+            Websites (shared across every service page), colored at the
+            bottom, fading to transparent (white) toward the top */}
         <section
           className="relative py-28 md:py-40"
           style={{
             backgroundImage:
-              'radial-gradient(140% 90% at 50% 100%, color-mix(in srgb, var(--svc-accent) 78%, transparent) 0%, transparent 75%)',
+              'radial-gradient(140% 90% at 50% 100%, color-mix(in srgb, #3B6BFF 78%, transparent) 0%, transparent 75%)',
           }}
         >
           <div className="mx-auto w-full max-w-[90rem] px-6 text-center md:px-12">

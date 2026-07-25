@@ -9,8 +9,8 @@ export default function BookingSystemsPage() {
       currentHref="/booking-systems"
       accent="#2FA76A"
       accent2="#7FD8AC"
-      heroGradient="linear-gradient(140deg, #22C3B0 0%, #22A76A 52%, #8FD45E 100%)"
-      heroBlobs={['#6FE6CE', '#4CD48C', '#BEE86F']}
+      heroGradient="linear-gradient(140deg, #2FA0F5 0%, #3E63F0 52%, #8A5CFF 100%)"
+      heroBlobs={['#7FD8FF', '#5B7CFF', '#B58BFF']}
       eyebrow={{ en: 'Booking & Reservations', sq: 'Rezervime Online' }}
       heading={{ en: 'Reservations while you sleep.', sq: 'Rezervime edhe kur fle.' }}
       subheading={{

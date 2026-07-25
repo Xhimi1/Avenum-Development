@@ -9,8 +9,8 @@ export default function EmailAutomationPage() {
       currentHref="/email-automation"
       accent="#D99500"
       accent2="#FFC85A"
-      heroGradient="linear-gradient(140deg, #FFC24B 0%, #F2971E 50%, #FF7A4D 100%)"
-      heroBlobs={['#FFE08A', '#FFB25A', '#FF8F6B']}
+      heroGradient="linear-gradient(140deg, #2FA0F5 0%, #3E63F0 52%, #8A5CFF 100%)"
+      heroBlobs={['#7FD8FF', '#5B7CFF', '#B58BFF']}
       eyebrow={{ en: 'Email Automation', sq: 'Automatizim Email-i' }}
       heading={{ en: 'Emails that send themselves.', sq: 'Email-e që nisen vetë.' }}
       subheading={{
