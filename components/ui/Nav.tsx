@@ -1,31 +1,90 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from '@/lib/gsap';
 import { useStore } from '@/lib/store';
 import { SECTIONS } from '@/lib/palette';
+import { NAV_SERVICES } from '@/lib/services-nav';
 import { scrollState } from '@/lib/scroll';
 import { useT } from '@/lib/i18n';
 import { cn, prefersReducedMotion } from '@/lib/utils';
 import LangToggle from '@/components/ui/LangToggle';
 import Logo from '@/components/ui/Logo';
+import ServiceIcon from '@/components/services/ServiceIcon';
 import { EMAIL } from '@/lib/contact';
 
 const PRICING_LABEL = { en: 'Pricing', sq: 'Çmimet' };
+const BACK_LABEL = { en: 'Back', sq: 'Kthehu' };
 const REMOTE_LINE = {
   en: 'Tirana · we build for other cities too',
   sq: 'Tiranë · punojmë edhe për qytete të tjera',
 };
 const PRICING_WASH = { accent: '#8b5cf6', bg: '#1c0f36' };
+const contactSection = SECTIONS.find((s) => s.id === 'contact')!;
 
 export default function Nav() {
-  const section = useStore((s) => s.section);
   const navigate = useStore((s) => s.navigate);
   const pageNavigate = useStore((s) => s.pageNavigate);
   const t = useT();
+  const pathname = usePathname();
+  const onHomePage = pathname === '/';
   const [open, setOpen] = useState(false);
   const linksRef = useRef<HTMLElement>(null);
+
+  // Desktop "Services" dropdown — closes on an outside click. The dropdown
+  // sits below the pill with a visual gap (it's absolutely positioned, so
+  // that gap isn't part of the pill's own hit box), so a plain onMouseLeave
+  // fires the instant the cursor crosses into that gap. A short close delay,
+  // cancelled by re-entering either the button or the panel, bridges it.
+  const [servicesOpen, setServicesOpen] = useState(false);
+  const servicesRef = useRef<HTMLDivElement>(null);
+  const servicesCloseTimeout = useRef<number | null>(null);
+  const clearServicesCloseTimeout = () => {
+    if (servicesCloseTimeout.current != null) {
+      window.clearTimeout(servicesCloseTimeout.current);
+      servicesCloseTimeout.current = null;
+    }
+  };
+  const openServices = () => {
+    clearServicesCloseTimeout();
+    setServicesOpen(true);
+  };
+  const scheduleCloseServices = () => {
+    clearServicesCloseTimeout();
+    servicesCloseTimeout.current = window.setTimeout(() => setServicesOpen(false), 250);
+  };
+  useEffect(() => clearServicesCloseTimeout, []);
+  useEffect(() => {
+    if (!servicesOpen) return;
+    const onClick = (e: MouseEvent) => {
+      if (servicesRef.current && !servicesRef.current.contains(e.target as Node)) setServicesOpen(false);
+    };
+    document.addEventListener('mousedown', onClick);
+    return () => document.removeEventListener('mousedown', onClick);
+  }, [servicesOpen]);
+
+  // Mobile "Services" row expands a submenu in place; collapses whenever the
+  // full-screen menu itself closes so it doesn't reopen pre-expanded.
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  useEffect(() => {
+    if (!open) setMobileServicesOpen(false);
+  }, [open]);
+
+  const goToService = (href: string, accent: string) => {
+    pageNavigate(href, { accent, bg: '#0b0a16' });
+  };
+
+  // Section links scroll in-page on the homepage; from any other route they
+  // route home first, landing on the target section via Home's hash effect.
+  const goToSection = (i: number) => {
+    if (onHomePage) {
+      navigate(i);
+    } else {
+      pageNavigate(`/#${SECTIONS[i].id}`, { accent: SECTIONS[i].accent, bg: SECTIONS[i].bg });
+    }
+  };
 
   // Stagger the links in on open, and quick-fade them out on close.
   useEffect(() => {
@@ -80,33 +139,81 @@ export default function Nav() {
 
   const go = (i: number) => {
     setOpen(false);
-    navigate(i);
+    goToSection(i);
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
-      <div className="pointer-events-none relative z-50 flex items-center justify-between px-4 py-4 md:px-10 md:py-6">
-        <Logo onClick={() => go(0)} className="pointer-events-auto text-3xl md:text-4xl" />
+    <>
+      {/* dims the rest of the page while the desktop Services dropdown is open */}
+      <div
+        aria-hidden
+        onClick={() => setServicesOpen(false)}
+        className={cn(
+          'fixed inset-0 z-40 hidden bg-black/50 transition-opacity duration-300 md:block',
+          servicesOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
+        )}
+      />
+      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-4 py-4 md:px-10 md:py-6">
+      {/* Desktop: one compact black pill, logo left, links right — centered
+          on the page, not stretched edge to edge. */}
+      <div
+        ref={servicesRef}
+        onMouseLeave={scheduleCloseServices}
+        className="pointer-events-auto relative hidden items-center gap-10 rounded-full border border-white/15 bg-black py-2 pl-6 pr-2 md:flex"
+      >
+        <Logo onClick={() => go(0)} className="text-2xl text-white" />
 
-        {/* Desktop inline nav */}
-        <nav
-          aria-label="Sections"
-          className="pointer-events-auto hidden items-center gap-6 rounded-full bg-black px-6 py-3 md:flex"
-        >
-          {SECTIONS.slice(1).map((s, i) => (
-            <button
-              key={s.id}
-              type="button"
-              data-cursor
-              onClick={() => navigate(i + 1)}
-              className={cn(
-                'text-xs tracking-normal transition-colors duration-300',
-                section === i + 1 ? 'text-[var(--accent)]' : 'text-white/60 hover:text-white'
-              )}
-            >
-              {t(s.label)}
-            </button>
-          ))}
+        <nav aria-label="Sections" className="flex items-center gap-4">
+          {SECTIONS.slice(1).map((s, i) => {
+            // Contact is rendered separately as a pill button, at the end.
+            if (s.id === 'contact') return null;
+            if (s.id === 'services') {
+              return (
+                <button
+                  key={s.id}
+                  type="button"
+                  data-cursor
+                  onClick={() => setServicesOpen((o) => !o)}
+                  onMouseEnter={openServices}
+                  aria-expanded={servicesOpen}
+                  className={cn(
+                    'flex items-center gap-1.5 text-xs tracking-normal transition-colors duration-300',
+                    'text-[#BFC9D1] hover:text-white'
+                  )}
+                >
+                  {t(s.label)}
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden
+                    className={cn('h-3 w-3 transition-transform duration-300', servicesOpen && 'rotate-180')}
+                  >
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </button>
+              );
+            }
+            // "About" points at the section right under the hero (the
+            // intro/mission copy), not its own position further down.
+            return (
+              <button
+                key={s.id}
+                type="button"
+                data-cursor
+                onClick={() => goToSection(s.id === 'about' ? 1 : i + 1)}
+                className={cn(
+                  'text-xs tracking-normal transition-colors duration-300',
+                  'text-[#BFC9D1] hover:text-white'
+                )}
+              >
+                {t(s.label)}
+              </button>
+            );
+          })}
           <Link
             href="/pricing"
             data-cursor
@@ -114,21 +221,72 @@ export default function Nav() {
               e.preventDefault();
               pageNavigate('/pricing', PRICING_WASH);
             }}
-            className="text-xs tracking-normal text-white/60 transition-colors duration-300 hover:text-white"
+            className="text-xs tracking-normal text-[#BFC9D1] transition-colors duration-300 hover:text-white"
           >
             {t(PRICING_LABEL)}
           </Link>
-          <LangToggle />
+          <button
+            type="button"
+            data-cursor
+            onClick={() => goToSection(SECTIONS.indexOf(contactSection))}
+            className="rounded-full bg-white px-4 py-1.5 text-xs font-medium tracking-normal text-black"
+          >
+            {t(contactSection.label)}
+          </button>
         </nav>
 
-        {/* Mobile burger toggle */}
+        {/* dropdown — same width as the pill, fades in fast while sliding up into place */}
+        <div
+          onMouseEnter={openServices}
+          onMouseLeave={scheduleCloseServices}
+          className={cn(
+            'absolute left-0 right-0 top-full z-10 mt-3 rounded-md border border-white/15 bg-black shadow-2xl transition-all duration-150 ease-out',
+            servicesOpen ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none translate-y-2 opacity-0'
+          )}
+        >
+          <div className="p-2">
+            <div className="grid grid-cols-2 gap-1">
+              {NAV_SERVICES.map((svc) => (
+                <button
+                  key={svc.href}
+                  type="button"
+                  data-cursor
+                  onClick={() => {
+                    setServicesOpen(false);
+                    goToService(svc.href, svc.accent);
+                  }}
+                  className="flex items-center gap-3 rounded-md px-3 py-2.5 text-left transition-colors duration-200 hover:bg-white/10"
+                >
+                  <ServiceIcon id={svc.id} className="h-5 w-5 shrink-0 text-white" />
+                  <div className="min-w-0">
+                    <div className="text-xs font-medium text-white">{t(svc.title)}</div>
+                    <div className="mt-0.5 truncate text-[0.65rem] text-white/45">{t(svc.desc)}</div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Language switcher — its own floating element, top-right, separate
+          from the pill entirely */}
+      <div className="pointer-events-auto fixed right-4 top-4 z-50 hidden md:right-10 md:top-6 md:block">
+        <LangToggle />
+      </div>
+
+      {/* Mobile: logo + burger, same black pill treatment — stays above the
+          full-screen menu (z-40) so it's still visible/clickable when open */}
+      <div className="pointer-events-auto relative z-50 flex w-full items-center justify-between rounded-full border border-white/15 bg-black px-4 py-2 md:hidden">
+        <Logo onClick={() => go(0)} className="text-2xl text-white" />
+
         <button
           type="button"
           onClick={() => setOpen((o) => !o)}
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
           aria-controls="mobile-menu"
-          className="pointer-events-auto flex h-9 w-9 flex-col items-center justify-center gap-[6px] md:hidden"
+          className="flex h-9 w-9 flex-col items-center justify-center gap-[6px]"
         >
           <span
             className={cn(
@@ -164,22 +322,55 @@ export default function Nav() {
           open ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
         )}
       >
-        <nav ref={linksRef} aria-label="Sections" className="relative flex flex-col gap-1">
-          {SECTIONS.map((s, i) => (
-            <button
-              key={s.id}
-              type="button"
-              data-nav-link
-              onClick={() => go(i)}
-              style={{ ['--item' as string]: s.accent }}
-              className={cn(
-                'flex items-baseline gap-4 border-b border-white/10 py-4 text-left',
-                section === i ? 'text-[color:var(--item)]' : 'text-white hover:text-[color:var(--item)]'
-              )}
-            >
-              <span className="font-display text-4xl font-semibold leading-none">{t(s.label)}</span>
-            </button>
-          ))}
+        <nav
+          ref={linksRef}
+          aria-label="Sections"
+          className={cn(
+            'relative flex flex-col gap-1 transition-transform duration-300 ease-out',
+            mobileServicesOpen && '-translate-x-8'
+          )}
+        >
+          {SECTIONS.map((s, i) => {
+            if (s.id === 'services') {
+              return (
+                <button
+                  key={s.id}
+                  type="button"
+                  data-nav-link
+                  onClick={() => setMobileServicesOpen(true)}
+                  aria-expanded={mobileServicesOpen}
+                  className="flex w-full items-center justify-between gap-4 py-4 text-left text-white"
+                >
+                  <span className="font-display text-4xl font-semibold leading-none">{t(s.label)}</span>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden
+                    className="h-5 w-5 shrink-0"
+                  >
+                    <polyline points="9 6 15 12 9 18" />
+                  </svg>
+                </button>
+              );
+            }
+            // "About" points at the section right under the hero (the
+            // intro/mission copy), not its own position further down.
+            return (
+              <button
+                key={s.id}
+                type="button"
+                data-nav-link
+                onClick={() => go(s.id === 'about' ? 1 : i)}
+                className="flex items-baseline gap-4 py-4 text-left text-white"
+              >
+                <span className="font-display text-4xl font-semibold leading-none">{t(s.label)}</span>
+              </button>
+            );
+          })}
           <Link
             href="/pricing"
             data-nav-link
@@ -188,7 +379,7 @@ export default function Nav() {
               setOpen(false);
               pageNavigate('/pricing', PRICING_WASH);
             }}
-            className="flex items-baseline gap-4 border-b border-white/10 py-4 text-left text-white hover:text-[var(--accent)]"
+            className="flex items-baseline gap-4 py-4 text-left text-white hover:text-[var(--accent)]"
           >
             <span className="font-display text-4xl font-semibold leading-none">{t(PRICING_LABEL)}</span>
           </Link>
@@ -197,8 +388,9 @@ export default function Nav() {
         <div
           style={{ transitionDelay: open ? '0.42s' : '0s' }}
           className={cn(
-            'subtext relative flex flex-col gap-3 text-sm transition-opacity duration-500 motion-reduce:transition-none',
-            open ? 'opacity-100' : 'opacity-0'
+            'subtext relative flex flex-col gap-3 text-sm transition-[opacity,transform] duration-500 motion-reduce:transition-none',
+            open ? 'opacity-100' : 'opacity-0',
+            mobileServicesOpen && '-translate-x-8'
           )}
         >
           <a
@@ -210,7 +402,54 @@ export default function Nav() {
           <p>{t(REMOTE_LINE)}</p>
           <LangToggle className="mt-1 w-fit" />
         </div>
+
+        {/* Services drill-in — slides over the full menu from the right */}
+        <div
+          className={cn(
+            'absolute inset-0 flex flex-col bg-[#0a0a0d] px-6 pb-10 pt-28 transition-transform duration-300 ease-out',
+            mobileServicesOpen ? 'translate-x-0' : 'translate-x-full'
+          )}
+        >
+          <button
+            type="button"
+            onClick={() => setMobileServicesOpen(false)}
+            className="flex items-center gap-2 text-sm text-white/60 transition-colors hover:text-white"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+              className="h-4 w-4"
+            >
+              <polyline points="15 6 9 12 15 18" />
+            </svg>
+            {t(BACK_LABEL)}
+          </button>
+
+          <div className="mt-6 flex flex-1 flex-col gap-1 overflow-y-auto">
+            {NAV_SERVICES.map((svc) => (
+              <Link
+                key={svc.href}
+                href={svc.href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setOpen(false);
+                  goToService(svc.href, svc.accent);
+                }}
+                className="flex items-center gap-4 py-4 text-left text-white"
+              >
+                <ServiceIcon id={svc.id} className="h-6 w-6 shrink-0 text-white" />
+                <div className="min-w-0 truncate font-display text-2xl font-semibold leading-none">{t(svc.title)}</div>
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
-    </header>
+      </header>
+    </>
   );
 }

@@ -11,7 +11,7 @@ export function EmailHero() {
       <div className="absolute inset-x-6 top-10 h-44 rounded-xl bg-white" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD, transform: 'rotate(4deg)' }} />
 
       {/* front email card */}
-      <div className="svc-float absolute inset-x-3 top-4 rounded-xl bg-white p-4" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_LG }}>
+      <div className="absolute inset-x-3 top-4 rounded-xl bg-white p-4" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_LG }}>
         <div className="relative mb-3 flex h-24 items-center justify-center overflow-hidden rounded-lg" style={{ background: `linear-gradient(135deg, ${soft(26)}, ${soft(8)})`, boxShadow: GLOSS }}>
           <div className="svc-sheen absolute -inset-y-2 left-0 w-10 bg-white/40 blur-md" />
           <span className="flex h-12 w-12 items-center justify-center rounded-xl" style={{ background: 'white', boxShadow: ELEV_SM }}>
@@ -30,7 +30,7 @@ export function EmailHero() {
       </div>
 
       {/* automation flow chip */}
-      <div className="svc-sway absolute -bottom-2 right-1 flex items-center gap-2 rounded-full bg-white px-3 py-2" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD, ['--svc-rot' as string]: '3deg' }}>
+      <div className="absolute -bottom-2 right-1 flex items-center gap-2 rounded-full bg-white px-3 py-2" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD }}>
         <span className="h-6 w-6 rounded-full" style={{ background: 'var(--svc-accent)', boxShadow: chip('var(--svc-accent)') }} />
         <span className="h-0.5 w-4 rounded-full" style={{ background: tint(45) }} />
         <span className="flex h-6 w-6 items-center justify-center rounded-full" style={{ background: soft(30) }}>
@@ -39,7 +39,7 @@ export function EmailHero() {
       </div>
 
       {/* floating "sent" pill */}
-      <div className="svc-float absolute -left-3 top-12 rounded-lg bg-white px-3 py-2 text-[0.6rem] font-semibold" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD, color: deep(15), animationDelay: '-2.4s' }}>
+      <div className="absolute -left-3 top-12 rounded-lg bg-white px-3 py-2 text-[0.6rem] font-semibold" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD, color: deep(15) }}>
         ✓ Dërguar
       </div>
     </div>

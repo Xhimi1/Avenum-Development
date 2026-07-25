@@ -1,10 +1,16 @@
-export default function ArrowRight({ className }: { className?: string }) {
+export default function ArrowRight({
+  className,
+  strokeWidth = 1.75,
+}: {
+  className?: string;
+  strokeWidth?: number;
+}) {
   return (
     <svg
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={1.75}
+      strokeWidth={strokeWidth}
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden

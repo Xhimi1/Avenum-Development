@@ -113,14 +113,6 @@ html.lenis body {
 }
 
 /* ---- Flat 2D motion graphics for the white service-landing pages ---- */
-@keyframes svc-float {
-  0%, 100% { transform: translateY(0) rotate(var(--svc-rot, 0deg)); }
-  50% { transform: translateY(-14px) rotate(var(--svc-rot, 0deg)); }
-}
-.svc-float {
-  animation: svc-float 6s ease-in-out infinite;
-}
-
 @keyframes svc-blob {
   0%, 100% { border-radius: 42% 58% 65% 35% / 45% 45% 55% 55%; }
   50% { border-radius: 60% 40% 40% 60% / 55% 60% 40% 45%; }
@@ -166,13 +158,6 @@ html.lenis body {
   50% { opacity: 0.25; }
 }
 .svc-blink { animation: svc-blink 1.4s ease-in-out infinite; }
-
-/* Gentle sway for pinned chips. */
-@keyframes svc-sway {
-  0%, 100% { transform: translateY(0) rotate(var(--svc-rot, 0deg)); }
-  50% { transform: translateY(-8px) rotate(calc(var(--svc-rot, 0deg) + 2deg)); }
-}
-.svc-sway { animation: svc-sway 7s ease-in-out infinite; }
 
 /* Dashed ring spin (support / processing). */
 @keyframes svc-spin { to { transform: rotate(360deg); } }
@@ -220,23 +205,13 @@ html.lenis body {
 .chatbot-blob-2 { animation: chatbot-drift-2 24s ease-in-out infinite; }
 .chatbot-blob-3 { animation: chatbot-drift-3 21s ease-in-out infinite; }
 
-/* Service-card icon pop — fired when a card is swiped/scrolled into view.
-   Rotation is fed in per-card via --rot so the tile's resting tilt is kept. */
+/* Service-card icon tile — rotation fed in per-card via --rot for a
+   hand-placed resting tilt (no scroll/swipe interaction). */
 .svc-icon-tile {
   transform: rotate(var(--rot, 0deg));
 }
-@keyframes svc-icon-pop {
-  0%   { transform: rotate(var(--rot, 0deg)) scale(1); }
-  40%  { transform: rotate(calc(var(--rot, 0deg) + 7deg)) scale(1.18); }
-  70%  { transform: rotate(calc(var(--rot, 0deg) - 3deg)) scale(0.96); }
-  100% { transform: rotate(var(--rot, 0deg)) scale(1); }
-}
-.svc-icon-tile.pop {
-  animation: svc-icon-pop 0.7s ease-out;
-}
 
 @media (prefers-reduced-motion: reduce) {
-  .svc-float,
   .svc-blob,
   .svc-pulse,
   .svc-drift-a,
@@ -244,13 +219,11 @@ html.lenis body {
   .svc-drift-c,
   .svc-sheen,
   .svc-blink,
-  .svc-sway,
   .svc-spin,
   .svc-dot,
   .chatbot-blob-1,
   .chatbot-blob-2,
-  .chatbot-blob-3,
-  .svc-icon-tile.pop {
+  .chatbot-blob-3 {
     animation: none !important;
   }
 }

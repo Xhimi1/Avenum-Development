@@ -1,78 +1,79 @@
 /* Detailed flat 2D graphics for the Business Websites page. Light from the
    top, stacked shadows + hairline borders so the shapes feel layered / 3D.
    Everything recolors from --svc-accent. No WebGL. */
-import { soft, tint, deep, ELEV_LG, ELEV_MD, ELEV_SM, GLOSS, chip, HAIRLINE } from './depth';
+import { soft, ELEV_MD, ELEV_SM, GLOSS, HAIRLINE } from './depth';
 
-export function WebsiteHero() {
+const GLASS_SHADOW = '0 14px 28px -12px rgba(0,0,0,0.45)';
+
+/** A real project screenshot in a frosted-glass frame, ringed by floating
+    "design system" chips (typography, palette, CTA, components) — the
+    hero graphic for the Business Websites page. */
+export function WebsiteHeroShowcase() {
   return (
-    <div aria-hidden className="relative h-72 w-72 md:h-[22rem] md:w-[22rem]">
+    <div aria-hidden className="relative w-64 md:w-80">
       {/* soft ground shadow */}
-      <div className="absolute inset-x-8 bottom-2 h-10 rounded-full bg-black/20 blur-2xl" />
+      <div className="absolute inset-x-8 -bottom-3 h-10 rounded-full bg-black/25 blur-2xl" />
 
-      {/* main browser window */}
+      {/* glass-framed screenshot */}
       <div
-        className="svc-float absolute inset-x-0 top-2 overflow-hidden rounded-xl bg-white"
-        style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_LG }}
+        className="relative rounded-[1.75rem] border border-white/40 bg-white/10 p-2 backdrop-blur-xl"
+        style={{ boxShadow: '0 30px 60px -20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.4)' }}
       >
-        {/* chrome bar */}
-        <div className="flex items-center gap-2 border-b px-3 py-2.5" style={{ borderColor: HAIRLINE, background: 'linear-gradient(#fafafc,#f2f3f7)' }}>
-          <span className="h-2.5 w-2.5 rounded-full" style={{ background: '#ff5f57', boxShadow: '0 1px 1px rgba(0,0,0,0.15)' }} />
-          <span className="h-2.5 w-2.5 rounded-full" style={{ background: '#febc2e', boxShadow: '0 1px 1px rgba(0,0,0,0.15)' }} />
-          <span className="h-2.5 w-2.5 rounded-full" style={{ background: '#28c840', boxShadow: '0 1px 1px rgba(0,0,0,0.15)' }} />
-          <span className="ml-2 flex h-5 flex-1 items-center gap-1.5 rounded bg-white px-2" style={{ border: `1px solid ${HAIRLINE}` }}>
-            <svg viewBox="0 0 24 24" className="h-2.5 w-2.5" fill="none" stroke="var(--svc-accent)" strokeWidth="2.5"><rect x="5" y="11" width="14" height="9" rx="1.2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
-            <span className="h-1.5 w-20 rounded-full bg-black/10" />
-          </span>
-        </div>
-
-        {/* page body */}
-        <div className="p-3.5">
-          {/* nav row */}
-          <div className="mb-3 flex items-center justify-between">
-            <span className="h-2.5 w-10 rounded-full" style={{ background: 'var(--svc-accent)' }} />
-            <div className="flex gap-1.5">
-              <span className="h-1.5 w-6 rounded-full bg-black/12" />
-              <span className="h-1.5 w-6 rounded-full bg-black/10" />
-              <span className="h-1.5 w-6 rounded-full bg-black/[0.07]" />
-            </div>
-          </div>
-          {/* hero band with sheen */}
-          <div className="relative mb-3 h-20 overflow-hidden rounded-lg" style={{ background: `linear-gradient(135deg, ${soft(30)}, ${soft(8)})`, boxShadow: GLOSS }}>
-            <div className="svc-sheen absolute -inset-y-2 left-0 w-10 bg-white/40 blur-md" />
-            <div className="absolute left-3 top-4 h-2 w-24 rounded-full bg-white/70" />
-            <div className="absolute left-3 top-8 h-1.5 w-16 rounded-full bg-white/50" />
-            <div className="absolute left-3 top-12 h-5 w-14 rounded" style={{ background: 'var(--svc-accent)', boxShadow: chip('var(--svc-accent)') }} />
-          </div>
-          {/* content cards */}
-          <div className="grid grid-cols-3 gap-2">
-            {[26, 16, 22].map((p, i) => (
-              <div key={i} className="rounded-md bg-white p-1.5" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_SM }}>
-                <div className="mb-1.5 h-6 rounded-sm" style={{ background: `linear-gradient(135deg, ${soft(p + 12)}, ${soft(p - 8 < 0 ? 4 : p - 8)})` }} />
-                <div className="flex items-center gap-1">
-                  <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: soft(p + 20) }} />
-                  <span className="h-1 flex-1 rounded-full bg-black/12" />
-                </div>
-                <div className="mt-1 h-1 w-2/3 rounded-full bg-black/[0.06]" />
-              </div>
-            ))}
-          </div>
+        <div className="overflow-hidden rounded-[1.25rem]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/jimsestate-mockup.webp"
+            alt="Property listing page built by Avenum"
+            draggable={false}
+            className="w-full select-none"
+          />
         </div>
       </div>
 
-      {/* floating phone, responsive hint */}
+      {/* chip: typography */}
       <div
-        className="svc-float absolute -bottom-3 -right-3 w-[4.5rem] overflow-hidden rounded-xl bg-white p-1.5"
-        style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD, animationDelay: '-3s' }}
+        className="absolute -bottom-5 -left-6 z-10 flex items-center gap-2 rounded-xl border border-white/40 bg-white/15 px-3 py-2 backdrop-blur-md"
+        style={{ boxShadow: GLASS_SHADOW }}
       >
-        <div className="mb-1 h-11 rounded-md" style={{ background: `linear-gradient(135deg, ${soft(34)}, ${soft(12)})` }} />
-        <div className="mb-1 h-1.5 w-full rounded-full bg-black/12" />
-        <div className="h-1.5 w-2/3 rounded-full bg-black/[0.07]" />
+        <span className="flex h-6 w-6 items-center justify-center rounded-md bg-white/20 font-display text-xs font-bold text-white">
+          Aa
+        </span>
+        <span className="text-[0.65rem] font-medium tracking-wide text-white/90">Site Typography</span>
       </div>
 
-      {/* floating "cursor + tooltip" */}
-      <div className="svc-sway absolute -left-3 top-10 flex items-center gap-1.5 rounded-lg bg-white px-2.5 py-1.5" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD, ['--svc-rot' as string]: '-4deg' }}>
-        <span className="h-2 w-2 rounded-full" style={{ background: 'var(--svc-accent)' }} />
-        <span className="text-[0.6rem] font-semibold" style={{ color: deep(20) }}>Live</span>
+      {/* chip: color palette */}
+      <div
+        className="absolute -right-6 bottom-16 z-10 flex items-center gap-1.5 rounded-xl border border-white/40 bg-white/15 px-3 py-2.5 backdrop-blur-md"
+        style={{ boxShadow: GLASS_SHADOW }}
+      >
+        <span className="h-4 w-4 rounded-full border border-white/50" style={{ background: 'var(--svc-accent)' }} />
+        <span className="h-4 w-4 rounded-full border border-white/50" style={{ background: 'var(--svc-accent2)' }} />
+        <span className="h-4 w-4 rounded-full border border-white/50 bg-white" />
+        <span className="h-4 w-4 rounded-full border border-white/50 bg-black/80" />
+      </div>
+
+      {/* chip: CTA icons */}
+      <div
+        className="absolute -top-5 right-4 z-10 flex items-center gap-2 rounded-xl border border-white/40 bg-white/15 px-3 py-2 backdrop-blur-md"
+        style={{ boxShadow: GLASS_SHADOW }}
+      >
+        <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M13 3 4 14h6l-1 7 9-11h-6l1-7Z" />
+        </svg>
+        <span className="text-[0.65rem] font-medium tracking-wide text-white/90">CTA Icons</span>
+      </div>
+
+      {/* chip: components */}
+      <div
+        className="absolute -left-7 top-10 z-10 flex h-10 w-10 items-center justify-center rounded-xl border border-white/40 bg-white/15 backdrop-blur-md"
+        style={{ boxShadow: GLASS_SHADOW }}
+      >
+        <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="3" width="7" height="7" rx="1.5" />
+          <rect x="14" y="3" width="7" height="7" rx="1.5" />
+          <rect x="3" y="14" width="7" height="7" rx="1.5" />
+          <rect x="14" y="14" width="7" height="7" rx="1.5" />
+        </svg>
       </div>
     </div>
   );
@@ -103,7 +104,7 @@ export function TileResponsive() {
         <div className="mb-1 h-1.5 w-2/3 rounded-full bg-black/12" />
         <div className="h-1.5 w-1/2 rounded-full bg-black/[0.07]" />
       </div>
-      <div className="svc-float w-12 rounded-md bg-white p-1.5" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_SM }}>
+      <div className="w-12 rounded-md bg-white p-1.5" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_SM }}>
         <div className="h-14 rounded-sm" style={{ background: `linear-gradient(135deg,${soft(28)},${soft(10)})` }} />
       </div>
     </div>

@@ -1,11 +1,9 @@
 'use client';
 
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useRef, type ReactNode } from 'react';
 import ArrowRight from '@/components/ui/ArrowRight';
-import FadeIn from '@/components/ui/FadeIn';
 import SplitText from '@/components/ui/SplitText';
 import { useStore } from '@/lib/store';
-import { prefersReducedMotion } from '@/lib/utils';
 import { useT } from '@/lib/i18n';
 import type { Bi } from '@/lib/i18n';
 
@@ -209,7 +207,11 @@ export default function WorkServices() {
     if (!el) return;
     const card = el.querySelector<HTMLElement>('[data-service-card]');
     const amount = (card?.offsetWidth ?? 300) + 16;
-    el.scrollBy({ left: dir * amount, behavior: 'smooth' });
+    // Clamp to the real scroll range — otherwise requesting past the last
+    // (or before the first) card fights the scroll-snap and glitches.
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    const target = Math.min(Math.max(el.scrollLeft + dir * amount, 0), maxScroll);
+    el.scrollTo({ left: target, behavior: 'smooth' });
   };
 
   const handlePointerDown = (e: React.PointerEvent<HTMLUListElement>) => {
@@ -253,33 +255,6 @@ export default function WorkServices() {
     pageNavigate(href, { accent, bg: '#0b0a16' });
   };
 
-  // Pop each card's icon as it swipes/scrolls into view (mobile slider and
-  // desktop grid both — IntersectionObserver against the viewport covers
-  // horizontal scroll too). Class is pulled off on animation end so a card
-  // that leaves and returns pops again.
-  useEffect(() => {
-    const root = scrollerRef.current;
-    if (!root || prefersReducedMotion()) return;
-    const icons = Array.from(root.querySelectorAll<HTMLElement>('[data-svc-icon]'));
-    const clear = (e: AnimationEvent) => (e.currentTarget as HTMLElement).classList.remove('pop');
-    icons.forEach((el) => el.addEventListener('animationend', clear));
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const el = entry.target as HTMLElement;
-          if (entry.isIntersecting) el.classList.add('pop');
-          else el.classList.remove('pop');
-        });
-      },
-      { threshold: 0.6 }
-    );
-    icons.forEach((el) => io.observe(el));
-    return () => {
-      io.disconnect();
-      icons.forEach((el) => el.removeEventListener('animationend', clear));
-    };
-  }, []);
-
   return (
     <div className="mt-28 md:mt-36">
       <div className="mx-auto w-full max-w-6xl px-4 md:px-12">
@@ -298,6 +273,30 @@ export default function WorkServices() {
 
       {/* mobile: horizontal snap slider · desktop: bento grid */}
       <div className="mx-auto mt-10 w-full max-w-6xl md:mt-14 md:px-12">
+        {/* mobile slider arrows — above the cards, right-aligned; same style as the Work slider */}
+        <div className="mb-4 flex justify-end px-[5%] md:hidden">
+          <div className="flex gap-2">
+            <button
+              type="button"
+              data-cursor
+              aria-label="Previous"
+              onClick={() => scrollByCards(-1)}
+              className="pointer-events-auto flex h-10 w-14 items-center justify-center rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-300 hover:bg-gray-300"
+            >
+              <ArrowRight className="h-4 w-4 rotate-180 text-black" />
+            </button>
+            <button
+              type="button"
+              data-cursor
+              aria-label="Next"
+              onClick={() => scrollByCards(1)}
+              className="pointer-events-auto flex h-10 w-14 items-center justify-center rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-300 hover:bg-gray-300"
+            >
+              <ArrowRight className="h-4 w-4 text-black" />
+            </button>
+          </div>
+        </div>
+
         <ul
           ref={scrollerRef}
           onPointerDown={handlePointerDown}
@@ -323,7 +322,6 @@ export default function WorkServices() {
 
                 {isHot ? (
                   <span
-                    data-svc-icon
                     className="svc-icon-tile relative z-10 flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-[1.4rem] border border-white/40 bg-white/20 text-white backdrop-blur-sm md:h-[4rem] md:w-[4rem]"
                     style={{
                       ['--rot' as string]: `${s.rotate}deg`,
@@ -338,7 +336,6 @@ export default function WorkServices() {
                   </span>
                 ) : (
                   <span
-                    data-svc-icon
                     className="svc-icon-tile relative z-10 flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-[1.4rem] border border-white/30 text-white md:h-[3.75rem] md:w-[3.75rem] md:rounded-[1.15rem]"
                     style={{
                       ['--rot' as string]: `${s.rotate}deg`,
@@ -366,8 +363,8 @@ export default function WorkServices() {
                   <p
                     className={
                       isHot
-                        ? 'mt-2 text-sm leading-relaxed text-white/90 md:text-white/85'
-                        : 'mt-2 text-sm leading-relaxed text-black md:text-black/55'
+                        ? 'mt-2 text-sm leading-relaxed text-white md:text-xs'
+                        : 'mt-2 text-sm leading-relaxed text-black md:text-xs md:text-black'
                     }
                   >
                     {t(s.desc)}
@@ -375,11 +372,15 @@ export default function WorkServices() {
                 </div>
 
                 <span
-                  className="relative z-10 mt-5 inline-flex items-center gap-2 pt-1 text-sm font-medium md:mt-4"
-                  style={isHot ? { color: 'white' } : { color: s.iconColor }}
+                  className={`relative z-10 mt-5 inline-flex items-center gap-1 border-b pb-0 text-sm font-bold leading-none md:mt-4 ${
+                    isHot ? 'border-white text-white' : 'border-black text-black'
+                  }`}
                 >
                   {t(LEARN_MORE)}
-                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowRight
+                    strokeWidth={2.75}
+                    className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1"
+                  />
                 </span>
               </>
             );
@@ -390,7 +391,7 @@ export default function WorkServices() {
               ? 'items-center justify-center text-center'
               : 'items-center justify-center text-center md:items-start md:justify-start md:text-left';
             const baseCard = `group relative flex min-h-[26rem] flex-col rounded-2xl p-8 md:h-full md:min-h-0 md:p-6 ${align}`;
-            const skin = isHot ? 'shadow-xl shadow-[#7a3ce0]/25' : 'border';
+            const skin = isHot ? '' : 'border';
             const cardStyle = isHot
               ? {
                   // three-stop: sky-blue → purple → coral, with a soft radial
@@ -398,8 +399,8 @@ export default function WorkServices() {
                   backgroundImage:
                     'radial-gradient(120% 120% at 15% 12%, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0) 42%), linear-gradient(140deg, #2BB8F0 0%, #7A3CE0 50%, #FF6FA5 100%)',
                 }
-              : // non-hot cards get a soft wash of their own icon color
-                { backgroundColor: `${s.iconColor}16`, borderColor: `${s.iconColor}33` };
+              : // non-hot cards just get a border tinted with their own icon color
+                { borderColor: `${s.iconColor}33` };
 
             return (
               <li
@@ -407,7 +408,7 @@ export default function WorkServices() {
                 data-service-card
                 className={`shrink-0 basis-[90%] snap-center md:basis-auto ${s.span}`}
               >
-                <FadeIn delay={0.05 * i} className="h-full">
+                <div className="h-full">
                   {isHot ? (
                     <button
                       type="button"
@@ -415,24 +416,24 @@ export default function WorkServices() {
                       onClick={() => goToService(s.href, s.iconColor)}
                       aria-label={t(s.title)}
                       style={cardStyle}
-                      className={`${baseCard} ${skin} pointer-events-auto h-full w-full overflow-hidden transition-shadow duration-300 hover:shadow-2xl`}
+                      className={`${baseCard} ${skin} pointer-events-auto h-full w-full overflow-hidden`}
                     >
                       <span aria-hidden className="pointer-events-none absolute inset-0 z-0">
                         <span
-                          className="chatbot-blob chatbot-blob-1"
+                          className="chatbot-blob"
                           style={{ left: '-18%', top: '-22%', background: 'radial-gradient(circle at center, #5FD2FF 0%, rgba(95,210,255,0) 62%)' }}
                         />
                         <span
-                          className="chatbot-blob chatbot-blob-2"
+                          className="chatbot-blob"
                           style={{ right: '-18%', top: '-14%', background: 'radial-gradient(circle at center, #FF64A6 0%, rgba(255,100,166,0) 62%)' }}
                         />
                         <span
-                          className="chatbot-blob chatbot-blob-3"
+                          className="chatbot-blob"
                           style={{ left: '6%', bottom: '-26%', background: 'radial-gradient(circle at center, #A57BFF 0%, rgba(165,123,255,0) 62%)' }}
                         />
                         <span
-                          className="chatbot-blob chatbot-blob-1"
-                          style={{ right: '-14%', bottom: '-20%', animationDelay: '-9s', animationDuration: '27s', background: 'radial-gradient(circle at center, #FFC46B 0%, rgba(255,196,107,0) 60%)' }}
+                          className="chatbot-blob"
+                          style={{ right: '-14%', bottom: '-20%', background: 'radial-gradient(circle at center, #FFC46B 0%, rgba(255,196,107,0) 60%)' }}
                         />
                       </span>
                       {content}
@@ -444,40 +445,16 @@ export default function WorkServices() {
                       onClick={() => goToService(s.href, s.iconColor)}
                       aria-label={t(s.title)}
                       style={cardStyle}
-                      className={`${baseCard} ${skin} pointer-events-auto h-full w-full transition-shadow duration-300 hover:shadow-lg`}
+                      className={`${baseCard} ${skin} pointer-events-auto h-full w-full transition-colors duration-300 hover:bg-[#F3EEFF]`}
                     >
                       {content}
                     </button>
                   )}
-                </FadeIn>
+                </div>
               </li>
             );
           })}
         </ul>
-
-        {/* mobile slider arrows — below the cards, right-aligned; same style as the Work slider */}
-        <div className="mt-6 flex justify-end px-[5%] md:hidden">
-          <div className="flex gap-2">
-            <button
-              type="button"
-              data-cursor
-              aria-label="Previous"
-              onClick={() => scrollByCards(-1)}
-              className="pointer-events-auto flex h-10 w-14 items-center justify-center rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-300 hover:bg-gray-300"
-            >
-              <ArrowRight className="h-4 w-4 rotate-180 text-black" />
-            </button>
-            <button
-              type="button"
-              data-cursor
-              aria-label="Next"
-              onClick={() => scrollByCards(1)}
-              className="pointer-events-auto flex h-10 w-14 items-center justify-center rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-300 hover:bg-gray-300"
-            >
-              <ArrowRight className="h-4 w-4 text-black" />
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );

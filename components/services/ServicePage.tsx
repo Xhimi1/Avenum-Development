@@ -1,21 +1,24 @@
 'use client';
 
-import Link from 'next/link';
-import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
+import { type CSSProperties, type ReactNode } from 'react';
 import { useT, type Bi } from '@/lib/i18n';
 import FadeIn from '@/components/ui/FadeIn';
 import SplitText from '@/components/ui/SplitText';
 import ArrowRight from '@/components/ui/ArrowRight';
-import LangToggle from '@/components/ui/LangToggle';
-import Logo from '@/components/ui/Logo';
+import Nav from '@/components/ui/Nav';
+import OtherServices from './OtherServices';
+import Footer from '@/components/ui/Footer';
 import { whatsappHref } from '@/lib/contact';
 
 export interface ServiceTile {
   graphic: ReactNode;
   title: Bi;
+  subtitle: Bi;
 }
 
 interface ServicePageProps {
+  /** this page's own route, so "Other Services" can exclude it */
+  currentHref: string;
   /** drives every accent touch through --svc-accent */
   accent: string;
   /** second hue for gradients */
@@ -24,6 +27,8 @@ interface ServicePageProps {
   heroGradient: string;
   /** three colors for the slowly-drifting hero blobs */
   heroBlobs: [string, string, string];
+  /** short service name, shown as a pill above the heading */
+  eyebrow: Bi;
   heading: Bi;
   subheading: Bi;
   ctaLabel: Bi;
@@ -34,22 +39,18 @@ interface ServicePageProps {
   mailSubject: Bi;
 }
 
-const BACK_LINK = { en: '← Back', sq: '← Kthehu' };
-const COPYRIGHT = {
-  en: '© 2026 Avenum — All rights reserved',
-  sq: '© 2026 Avenum — Të gjitha të drejtat e rezervuara',
-};
-
 /**
  * Shared skeleton for every service page: hero (heading · subheading · CTA ·
  * graphic) → graphic showcase → closing CTA. Deliberately light on copy —
  * the 2D graphics carry the page, the words just label them.
  */
 export default function ServicePage({
+  currentHref,
   accent,
   accent2,
   heroGradient,
   heroBlobs,
+  eyebrow,
   heading,
   subheading,
   ctaLabel,
@@ -66,38 +67,16 @@ export default function ServicePage({
     '--svc-accent2': accent2,
   } as CSSProperties;
 
-  // Header rides on the colored hero (white text) then flips to dark once the
-  // page scrolls into the white sections below.
-  const [onHero, setOnHero] = useState(true);
-  useEffect(() => {
-    const onScroll = () => setOnHero(window.scrollY < window.innerHeight * 0.82);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
   const blob = (c: string) => `radial-gradient(circle at center, ${c} 0%, ${c}00 62%)`;
 
   return (
     <div className="min-h-screen bg-white text-[#0a0a0a]" style={accentVar}>
-      <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-4 py-3 md:px-8 md:py-4">
-        <Logo className={`text-3xl transition-colors duration-300 md:text-4xl ${onHero ? 'text-white' : 'text-black'}`} />
-        <div className="flex items-center gap-4">
-          <Link
-            href="/"
-            data-cursor
-            className={`text-xs transition-colors duration-300 ${onHero ? 'text-white' : 'text-black'}`}
-          >
-            {t(BACK_LINK)}
-          </Link>
-          <LangToggle light={onHero} />
-        </div>
-      </header>
+      <Nav />
 
       <main>
         {/* hero — vivid animated gradient in this page's palette */}
         <section
-          className="relative flex min-h-dvh items-center overflow-hidden pt-28 pb-20 text-white md:pt-32"
+          className="relative flex min-h-dvh items-center overflow-hidden pt-28 pb-32 text-white md:pb-40 md:pt-32"
           style={{
             backgroundImage: `radial-gradient(120% 120% at 15% 12%, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0) 42%), ${heroGradient}`,
           }}
@@ -108,17 +87,22 @@ export default function ServicePage({
             <span className="chatbot-blob chatbot-blob-3" style={{ left: '8%', bottom: '-24%', background: blob(heroBlobs[2]) }} />
           </span>
 
-          <div className="relative z-10 mx-auto grid w-full max-w-[90rem] items-center gap-14 px-6 md:grid-cols-2 md:gap-10 md:px-12">
+          <div className="relative z-10 mx-auto grid w-full max-w-5xl items-center gap-14 px-6 md:grid-cols-2 md:gap-6 md:px-12">
             <div className="max-w-xl">
+              <FadeIn delay={0.05}>
+                <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-medium tracking-normal text-white">
+                  {t(eyebrow)}
+                </span>
+              </FadeIn>
               <SplitText
                 as="h1"
                 delay={0.15}
-                className="font-display text-[clamp(2.3rem,5.5vw,4.2rem)] font-semibold leading-[0.98] tracking-normal"
+                className="mt-4 font-display text-[clamp(1.9rem,4.5vw,3.4rem)] font-medium leading-[1.05] tracking-normal [text-wrap:balance]"
               >
                 {t(heading)}
               </SplitText>
               <FadeIn delay={0.35}>
-                <p className="mt-6 max-w-md text-base tracking-normal text-white md:text-lg">
+                <p className="mt-6 max-w-xl text-sm tracking-normal text-white md:text-base">
                   {t(subheading)}
                 </p>
               </FadeIn>
@@ -139,6 +123,19 @@ export default function ServicePage({
               {heroGraphic}
             </FadeIn>
           </div>
+
+          {/* wave cut instead of a straight edge into the white section below */}
+          <svg
+            aria-hidden
+            viewBox="0 0 1440 120"
+            preserveAspectRatio="none"
+            className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-14 w-full md:h-24"
+          >
+            <path
+              fill="white"
+              d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1440,64L1440,120L1280,120C1120,120,960,120,800,120C640,120,480,120,320,120C160,120,80,120,0,120Z"
+            />
+          </svg>
         </section>
 
         {/* graphic showcase — the labels stay short on purpose */}
@@ -154,11 +151,12 @@ export default function ServicePage({
             <div className="mt-14 grid gap-8 md:mt-20 md:grid-cols-3 md:gap-7">
               {tiles.map((tile, i) => (
                 <FadeIn key={i} delay={i * 0.1}>
-                  <div className="group flex h-full flex-col items-center rounded-3xl border border-black/[0.07] bg-white p-8 text-center shadow-[0_20px_50px_-30px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_30px_60px_-28px_rgba(0,0,0,0.4)]">
+                  <div className="group flex h-full flex-col items-center rounded-md border border-black/15 bg-white p-8 text-center transition-transform duration-300 hover:-translate-y-1">
                     <div className="flex h-44 w-full items-center justify-center">{tile.graphic}</div>
                     <h3 className="mt-7 font-display text-xl font-semibold tracking-normal md:text-2xl">
                       {t(tile.title)}
                     </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-black">{t(tile.subtitle)}</p>
                   </div>
                 </FadeIn>
               ))}
@@ -166,45 +164,36 @@ export default function ServicePage({
           </div>
         </section>
 
-        {/* closing CTA */}
-        <section className="relative py-28 md:py-40">
+        <OtherServices currentHref={currentHref} />
+
+        {/* closing CTA — soft radial wash of the page's own accent, colored
+            at the bottom, fading to transparent (white) toward the top */}
+        <section
+          className="relative py-28 md:py-40"
+          style={{
+            backgroundImage:
+              'radial-gradient(140% 90% at 50% 100%, color-mix(in srgb, var(--svc-accent) 78%, transparent) 0%, transparent 75%)',
+          }}
+        >
           <div className="mx-auto w-full max-w-[90rem] px-6 text-center md:px-12">
-            <SplitText
-              as="h2"
-              className="mx-auto max-w-3xl font-display text-[clamp(2.2rem,6vw,4.6rem)] font-semibold leading-[1] tracking-normal"
-            >
+            <h2 className="mx-auto max-w-3xl font-display text-[clamp(2.2rem,6vw,4.6rem)] font-semibold leading-[1] tracking-normal">
               {t(ctaHeading)}
-            </SplitText>
-            <FadeIn delay={0.3} className="mt-10">
+            </h2>
+            <div className="mt-10">
               <a
                 href={waLink}
                 data-cursor
-                className="group inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[var(--svc-accent)] to-[var(--svc-accent2)] px-11 py-5 text-base font-medium tracking-normal text-white shadow-xl transition-transform duration-300 hover:-translate-y-0.5"
+                className="group inline-flex items-center gap-3 rounded-full bg-black px-11 py-5 text-base font-medium tracking-normal text-white shadow-xl transition-transform duration-300 hover:-translate-y-0.5"
               >
                 {t(ctaLabel)}
                 <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
               </a>
-            </FadeIn>
+            </div>
           </div>
         </section>
       </main>
 
-      <footer className="border-t border-black/10 px-6 py-8 md:px-12">
-        <div className="mx-auto flex w-full max-w-[90rem] flex-col gap-4 text-xs tracking-normal text-black md:flex-row md:items-center md:justify-between">
-          <p>{t(COPYRIGHT)}</p>
-          <div className="flex gap-5">
-            <Link href="/privacy-policy" data-cursor className="transition-colors duration-300 hover:text-black/70">
-              {t({ en: 'Privacy Policy', sq: 'Privatësia' })}
-            </Link>
-            <Link href="/terms-of-service" data-cursor className="transition-colors duration-300 hover:text-black/70">
-              {t({ en: 'Terms of Service', sq: 'Kushtet' })}
-            </Link>
-          </div>
-          <Link href="/" data-cursor className="w-fit text-black">
-            avenum.website
-          </Link>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useLayoutEffect, useRef } from 'react';
 import { gsap } from '@/lib/gsap';
 import { cn, prefersReducedMotion } from '@/lib/utils';
@@ -8,15 +7,10 @@ import { useT, type Bi } from '@/lib/i18n';
 import FadeIn from '@/components/ui/FadeIn';
 import SplitText from '@/components/ui/SplitText';
 import ArrowRight from '@/components/ui/ArrowRight';
-import LangToggle from '@/components/ui/LangToggle';
-import Logo from '@/components/ui/Logo';
+import Nav from '@/components/ui/Nav';
+import Footer from '@/components/ui/Footer';
 import { whatsappHref } from '@/lib/contact';
 
-const BACK_LINK = { en: '← Back to the experience', sq: '← Kthehu te eksperienca' };
-const COPYRIGHT = {
-  en: '© 2026 Avenum — All rights reserved',
-  sq: '© 2026 Avenum — Të gjitha të drejtat e rezervuara',
-};
 
 /* ---- tiny inline icons ---- */
 
@@ -328,19 +322,7 @@ export default function PricingPage() {
         ))}
       </div>
 
-      <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-4 py-3 md:px-8 md:py-4">
-        <Logo className="text-3xl md:text-4xl" />
-        <div className="flex items-center gap-4">
-          <Link
-            href="/"
-            data-cursor
-            className="text-xs text-white/60 transition-colors duration-300 hover:text-white"
-          >
-            {t(BACK_LINK)}
-          </Link>
-          <LangToggle />
-        </div>
-      </header>
+      <Nav />
 
       <main>
         {/* hero */}
@@ -563,26 +545,7 @@ export default function PricingPage() {
         </section>
       </main>
 
-      <footer className="border-t border-white/10 px-6 py-8 md:px-12">
-        <div className="mx-auto flex w-full max-w-[90rem] flex-col gap-4 text-xs text-white/50 md:flex-row md:items-center md:justify-between">
-          <p>{t(COPYRIGHT)}</p>
-          <div className="flex gap-5">
-            <Link href="/privacy-policy" data-cursor className="transition-colors duration-300 hover:text-white">
-              {t({ en: 'Privacy Policy', sq: 'Privatësia' })}
-            </Link>
-            <Link href="/terms-of-service" data-cursor className="transition-colors duration-300 hover:text-white">
-              {t({ en: 'Terms of Service', sq: 'Kushtet' })}
-            </Link>
-          </div>
-          <Link
-            href="/"
-            data-cursor
-            className="w-fit text-white/50 transition-colors duration-300 hover:text-white"
-          >
-            avenum.website
-          </Link>
-        </div>
-      </footer>
+      <Footer theme="dark" />
 
       <div
         aria-hidden

@@ -33,7 +33,7 @@ export default function LangToggle({
     window.localStorage.setItem(STORAGE_KEY, l);
   };
 
-  const activeClasses = light ? 'bg-black text-white' : 'bg-white text-black';
+  const activeClasses = light ? 'text-white' : 'text-black';
   const inactiveClasses = light
     ? 'text-black/50 hover:text-black'
     : 'text-white/60 hover:text-white';
@@ -41,11 +41,19 @@ export default function LangToggle({
   return (
     <div
       className={cn(
-        'pointer-events-auto inline-flex items-center gap-0.5 rounded-full border p-0.5 text-[11px] font-medium tracking-normal',
-        light ? 'border-black/15' : 'border-white/15',
+        'pointer-events-auto relative inline-flex items-center rounded-full border p-0.5 text-[11px] font-medium tracking-normal',
+        light ? 'border-black/15 bg-white' : 'border-white/15 bg-black',
         className
       )}
     >
+      <span
+        aria-hidden
+        className={cn(
+          'absolute inset-y-0.5 left-0.5 w-[calc(50%-2px)] rounded-full transition-transform duration-300 ease-out',
+          light ? 'bg-black' : 'bg-white',
+          locale === 'sq' && 'translate-x-full'
+        )}
+      />
       {(['en', 'sq'] as const).map((l) => (
         <button
           key={l}
@@ -54,7 +62,7 @@ export default function LangToggle({
           onClick={() => choose(l)}
           aria-pressed={locale === l}
           className={cn(
-            'rounded-full px-2.5 py-1 uppercase transition-colors duration-300',
+            'relative z-10 flex-1 rounded-full px-2.5 py-1 text-center uppercase transition-colors duration-300',
             locale === l ? activeClasses : inactiveClasses
           )}
         >

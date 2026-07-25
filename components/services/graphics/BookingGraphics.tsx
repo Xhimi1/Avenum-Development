@@ -8,7 +8,7 @@ export function BookingHero() {
       <div className="absolute inset-x-8 bottom-2 h-10 rounded-full bg-black/20 blur-2xl" />
 
       {/* calendar card */}
-      <div className="svc-float absolute inset-x-0 top-2 rounded-xl bg-white p-5" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_LG }}>
+      <div className="absolute inset-x-0 top-2 rounded-xl bg-white p-5" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_LG }}>
         <div className="mb-4 flex items-center justify-between">
           <div className="flex flex-col gap-1.5">
             <span className="h-3 w-24 rounded-full" style={{ background: 'var(--svc-accent)' }} />
@@ -51,7 +51,7 @@ export function BookingHero() {
       </div>
 
       {/* floating confirmed reservation */}
-      <div className="svc-sway absolute -bottom-3 -left-4 flex items-center gap-2.5 rounded-xl bg-white px-4 py-3" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD, ['--svc-rot' as string]: '-3deg' }}>
+      <div className="absolute -bottom-3 -left-4 flex items-center gap-2.5 rounded-xl bg-white px-4 py-3" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD }}>
         <span className="flex h-9 w-9 items-center justify-center rounded-full" style={{ background: 'var(--svc-accent)', boxShadow: chip('var(--svc-accent)') }}>
           <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12l4 4 10-10" /></svg>
         </span>
@@ -62,7 +62,7 @@ export function BookingHero() {
       </div>
 
       {/* floating time chip */}
-      <div className="svc-float absolute -right-2 top-6 flex items-center gap-1.5 rounded-lg bg-white px-3 py-2" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD, animationDelay: '-2s' }}>
+      <div className="absolute -right-2 top-6 flex items-center gap-1.5 rounded-lg bg-white px-3 py-2" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD }}>
         <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="var(--svc-accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
         <span className="text-[0.65rem] font-semibold" style={{ color: deep(15) }}>20:00</span>
       </div>
@@ -99,8 +99,8 @@ export function TileGuests() {
         {[26, 38, 18, 46].map((pct, i) => (
           <span
             key={i}
-            className="svc-float flex h-14 w-14 items-center justify-center rounded-full border-[3px] border-white"
-            style={{ background: `linear-gradient(150deg,${soft(pct + 12)},${soft(pct - 4 < 0 ? 4 : pct - 4)})`, boxShadow: ELEV_SM, animationDelay: `${i * 0.4}s`, zIndex: 4 - i }}
+            className="flex h-14 w-14 items-center justify-center rounded-full border-[3px] border-white"
+            style={{ background: `linear-gradient(150deg,${soft(pct + 12)},${soft(pct - 4 < 0 ? 4 : pct - 4)})`, boxShadow: ELEV_SM, zIndex: 4 - i }}
           >
             <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="white" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
@@ -116,7 +116,7 @@ export function TileGuests() {
 export function TileReminder() {
   return (
     <div aria-hidden className="flex h-full w-full items-center justify-center">
-      <div className="svc-float relative flex h-28 w-28 items-center justify-center rounded-2xl bg-white" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD + ', ' + GLOSS }}>
+      <div className="relative flex h-28 w-28 items-center justify-center rounded-2xl bg-white" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD + ', ' + GLOSS }}>
         <svg viewBox="0 0 24 24" className="h-12 w-12" fill="none" stroke="var(--svc-accent)" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
           <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.7 21a2 2 0 0 1-3.4 0" />
         </svg>

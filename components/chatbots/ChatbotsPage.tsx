@@ -1,16 +1,15 @@
 'use client';
 
-import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import { useLayoutEffect, useRef } from 'react';
-import { gsap } from '@/lib/gsap';
+import { useEffect, useLayoutEffect, useRef } from 'react';
+import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { prefersReducedMotion } from '@/lib/utils';
 import { useT } from '@/lib/i18n';
 import FadeIn from '@/components/ui/FadeIn';
 import SplitText from '@/components/ui/SplitText';
 import ArrowRight from '@/components/ui/ArrowRight';
-import LangToggle from '@/components/ui/LangToggle';
-import Logo from '@/components/ui/Logo';
+import Nav from '@/components/ui/Nav';
+import Footer from '@/components/ui/Footer';
 import { whatsappHref } from '@/lib/contact';
 
 const AssistantOrb = dynamic(() => import('./AssistantOrb'), { ssr: false });
@@ -18,11 +17,6 @@ const ChatDemo = dynamic(() => import('./ChatDemo'), { ssr: false });
 
 const MAIL_SUBJECT = { en: 'AI chatbot for my restaurant', sq: 'AI chatbot për restorantin tim' };
 
-const BACK_LINK = { en: '← Back to the experience', sq: '← Kthehu te eksperienca' };
-const COPYRIGHT = {
-  en: '© 2026 Avenum — All rights reserved',
-  sq: '© 2026 Avenum — Të gjitha të drejtat e rezervuara',
-};
 
 const HERO_HEADING = { en: 'A chatbot that never misses a table.', sq: 'Një chatbot që nuk humbet asnjë rezervim.' };
 const HERO_SUB = {
@@ -208,6 +202,14 @@ export default function ChatbotsPage() {
     document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // Web fonts finishing late can reflow the hero (heading/button included)
+  // after ScrollTrigger already measured it, leaving above-the-fold reveals
+  // stuck at opacity 0 until the next scroll forces a recalculation. Refresh
+  // once fonts settle so they show immediately on load instead.
+  useEffect(() => {
+    document.fonts?.ready.then(() => ScrollTrigger.refresh()).catch(() => {});
+  }, []);
+
   // On load the heading/subheading reveal first (SplitText/FadeIn), then the
   // decorative background — gradient, light stripes, glow — fades in over the
   // flat base color a beat later.
@@ -281,24 +283,11 @@ export default function ChatbotsPage() {
         ))}
       </div>
 
-      {/* minimal header — this page lives outside the main 3D experience */}
-      <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-4 py-3 md:px-8 md:py-4">
-        <Logo className="text-3xl md:text-4xl" />
-        <div className="flex items-center gap-4">
-          <Link
-            href="/"
-            data-cursor
-            className="text-xs text-white/60 transition-colors duration-300 hover:text-white"
-          >
-            {t(BACK_LINK)}
-          </Link>
-          <LangToggle />
-        </div>
-      </header>
+      <Nav />
 
       <main>
         {/* hero */}
-        <section className="relative flex h-dvh items-start overflow-hidden pt-[6.5rem] md:h-auto md:min-h-dvh md:items-center md:pt-28">
+        <section className="relative flex min-h-dvh items-start overflow-hidden pt-[6.5rem] md:h-auto md:items-center md:pt-28">
           <AssistantOrb />
           <div className="relative mx-auto w-full max-w-[90rem] px-6 md:px-12">
             <div className="max-w-2xl">
@@ -318,7 +307,7 @@ export default function ChatbotsPage() {
                 {t(HERO_SUB)}
               </SplitText>
 
-              <FadeIn delay={0.7} className="mt-10 flex flex-wrap items-center gap-4">
+              <div className="mt-10 flex flex-wrap items-center gap-4">
                 <a
                   href={waLink}
                   data-cursor
@@ -335,7 +324,7 @@ export default function ChatbotsPage() {
                 >
                   {t(CTA_SECONDARY)}
                 </a>
-              </FadeIn>
+              </div>
             </div>
           </div>
         </section>
@@ -486,22 +475,7 @@ export default function ChatbotsPage() {
         </section>
       </main>
 
-      <footer className="border-t border-white/10 px-6 py-8 md:px-12">
-        <div className="mx-auto flex w-full max-w-[90rem] flex-col gap-4 text-xs text-white/50 md:flex-row md:items-center md:justify-between">
-          <p>{t(COPYRIGHT)}</p>
-          <div className="flex gap-5">
-            <Link href="/privacy-policy" data-cursor className="transition-colors duration-300 hover:text-white">
-              {t({ en: 'Privacy Policy', sq: 'Privatësia' })}
-            </Link>
-            <Link href="/terms-of-service" data-cursor className="transition-colors duration-300 hover:text-white">
-              {t({ en: 'Terms of Service', sq: 'Kushtet' })}
-            </Link>
-          </div>
-          <Link href="/" data-cursor className="w-fit text-white/50 transition-colors duration-300 hover:text-white">
-            avenum.website
-          </Link>
-        </div>
-      </footer>
+      <Footer theme="dark" />
 
       <div
         aria-hidden
