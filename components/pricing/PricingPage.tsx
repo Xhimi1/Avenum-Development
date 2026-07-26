@@ -290,41 +290,46 @@ export default function PricingPage() {
 
   return (
     <div className="isolate min-h-screen overflow-x-clip bg-black text-[#f2f4ff]">
-      {/* deep-purple base, diagonal light stripes and a soft center glow */}
-      <div ref={bgRef} aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        {/* base purple gradient */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'linear-gradient(160deg, #2a1660 0%, #1b0f3d 45%, #140a30 100%)',
-          }}
-        />
-        {/* diagonal white light stripes */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'repeating-linear-gradient(125deg, transparent 0px, transparent 130px, rgba(255,255,255,0.04) 175px, rgba(255,255,255,0.10) 210px, rgba(255,255,255,0.04) 245px, transparent 300px, transparent 430px)',
-          }}
-        />
-        {/* soft radial glow toward the top */}
-        <div
-          className="absolute -top-40 left-1/2 h-[42rem] w-[42rem] -translate-x-1/2 rounded-full blur-3xl"
-          style={{ background: 'radial-gradient(circle, rgba(140,110,255,0.28), transparent 70%)' }}
-        />
-        {STARS.map((s, i) => (
-          <span
-            key={i}
-            className="svc-pulse absolute rounded-full bg-white/60"
-            style={{ top: s.top, left: s.left, width: s.size, height: s.size, animationDelay: s.delay }}
-          />
-        ))}
-      </div>
-
       <Nav />
 
       <main>
+        {/* deep-purple base, diagonal light stripes and a soft center glow —
+            scoped to the hero + plan cards only, same as the Chatbots page;
+            a black fade at the bottom blends into the plain black body below. */}
+        <div className="relative">
+          <div ref={bgRef} aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+            {/* base purple gradient */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  'linear-gradient(160deg, #2a1660 0%, #1b0f3d 45%, #140a30 100%)',
+              }}
+            />
+            {/* diagonal white light stripes */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  'repeating-linear-gradient(125deg, transparent 0px, transparent 130px, rgba(255,255,255,0.04) 175px, rgba(255,255,255,0.10) 210px, rgba(255,255,255,0.04) 245px, transparent 300px, transparent 430px)',
+              }}
+            />
+            {/* soft radial glow toward the top */}
+            <div
+              className="absolute -top-40 left-1/2 h-[42rem] w-[42rem] -translate-x-1/2 rounded-full blur-3xl"
+              style={{ background: 'radial-gradient(circle, rgba(140,110,255,0.28), transparent 70%)' }}
+            />
+            {STARS.map((s, i) => (
+              <span
+                key={i}
+                className="svc-pulse absolute rounded-full bg-white/60"
+                style={{ top: s.top, left: s.left, width: s.size, height: s.size, animationDelay: s.delay }}
+              />
+            ))}
+            {/* fade into the black body below */}
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-black" />
+          </div>
+
         {/* hero */}
         <section className="relative px-6 pt-24 text-center md:px-12 md:pt-28">
           <div className="mx-auto max-w-3xl">
@@ -449,6 +454,7 @@ export default function PricingPage() {
             </FadeIn>
           </div>
         </section>
+        </div>
 
         {/* comparison */}
         <section className="relative px-6 py-16 md:px-12 md:py-24">
@@ -485,7 +491,7 @@ export default function PricingPage() {
                             key={tier.id}
                             className={cn(
                               'px-4 py-5 text-center font-display text-sm font-semibold md:text-base',
-                              tier.featured && 'bg-[#8b5cf6]/[0.08] text-[#c4b5fd]'
+                              tier.featured && 'bg-[#8b5cf6]/[0.18] text-[#c4b5fd]'
                             )}
                           >
                             {tier.name}
@@ -502,7 +508,7 @@ export default function PricingPage() {
                               key={i}
                               className={cn(
                                 'px-4 py-4 text-center',
-                                TIERS[i].featured && 'bg-[#8b5cf6]/[0.08]'
+                                TIERS[i].featured && 'bg-[#8b5cf6]/[0.18]'
                               )}
                             >
                               <CompareCell value={v} featured={TIERS[i].featured} t={t} />
@@ -518,8 +524,14 @@ export default function PricingPage() {
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="relative px-6 py-24 text-center md:px-12 md:py-36">
+        {/* CTA — same purple radial wash as the case-study pages' closing banner */}
+        <section
+          className="relative px-6 py-24 text-center md:px-12 md:py-36"
+          style={{
+            backgroundImage:
+              'radial-gradient(140% 90% at 50% 100%, color-mix(in srgb, #6367FF 78%, transparent) 0%, transparent 75%)',
+          }}
+        >
           <SplitText
             as="h2"
             animate
