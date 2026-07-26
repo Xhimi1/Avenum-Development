@@ -18,6 +18,7 @@ const SUBHEADING: Bi = {
   sq: 'Disa nga projektet e fundit — secili i dizajnuar, ndërtuar dhe lançuar për të lënë përshtypje.',
 };
 const CASE_STUDY_LABEL: Bi = { en: 'See case study', sq: 'Shiko studimin e rastit' };
+const VIEW_MORE_LABEL: Bi = { en: 'View more', sq: 'Shiko më shumë' };
 
 /**
  * The project gallery/slider from the homepage Work section, extracted so it
@@ -141,7 +142,7 @@ export default function WorkGallery({
           onClickCapture={handleClickCapture}
           className={
             grid
-              ? 'grid grid-cols-1 gap-y-10 gap-x-8 sm:grid-cols-2'
+              ? 'flex flex-col gap-y-10'
               : mobileSlider
               ? 'pointer-events-auto mt-14 flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory cursor-grab active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mt-20 md:gap-8'
               : 'pointer-events-auto mt-14 flex flex-col gap-y-10 md:mt-20 md:flex-row md:gap-8 md:overflow-x-auto md:pb-4 md:snap-x md:snap-mandatory md:cursor-grab md:active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] md:[&::-webkit-scrollbar]:hidden'
@@ -159,41 +160,17 @@ export default function WorkGallery({
                   : 'md:flex md:w-[40rem] md:flex-shrink-0 md:snap-start'
               }
             >
-              <div className={grid || mobileSlider ? 'flex h-full w-full flex-col' : 'md:flex md:h-full md:w-full md:flex-col'}>
-                <div
-                  className={
-                    grid || mobileSlider
-                      ? 'flex h-full flex-col overflow-hidden rounded-2xl border-8 border-[#E2E5FA] bg-white px-5 pt-5 md:px-7 md:pt-7'
-                      : 'overflow-hidden rounded-2xl border-8 border-[#E2E5FA] bg-white px-5 pt-5 md:flex md:h-full md:flex-col md:px-7 md:pt-7'
-                  }
-                >
-                  <span className="inline-block w-fit rounded-full bg-[#EEF0FF] px-3 py-1 text-[0.8rem] font-medium text-[#6367FF]">
-                    {t(project.category)}
-                  </span>
-                  <h3 className="mt-2 font-display text-2xl font-semibold md:text-3xl">
-                    {project.name}
-                  </h3>
-                  <button
-                    type="button"
-                    data-cursor
-                    aria-label={t(CASE_STUDY_LABEL)}
-                    onClick={() => {
-                      if (dragRef.current.moved) return;
-                      pageNavigate(`/portfolio/${project.slug}`, { accent: project.tagColor, bg: '#0b0a16' });
-                    }}
-                    className="group pointer-events-auto mt-5 flex h-12 w-20 items-center justify-center rounded-full border-2 border-[#6367FF] bg-[#6367FF] transition-colors duration-300 hover:bg-[#4f52e0]"
-                  >
-                    <ArrowRight className="h-4 w-4 text-white transition-transform duration-300 group-hover:translate-x-1" />
-                  </button>
-
+              {grid ? (
+                <div className="flex w-full flex-col gap-6 rounded-2xl border-8 border-[#E2E5FA] bg-white p-5 md:flex-row md:items-center md:gap-10 md:p-7">
+                  {/* image — its own box, same border the row now has too */}
                   <div
-                    className="mt-6 aspect-[1101/1500] overflow-hidden rounded-t-lg md:aspect-[512/585] md:h-auto md:rounded-t-lg"
+                    className="aspect-[1101/1500] w-full overflow-hidden rounded-lg bg-white md:aspect-[512/585] md:w-[22rem] md:flex-shrink-0 md:border-8 md:border-[#E2E5FA]"
                     style={{
                       background: project.canvasColor ?? 'linear-gradient(180deg, #D2EBFB 0%, #F3FAFF 100%)',
                     }}
                   >
                     {project.image ? (
-                      <div className="flex h-full items-center justify-center px-5 pt-6 md:items-end md:px-8 md:pt-8">
+                      <div className="flex h-full items-end justify-center px-5 pt-6 md:px-8 md:pt-8">
                         <div className="h-full w-full overflow-hidden rounded-t-lg md:rounded-t-md">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
@@ -209,8 +186,89 @@ export default function WorkGallery({
                       <div aria-hidden className="h-full w-full" />
                     )}
                   </div>
+
+                  {/* eyebrow, title, description, button */}
+                  <div className="flex flex-col">
+                    <span className="inline-block w-fit rounded-full bg-[#EEF0FF] px-3 py-1 text-[0.8rem] font-medium text-[#6367FF]">
+                      {t(project.category)}
+                    </span>
+                    <h3 className="mt-2 font-display text-2xl font-semibold md:text-3xl">
+                      {project.name}
+                    </h3>
+                    {project.description && (
+                      <p className="mt-3 max-w-md text-xs text-black md:text-sm">
+                        {t(project.description)}
+                      </p>
+                    )}
+                    <button
+                      type="button"
+                      data-cursor
+                      aria-label={t(CASE_STUDY_LABEL)}
+                      onClick={() => {
+                        if (dragRef.current.moved) return;
+                        pageNavigate(`/portfolio/${project.slug}`, { accent: project.tagColor, bg: '#0b0a16' });
+                      }}
+                      className="group pointer-events-auto mt-5 flex h-12 w-fit items-center gap-2 rounded-full border-2 border-[#6367FF] bg-[#6367FF] px-6 text-sm font-medium text-white transition-colors duration-300 hover:bg-[#4f52e0]"
+                    >
+                      {t(VIEW_MORE_LABEL)}
+                      <ArrowRight className="h-4 w-4 text-white transition-transform duration-300 group-hover:translate-x-1" />
+                    </button>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className={mobileSlider ? 'flex h-full w-full flex-col' : 'md:flex md:h-full md:w-full md:flex-col'}>
+                  <div
+                    className={
+                      mobileSlider
+                        ? 'flex h-full flex-col overflow-hidden rounded-2xl border-8 border-[#E2E5FA] bg-white px-5 pt-5 md:px-7 md:pt-7'
+                        : 'overflow-hidden rounded-2xl border-8 border-[#E2E5FA] bg-white px-5 pt-5 md:flex md:h-full md:flex-col md:px-7 md:pt-7'
+                    }
+                  >
+                    <span className="inline-block w-fit rounded-full bg-[#EEF0FF] px-3 py-1 text-[0.8rem] font-medium text-[#6367FF]">
+                      {t(project.category)}
+                    </span>
+                    <h3 className="mt-2 font-display text-2xl font-semibold md:text-3xl">
+                      {project.name}
+                    </h3>
+                    <button
+                      type="button"
+                      data-cursor
+                      aria-label={t(CASE_STUDY_LABEL)}
+                      onClick={() => {
+                        if (dragRef.current.moved) return;
+                        pageNavigate(`/portfolio/${project.slug}`, { accent: project.tagColor, bg: '#0b0a16' });
+                      }}
+                      className="group pointer-events-auto mt-5 flex h-12 w-20 items-center justify-center rounded-full border-2 border-[#6367FF] bg-[#6367FF] transition-colors duration-300 hover:bg-[#4f52e0]"
+                    >
+                      <ArrowRight className="h-4 w-4 text-white transition-transform duration-300 group-hover:translate-x-1" />
+                    </button>
+
+                    <div
+                      className="mt-6 aspect-[1101/1500] overflow-hidden rounded-t-lg md:aspect-[512/585] md:h-auto md:rounded-t-lg"
+                      style={{
+                        background: project.canvasColor ?? 'linear-gradient(180deg, #D2EBFB 0%, #F3FAFF 100%)',
+                      }}
+                    >
+                      {project.image ? (
+                        <div className="flex h-full items-center justify-center px-5 pt-6 md:items-end md:px-8 md:pt-8">
+                          <div className="h-full w-full overflow-hidden rounded-t-lg md:rounded-t-md">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={project.image}
+                              alt=""
+                              draggable={false}
+                              className="h-full w-full select-none object-cover object-top"
+                              style={project.imageScale ? { transform: `scale(${project.imageScale})` } : undefined}
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        <div aria-hidden className="h-full w-full" />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </li>
           ))}
         </ul>

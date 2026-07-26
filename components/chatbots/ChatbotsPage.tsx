@@ -298,6 +298,7 @@ export default function ChatbotsPage() {
               <SplitText
                 as="h1"
                 delay={0.2}
+                animate
                 className="text-shadow-soft font-display text-[clamp(2.4rem,6vw,4.4rem)] font-semibold leading-[0.98]"
               >
                 {t(HERO_HEADING)}

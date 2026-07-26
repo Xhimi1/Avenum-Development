@@ -9,11 +9,15 @@ import OtherWork from './OtherWork';
 import { useT } from '@/lib/i18n';
 import type { Bi } from '@/lib/i18n';
 import type { Project } from '@/lib/projects';
+import { whatsappHref } from '@/lib/contact';
 
 const OVERVIEW_HEADING: Bi = { en: 'Project overview', sq: 'Përmbledhje e projektit' };
 const APPROACH_HEADING: Bi = { en: 'Our approach', sq: 'Qasja jonë' };
 const IMAGE_PLACEHOLDER: Bi = { en: 'Image', sq: 'Imazh' };
 const LIVE_WEBSITE: Bi = { en: 'Live website', sq: 'Faqja live' };
+const CTA_HEADING: Bi = { en: 'Ready for a project like this?', sq: 'Gati për një projekt të tillë?' };
+const CTA_LABEL: Bi = { en: 'Contact us', sq: 'Na kontaktoni' };
+const WA_MESSAGE: Bi = { en: 'Hi! I want to start a project.', sq: 'Përshëndetje! Dua të nis një projekt.' };
 
 /**
  * Minimalist, white-background case-study template for a single portfolio
@@ -27,12 +31,13 @@ const LIVE_WEBSITE: Bi = { en: 'Live website', sq: 'Faqja live' };
 export default function CaseStudyPage({ project }: { project: Project }) {
   const t = useT();
   const services = project.services ?? [];
+  const waLink = whatsappHref(t(WA_MESSAGE));
 
   return (
     <div className="min-h-screen bg-white text-black">
       <Nav />
 
-      <main className="px-4 pb-24 pt-24 md:px-8 md:pb-32 md:pt-28">
+      <main className="px-4 pt-24 md:px-8 md:pt-28">
         {/* hero — one image, then name / description / service pills below it */}
         <section className="mx-auto w-full max-w-5xl">
           <FadeIn>
@@ -42,7 +47,7 @@ export default function CaseStudyPage({ project }: { project: Project }) {
               <img
                 src={project.heroImage}
                 alt=""
-                className="aspect-video w-full rounded-xl border-[6px] border-[#E4E4E7] object-cover md:rounded-3xl md:border-[12px]"
+                className="aspect-video w-full rounded-xl border-[6px] border-[#E4E4E7] object-cover object-top md:rounded-3xl md:border-[12px]"
               />
             ) : (
               <div className="flex aspect-video w-full items-center justify-center rounded-lg border-2 border-dashed border-black/15 bg-black/[0.02] text-sm text-black/30">
@@ -60,14 +65,14 @@ export default function CaseStudyPage({ project }: { project: Project }) {
             <SplitText
               as="h1"
               delay={0.1}
-              className="mt-3 font-display text-4xl font-medium leading-[1.05] tracking-normal [text-wrap:balance] md:text-[clamp(1.5rem,3.4vw,2.4rem)]"
+              className="mt-6 font-display text-4xl font-medium leading-[1.05] tracking-normal [text-wrap:balance] md:text-[clamp(1.5rem,3.4vw,2.4rem)]"
             >
               {project.name}
             </SplitText>
 
             {project.description && (
               <FadeIn delay={0.2}>
-                <p className="mt-3 max-w-2xl text-sm text-black md:text-base">
+                <p className="mt-20 max-w-2xl text-sm text-black md:mt-3 md:text-base">
                   {t(project.description)}
                 </p>
               </FadeIn>
@@ -121,7 +126,7 @@ export default function CaseStudyPage({ project }: { project: Project }) {
                   <img
                     src={project.overviewImages[0]}
                     alt=""
-                    className={`h-full w-full ${project.overviewImageFit === 'cover' ? 'object-cover' : 'object-contain'}`}
+                    className={`h-full w-full ${project.overviewImageFit === 'cover' ? 'object-cover' : 'object-contain object-bottom'}`}
                     style={{ transform: `scale(${project.overviewImageScale ?? 1.7})` }}
                   />
                 </div>
@@ -137,7 +142,7 @@ export default function CaseStudyPage({ project }: { project: Project }) {
             <FadeIn delay={0.1} className="flex-1">
               {project.overviewImages?.[1] ? (
                 <div
-                  className="aspect-[4/3] w-full overflow-hidden rounded-lg"
+                  className="aspect-[4/3] w-full overflow-hidden rounded-lg pl-10 pt-10 md:pl-14 md:pt-14"
                   style={{
                     background:
                       project.overviewBg ?? project.canvasColor ?? 'linear-gradient(180deg, #D2EBFB 0%, #F3FAFF 100%)',
@@ -147,8 +152,7 @@ export default function CaseStudyPage({ project }: { project: Project }) {
                   <img
                     src={project.overviewImages[1]}
                     alt=""
-                    className={`h-full w-full ${project.overviewImageFit === 'cover' ? 'object-cover' : 'object-contain'}`}
-                    style={{ transform: `scale(${project.overviewImageScale ?? 1.7})` }}
+                    className="h-full w-full rounded-tl-lg object-cover object-left-top"
                   />
                 </div>
               ) : (
@@ -181,6 +185,31 @@ export default function CaseStudyPage({ project }: { project: Project }) {
         )}
 
         <OtherWork currentSlug={project.slug} />
+
+        {/* closing CTA — same banner as the service pages' bottom CTA, in this page's purple */}
+        <section
+          className="relative -mx-4 py-28 md:-mx-8 md:py-40"
+          style={{
+            backgroundImage:
+              'radial-gradient(140% 90% at 50% 100%, color-mix(in srgb, #6367FF 78%, transparent) 0%, transparent 75%)',
+          }}
+        >
+          <div className="mx-auto w-full max-w-[90rem] px-6 text-center md:px-12">
+            <h2 className="mx-auto max-w-3xl font-display text-[clamp(2.2rem,6vw,4.6rem)] font-semibold leading-[1] tracking-normal">
+              {t(CTA_HEADING)}
+            </h2>
+            <div className="mt-10">
+              <a
+                href={waLink}
+                data-cursor
+                className="group inline-flex items-center gap-3 rounded-full bg-black px-11 py-5 text-base font-medium tracking-normal text-white shadow-xl transition-transform duration-300 hover:-translate-y-0.5"
+              >
+                {t(CTA_LABEL)}
+                <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+              </a>
+            </div>
+          </div>
+        </section>
       </main>
 
       <Footer theme="light" />

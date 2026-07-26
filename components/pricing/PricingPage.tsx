@@ -342,6 +342,7 @@ export default function PricingPage() {
             <SplitText
               as="h1"
               delay={0.15}
+              animate
               className="font-display text-[clamp(2.4rem,6.5vw,4.8rem)] font-semibold leading-[0.98]"
             >
               {t({ en: 'Plans built for Albanian businesses.', sq: 'Plane të ndërtuara për bizneset shqiptare.' })}
@@ -455,6 +456,7 @@ export default function PricingPage() {
             <div className="mb-10 text-center md:mb-14">
               <SplitText
                 as="h2"
+                animate
                 className="font-display text-[clamp(1.9rem,4.5vw,3.4rem)] font-semibold leading-[0.98]"
               >
                 {t({ en: 'Compare the plans.', sq: 'Krahaso planet.' })}
@@ -520,6 +522,7 @@ export default function PricingPage() {
         <section className="relative px-6 py-24 text-center md:px-12 md:py-36">
           <SplitText
             as="h2"
+            animate
             className="font-display text-[clamp(2.2rem,6.5vw,5rem)] font-semibold leading-[0.98]"
           >
             {t({ en: 'Still deciding?', sq: 'Ende në mëdyshje?' })}

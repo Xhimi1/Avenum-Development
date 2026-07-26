@@ -30,6 +30,15 @@ export default function PageWash() {
     useStore.setState({
       pageNavigate: (href: string, colors?: { accent: string; bg: string }) => {
         if (href === pathname) return;
+
+        // Portfolio/case-study routes navigate instantly — no color-wash
+        // preloader — since the works page and each case study already have
+        // their own real content to reveal, not a route that needs covering.
+        if (href === '/portfolio' || href.startsWith('/portfolio/')) {
+          router.push(href);
+          return;
+        }
+
         const accent = accentRef.current!;
         const dark = darkRef.current!;
 
