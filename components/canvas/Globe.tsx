@@ -82,21 +82,25 @@ const ROUTES: [string, string][] = [
   ['singapore', 'tokyo'],
 ];
 
-/** Soft round sprite shared by the halftone dots and dust. */
+/** Crisp round sprite shared by the halftone dots and dust — a solid core
+ *  with only a thin anti-aliasing edge, rendered at a high enough resolution
+ *  that it stays sharp even scaled up close to the camera. */
 let cachedDot: THREE.CanvasTexture | null = null;
 function dotTexture(): THREE.CanvasTexture {
   if (cachedDot) return cachedDot;
-  const s = 64;
+  const s = 256;
   const canvas = document.createElement('canvas');
   canvas.width = canvas.height = s;
   const ctx = canvas.getContext('2d')!;
   const g = ctx.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
   g.addColorStop(0, 'rgba(255,255,255,1)');
-  g.addColorStop(0.4, 'rgba(255,255,255,0.85)');
+  g.addColorStop(0.72, 'rgba(255,255,255,1)');
+  g.addColorStop(0.88, 'rgba(255,255,255,0.7)');
   g.addColorStop(1, 'rgba(255,255,255,0)');
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, s, s);
   cachedDot = new THREE.CanvasTexture(canvas);
+  cachedDot.anisotropy = 4;
   return cachedDot;
 }
 
@@ -408,13 +412,13 @@ export default function Globe() {
               <bufferAttribute attach="attributes-position" args={[dots, 3]} />
             </bufferGeometry>
             <pointsMaterial
-              size={R * 0.02}
+              size={R * (isMobile ? 0.018 : 0.012)}
               map={dotTexture()}
               color={PURPLE}
               transparent
+              alphaTest={0.3}
               depthWrite={false}
               sizeAttenuation
-              blending={THREE.AdditiveBlending}
             />
           </points>
         )}
