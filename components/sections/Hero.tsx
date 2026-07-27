@@ -119,7 +119,7 @@ export default function Hero() {
       <div className="sticky top-0 flex h-screen flex-col items-center justify-start px-6 pt-28 text-center md:justify-center md:pt-0">
         <div ref={contentRef} className="will-change-transform">
           <Kinetic factor={1.2}>
-            <h1 className="text-balance font-display text-[clamp(3.4rem,10.5vw,7.5rem)] font-semibold leading-[0.95]">
+            <h1 className="text-balance font-display text-[clamp(3.4rem,10.5vw,7.5rem)] font-semibold leading-[0.95] md:text-[clamp(3rem,7vw,5.5rem)]">
               <SplitText as="span" delay={1.75} animate className="block">
                 {t(HEADING_LINE_1)}
               </SplitText>
