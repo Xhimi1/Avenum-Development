@@ -22,13 +22,10 @@ const QUOTE = {
   en: 'Based in Tirana, building for every city.',
   sq: 'Me bazë në Tiranë, ndërtojmë për çdo qytet.',
 };
-const SUBQUOTE = {
-  en: 'Wherever your business is, we can work together.',
-  sq: 'Kudo që të jetë biznesi yt, mund të punojmë bashkë.',
-};
 
 export default function Hero() {
   const navigate = useStore((s) => s.navigate);
+  const locale = useStore((s) => s.locale);
   const t = useT();
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -42,12 +39,13 @@ export default function Hero() {
   // section is 220vh over a 100vh sticky pane, so the scrubbed timeline maps
   // 120vh of scroll onto its 3 units, i.e. 40vh per unit; travelling one
   // viewport height over 2.5 units keeps it 1:1 and reads as normal scroll
-  // rather than a fade. A quote then fades in once the globe has fully
+  // rather than a fade. A quote then slides in once the globe has fully
   // revealed, and fades out again just before hero unpins.
-  // The quote animates as a single block (not per-word) so this timeline
-  // never needs to rebuild when the text changes — e.g. on a language
-  // switch, which would otherwise reset the whole scrubbed scroll mapping
-  // mid-scroll and visibly jolt the already-departed intro content.
+  // This timeline only ever touches quoteTextRef's *position* (a single
+  // stable ref) and never its word count, so it never needs to rebuild on a
+  // language switch — which would otherwise reset the whole scrubbed scroll
+  // mapping mid-scroll and visibly jolt the already-departed intro content.
+  // The per-word opacity reveal is a separate, locale-scoped effect below.
   useLayoutEffect(() => {
     const section = sectionRef.current;
     if (!section || prefersReducedMotion()) return;
@@ -71,20 +69,50 @@ export default function Hero() {
         )
         .fromTo(
           quoteTextRef.current,
-          { yPercent: 40, opacity: 0 },
-          { yPercent: 0, opacity: 1, duration: 0.6, ease: 'none' },
+          { yPercent: 40 },
+          { yPercent: 0, duration: 0.6, ease: 'none' },
           1.3
-        )
-        .fromTo(
-          quoteRef.current?.querySelector('[data-quote-sub]') ?? null,
-          { opacity: 0 },
-          { opacity: 1, duration: 0.4, ease: 'none' },
-          2.05
         )
         .to(quoteRef.current, { opacity: 0, duration: 0.4, ease: 'none' }, 2.6);
     }, section);
     return () => ctx.revert();
   }, []);
+
+  // Per-word GSAP reveal for the quote, scrubbed against the same section/
+  // range as the timeline above so it stays in sync with the quote's slide-
+  // in. Split out into its own effect (keyed on locale) since word count —
+  // and therefore the DOM nodes this targets — changes with the language;
+  // rebuilding just this small piece on a language switch is a much smaller
+  // risk than rebuilding the whole hero timeline above.
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    const ctx = gsap.context(() => {
+      if (prefersReducedMotion()) {
+        gsap.set('[data-quote-word]', { opacity: 1 });
+        return;
+      }
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 0.6,
+          },
+        })
+        .fromTo(
+          '[data-quote-word]',
+          { opacity: 0 },
+          { opacity: 1, stagger: 0.04, duration: 0.5, ease: 'none' },
+          1.3
+        )
+        // zero-duration marker at the same total time as the timeline above,
+        // so this scrub maps to the identical scroll fraction as the slide-in
+        .to({}, { duration: 0 }, 3);
+    }, section);
+    return () => ctx.revert();
+  }, [locale]);
 
   return (
     <section ref={sectionRef} id="hero" data-scene-section className="relative h-[220vh]">
@@ -130,12 +158,14 @@ export default function Hero() {
         >
           <p
             ref={quoteTextRef}
+            aria-label={quote}
             className="text-shadow-soft mx-auto max-w-2xl text-balance font-display text-[clamp(1.4rem,3.4vw,2.6rem)] font-medium leading-snug will-change-transform"
           >
-            {quote}
-          </p>
-          <p data-quote-sub className="subtext mt-3 text-xs tracking-normal">
-            {t(SUBQUOTE)}
+            {quote.split(' ').map((word, i) => (
+              <span key={i} aria-hidden data-quote-word className="mr-[0.28em] inline-block opacity-0 last:mr-0">
+                {word}
+              </span>
+            ))}
           </p>
         </div>
       </div>
