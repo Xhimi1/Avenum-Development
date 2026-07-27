@@ -44,9 +44,10 @@ const FRAGMENT = /* glsl */ `
 `;
 
 /**
- * Additive point field scattered along the whole camera path, colored by the
- * palette of whichever section each point drifts near. The group shifts with
- * the pointer for a parallax layer independent of the camera.
+ * Additive point field scattered along the camera path (excluding Hero and
+ * Services, see below), colored by the palette of whichever section each
+ * point drifts near. The group shifts with the pointer for a parallax layer
+ * independent of the camera.
  */
 export default function Particles() {
   const group = useRef<THREE.Group>(null);
@@ -65,6 +66,13 @@ export default function Particles() {
     const bandStart = servicesIndex / (SECTIONS.length - 1);
     const bandEnd = (servicesIndex + 1) / (SECTIONS.length - 1);
 
+    // Also keep it out of Hero — the globe already carries the visual
+    // interest there, and the drifting colored points read as distracting
+    // stray dots chasing the cursor over the heading.
+    const heroIndex = SECTIONS.findIndex((s) => s.id === 'hero');
+    const heroBandStart = heroIndex / (SECTIONS.length - 1);
+    const heroBandEnd = (heroIndex + 1) / (SECTIONS.length - 1);
+
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
     const scales = new Float32Array(count);
@@ -76,7 +84,7 @@ export default function Particles() {
 
     for (let i = 0; i < count; i++) {
       let u = Math.random();
-      while (u >= bandStart && u <= bandEnd) u = Math.random();
+      while ((u >= bandStart && u <= bandEnd) || (u >= heroBandStart && u <= heroBandEnd)) u = Math.random();
       curve.getPoint(u, point);
       offset
         .set(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5)
