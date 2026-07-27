@@ -20,7 +20,7 @@ const HERO_INDEX = 0;
 const REVEAL_START = 0.15;
 const REVEAL_END = 0.65;
 /** Shrink applied at full reveal so the whole sphere clears the frame. */
-const REVEAL_SCALE = 0.62;
+const REVEAL_SCALE = 0.78;
 /** Extra shrink applied only to the resting peek state on mobile, so more of
  *  the sphere is visible before the user scrolls — the post-scroll reveal
  *  size (REVEAL_SCALE) is unaffected since this only scales the peek end of
