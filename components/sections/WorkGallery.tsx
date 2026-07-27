@@ -10,8 +10,8 @@ import { useT } from '@/lib/i18n';
 import type { Bi } from '@/lib/i18n';
 
 const HEADING: Bi = {
-  en: 'Work that speaks for itself.',
-  sq: 'Punë që flet vetë.',
+  en: 'Our portfolio.',
+  sq: 'Projektet tona.',
 };
 const SUBHEADING: Bi = {
   en: 'A handful of recent projects — each one designed, built and shipped to make an impression.',
