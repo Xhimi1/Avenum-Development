@@ -19,8 +19,8 @@ const SUBTEXT = {
 };
 const CTA_LABEL = { en: 'See our work', sq: 'Shiko punën' };
 const QUOTE = {
-  en: 'Based in Tirana, building for every city.',
-  sq: 'Me bazë në Tiranë, ndërtojmë për çdo qytet.',
+  en: 'Your satisfaction is our priority.',
+  sq: 'Kënaqësia juaj është prioriteti jonë.',
 };
 
 export default function Hero() {
