@@ -9,7 +9,6 @@ import HeroBlob from './HeroBlob';
 import ServicesCluster from './ServicesCluster';
 import AboutOrbit from './AboutOrbit';
 import Globe from './Globe';
-import Particles from './Particles';
 import Shards from './Shards';
 import { useStore } from '@/lib/store';
 import { CAM_POINTS } from '@/lib/path';
@@ -45,7 +44,6 @@ export default function Scene() {
           <ServicesCluster />
           <AboutOrbit />
           <Globe />
-          <Particles />
           <Shards />
         </PerformanceMonitor>
       </Canvas>
