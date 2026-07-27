@@ -98,7 +98,7 @@ export default function Services() {
             type="button"
             data-cursor
             onClick={() => pageNavigate('/about', { accent: aboutSection.accent, bg: aboutSection.bg })}
-            className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-xs font-medium tracking-normal text-black transition-colors duration-300 hover:text-[var(--accent)]"
+            className="pointer-events-auto mt-6 inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-xs font-medium tracking-normal text-black transition-colors duration-300 hover:text-[var(--accent)]"
           >
             {t(LEARN_MORE)}
             <ArrowRight className="h-3.5 w-3.5" />
