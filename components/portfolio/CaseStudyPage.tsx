@@ -3,7 +3,6 @@
 import Nav from '@/components/ui/Nav';
 import Footer from '@/components/ui/Footer';
 import FadeIn from '@/components/ui/FadeIn';
-import SplitText from '@/components/ui/SplitText';
 import ArrowRight from '@/components/ui/ArrowRight';
 import OtherWork from './OtherWork';
 import { useT } from '@/lib/i18n';
@@ -14,10 +13,14 @@ import { whatsappHref } from '@/lib/contact';
 const OVERVIEW_HEADING: Bi = { en: 'Project overview', sq: 'Përmbledhje e projektit' };
 const APPROACH_HEADING: Bi = { en: 'Our approach', sq: 'Qasja jonë' };
 const IMAGE_PLACEHOLDER: Bi = { en: 'Image', sq: 'Imazh' };
-const LIVE_WEBSITE: Bi = { en: 'Live website', sq: 'Faqja live' };
 const CTA_HEADING: Bi = { en: 'Ready for a project like this?', sq: 'Gati për një projekt të tillë?' };
 const CTA_LABEL: Bi = { en: 'Contact us', sq: 'Na kontaktoni' };
 const WA_MESSAGE: Bi = { en: 'Hi! I want to start a project.', sq: 'Përshëndetje! Dua të nis një projekt.' };
+
+/** "https://kroni-restaurant.com/" -> "kroni-restaurant.com" for display in the live-site button */
+function displayUrl(url: string): string {
+  return url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+}
 
 /**
  * Minimalist, white-background case-study template for a single portfolio
@@ -62,17 +65,16 @@ export default function CaseStudyPage({ project }: { project: Project }) {
                 {t(project.category)}
               </span>
             </FadeIn>
-            <SplitText
-              as="h1"
-              delay={0.1}
-              className="mt-6 font-display text-4xl font-medium leading-[1.05] tracking-normal [text-wrap:balance] md:text-[clamp(1.5rem,3.4vw,2.4rem)]"
-            >
+            <h1 className="mt-6 font-display text-4xl font-medium leading-[1.05] tracking-normal text-[#0A2947] [text-wrap:balance] md:text-[clamp(1.5rem,3.4vw,2.4rem)]">
               {project.name}
-            </SplitText>
+              {project.isPrototype && (
+                <span className="ml-1 align-middle text-base font-normal opacity-30 md:text-lg"> (Prototype)</span>
+              )}
+            </h1>
 
             {project.description && (
               <FadeIn delay={0.2}>
-                <p className="mt-20 max-w-2xl text-sm text-black md:mt-3 md:text-base">
+                <p className="mt-20 max-w-2xl text-sm text-[#0A2947] md:mt-3 md:text-base">
                   {t(project.description)}
                 </p>
               </FadeIn>
@@ -87,7 +89,7 @@ export default function CaseStudyPage({ project }: { project: Project }) {
                   data-cursor
                   className="group inline-flex items-center gap-2 rounded-full border border-black px-5 py-2.5 text-sm font-medium text-black transition-colors duration-300 hover:bg-black hover:text-white"
                 >
-                  {t(LIVE_WEBSITE)}
+                  {displayUrl(project.liveUrl)}
                   <ArrowRight className="h-4 w-4 -rotate-45 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </a>
               </FadeIn>
@@ -110,7 +112,7 @@ export default function CaseStudyPage({ project }: { project: Project }) {
 
         {/* project overview — two mockups, side by side on desktop, stacked on mobile */}
         <section className="mx-auto mt-20 w-full max-w-5xl md:mt-28">
-          <h2 className="font-display text-3xl font-medium md:text-4xl">{t(OVERVIEW_HEADING)}</h2>
+          <h2 className="font-display text-3xl font-medium text-[#0A2947] md:text-4xl">{t(OVERVIEW_HEADING)}</h2>
           <div className="mt-8 flex flex-col gap-6 md:flex-row md:gap-8">
             {/* first mockup — plain placeholder */}
             <FadeIn className="flex-1">
@@ -175,9 +177,9 @@ export default function CaseStudyPage({ project }: { project: Project }) {
         {/* our approach */}
         {project.approach && (
           <section className="mx-auto mt-20 w-full max-w-5xl md:mt-28">
-            <h2 className="font-display text-3xl font-medium md:text-4xl">{t(APPROACH_HEADING)}</h2>
+            <h2 className="font-display text-3xl font-medium text-[#0A2947] md:text-4xl">{t(APPROACH_HEADING)}</h2>
             <FadeIn delay={0.1}>
-              <p className="mt-5 max-w-2xl text-sm leading-relaxed text-black md:text-base">
+              <p className="mt-5 max-w-2xl text-sm leading-relaxed text-[#0A2947] md:text-base">
                 {t(project.approach)}
               </p>
             </FadeIn>

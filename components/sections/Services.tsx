@@ -69,6 +69,7 @@ export default function Services() {
         <div className="max-w-2xl">
           <SplitText
             as="h2"
+            animate
             className="text-shadow-soft font-display text-[clamp(2.1rem,5.5vw,4.6rem)] font-semibold leading-[0.95]"
           >
             {t(HEADING)}

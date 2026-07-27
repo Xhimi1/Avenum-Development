@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
-import { prefersReducedMotion } from '@/lib/utils';
+import { cn, prefersReducedMotion } from '@/lib/utils';
 import { useT } from '@/lib/i18n';
 import FadeIn from '@/components/ui/FadeIn';
 import SplitText from '@/components/ui/SplitText';
@@ -179,15 +179,37 @@ const BG_ACCENT_MID = '#160C31';
 const BG_ACCENT_DEEP = '#100826';
 const BG_GLOW = 'rgba(112, 88, 204, 0.28)';
 
-const STARS: Array<{ top: string; left: string; size: number; delay: string }> = [
+const STARS: Array<{ top: string; left: string; size: number; delay: string; bright?: boolean }> = [
   { top: '12%', left: '8%', size: 2, delay: '0s' },
-  { top: '22%', left: '85%', size: 3, delay: '0.6s' },
+  { top: '22%', left: '85%', size: 3, delay: '0.6s', bright: true },
   { top: '35%', left: '72%', size: 2, delay: '1.2s' },
   { top: '48%', left: '12%', size: 2, delay: '0.9s' },
   { top: '62%', left: '92%', size: 2, delay: '0.3s' },
-  { top: '75%', left: '20%', size: 3, delay: '1.5s' },
+  { top: '75%', left: '20%', size: 3, delay: '1.5s', bright: true },
   { top: '85%', left: '65%', size: 2, delay: '0.7s' },
   { top: '8%', left: '45%', size: 2, delay: '1.1s' },
+  { top: '5%', left: '65%', size: 2, delay: '0.4s' },
+  { top: '15%', left: '28%', size: 3, delay: '1.7s' },
+  { top: '28%', left: '5%', size: 2, delay: '0.2s' },
+  { top: '30%', left: '95%', size: 2, delay: '1.4s' },
+  { top: '40%', left: '38%', size: 2, delay: '0.8s' },
+  { top: '42%', left: '58%', size: 3, delay: '1.9s' },
+  { top: '55%', left: '25%', size: 2, delay: '0.5s' },
+  { top: '68%', left: '48%', size: 3, delay: '0.1s', bright: true },
+  { top: '80%', left: '88%', size: 2, delay: '0.9s' },
+  { top: '90%', left: '35%', size: 2, delay: '1.3s' },
+  { top: '92%', left: '55%', size: 3, delay: '0.6s' },
+  { top: '18%', left: '55%', size: 2, delay: '1.1s' },
+  { top: '3%', left: '18%', size: 2, delay: '1.8s' },
+  { top: '25%', left: '38%', size: 4, delay: '0.9s', bright: true },
+  { top: '32%', left: '20%', size: 2, delay: '1.3s' },
+  { top: '45%', left: '65%', size: 4, delay: '0.4s', bright: true },
+  { top: '50%', left: '5%', size: 2, delay: '1.0s' },
+  { top: '60%', left: '58%', size: 2, delay: '0.6s' },
+  { top: '65%', left: '15%', size: 4, delay: '1.9s', bright: true },
+  { top: '78%', left: '42%', size: 2, delay: '0.3s' },
+  { top: '88%', left: '12%', size: 2, delay: '1.1s' },
+  { top: '95%', left: '68%', size: 2, delay: '0.5s' },
 ];
 
 export default function ChatbotsPage() {
@@ -284,8 +306,15 @@ export default function ChatbotsPage() {
             {STARS.map((s, i) => (
               <span
                 key={i}
-                className="svc-pulse absolute rounded-full bg-white/60"
-                style={{ top: s.top, left: s.left, width: s.size, height: s.size, animationDelay: s.delay }}
+                className={cn('svc-pulse absolute rounded-full', s.bright ? 'bg-white' : 'bg-white/60')}
+                style={{
+                  top: s.top,
+                  left: s.left,
+                  width: s.size,
+                  height: s.size,
+                  animationDelay: s.delay,
+                  boxShadow: s.bright ? '0 0 8px 2px rgba(255,255,255,0.8)' : undefined,
+                }}
               />
             ))}
             {/* fade into the black body below */}
@@ -307,7 +336,7 @@ export default function ChatbotsPage() {
                 as="p"
                 type="words"
                 delay={0.5}
-                className="subtext text-shadow-soft mt-6 max-w-xl text-sm font-light md:text-lg"
+                className="subtext text-shadow-soft mt-6 max-w-xl text-sm font-normal md:text-lg"
               >
                 {t(HERO_SUB)}
               </SplitText>

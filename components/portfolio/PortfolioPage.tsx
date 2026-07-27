@@ -56,7 +56,7 @@ export default function PortfolioPage() {
                   {t(HEADING)}
                 </SplitText>
                 <FadeIn delay={0.35}>
-                  <p className="mt-3 max-w-md text-[0.7rem] tracking-normal text-white md:text-xs">
+                  <p className="mt-3 max-w-md text-sm tracking-normal text-white">
                     {t(SUBHEADING)}
                   </p>
                 </FadeIn>

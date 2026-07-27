@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Plus_Jakarta_Sans, Inter } from 'next/font/google';
+import { Plus_Jakarta_Sans } from 'next/font/google';
 import PageWash from '@/components/ui/PageWash';
 import './globals.css';
 
@@ -10,7 +10,7 @@ const jakarta = Plus_Jakarta_Sans({
   display: 'swap',
 });
 
-const inter = Inter({
+const jakartaBody = Plus_Jakarta_Sans({
   subsets: ['latin', 'latin-ext'],
   weight: ['300', '400', '500', '600'],
   variable: '--font-body',
@@ -39,7 +39,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="sq" className={`${jakarta.variable} ${inter.variable}`}>
+    <html lang="sq" className={`${jakarta.variable} ${jakartaBody.variable}`}>
       <body className="bg-[#050a30] font-body text-[#f2f4ff] antialiased">
         <PageWash />
         {children}

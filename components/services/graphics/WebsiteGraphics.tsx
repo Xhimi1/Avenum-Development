@@ -1,7 +1,7 @@
 /* Detailed flat 2D graphics for the Business Websites page. Light from the
    top, stacked shadows + hairline borders so the shapes feel layered / 3D.
    Everything recolors from --svc-accent. No WebGL. */
-import { soft, ELEV_MD, ELEV_SM, GLOSS, HAIRLINE } from './depth';
+import { TileIconBadge, IconFlash, IconScreen, IconPalette } from './StreamlineIcons';
 
 const GLASS_SHADOW = '0 14px 28px -12px rgba(0,0,0,0.45)';
 
@@ -81,50 +81,24 @@ export function WebsiteHeroShowcase() {
 
 export function TileSpeed() {
   return (
-    <div aria-hidden className="flex h-full w-full items-center justify-center">
-      <div className="relative flex h-32 w-32 items-center justify-center rounded-full bg-white" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD }}>
-        <svg viewBox="0 0 100 100" className="h-28 w-28 -rotate-90">
-          <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(0,0,0,0.07)" strokeWidth="10" />
-          <circle cx="50" cy="50" r="38" fill="none" stroke="var(--svc-accent)" strokeWidth="10" strokeLinecap="round" strokeDasharray="239" strokeDashoffset="30" style={{ filter: 'drop-shadow(0 3px 5px color-mix(in srgb, var(--svc-accent) 45%, transparent))' }} />
-        </svg>
-        <div className="absolute flex flex-col items-center">
-          <span className="font-display text-2xl font-semibold text-[var(--svc-accent)]">98</span>
-          <span className="text-[0.55rem] font-medium tracking-wide text-black/40">SCORE</span>
-        </div>
-      </div>
-    </div>
+    <TileIconBadge>
+      <IconFlash />
+    </TileIconBadge>
   );
 }
 
 export function TileResponsive() {
   return (
-    <div aria-hidden className="flex h-full w-full items-end justify-center gap-3">
-      <div className="w-36 rounded-lg bg-white p-2" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD }}>
-        <div className="mb-1.5 h-16 rounded" style={{ background: `linear-gradient(135deg,${soft(20)},${soft(6)})`, boxShadow: GLOSS }} />
-        <div className="mb-1 h-1.5 w-2/3 rounded-full bg-black/12" />
-        <div className="h-1.5 w-1/2 rounded-full bg-black/[0.07]" />
-      </div>
-      <div className="w-12 rounded-md bg-white p-1.5" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_SM }}>
-        <div className="h-14 rounded-sm" style={{ background: `linear-gradient(135deg,${soft(28)},${soft(10)})` }} />
-      </div>
-    </div>
+    <TileIconBadge>
+      <IconScreen />
+    </TileIconBadge>
   );
 }
 
 export function TileDesign() {
   return (
-    <div aria-hidden className="flex h-full w-full items-center justify-center">
-      <div className="grid grid-cols-2 gap-3">
-        {[30, 16, 20, 40].map((pct, i) => (
-          <div
-            key={i}
-            className="svc-pulse flex h-14 w-14 items-center justify-center rounded-xl"
-            style={{ background: `linear-gradient(150deg, ${soft(pct + 14)}, ${soft(pct - 6 < 0 ? 4 : pct - 6)})`, border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_SM + ', ' + GLOSS, animationDelay: `${i * 0.3}s` }}
-          >
-            <span className="h-4 w-4 rounded" style={{ background: 'var(--svc-accent)', boxShadow: '0 2px 4px rgba(0,0,0,0.2)' }} />
-          </div>
-        ))}
-      </div>
-    </div>
+    <TileIconBadge>
+      <IconPalette />
+    </TileIconBadge>
   );
 }

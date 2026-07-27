@@ -1,7 +1,8 @@
 /* Detailed flat 2D graphics for the Multi-Language Websites page. */
-import { soft, ELEV_LG, ELEV_MD, ELEV_SM, GLOSS, chip, HAIRLINE } from './depth';
+import { ELEV_LG, ELEV_MD, HAIRLINE } from './depth';
 import { useT, type Bi, type Locale } from '@/lib/i18n';
 import { type ReactNode } from 'react';
+import { TileIconBadge, IconSwitch, IconDictionary, IconEarth } from './StreamlineIcons';
 
 const TITLE: Bi = { en: 'Luxury room with sea view', sq: 'Dhomë luksoze me pamje nga deti' };
 const LEARN_MORE: Bi = { en: 'Learn more', sq: 'Mëso më shumë' };
@@ -160,44 +161,24 @@ export function LanguageHero() {
 
 export function TileToggle() {
   return (
-    <div aria-hidden className="flex h-full w-full items-center justify-center">
-      <div className="flex items-center gap-1 rounded-full bg-white p-1.5" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD }}>
-        <span className="rounded-full px-4 py-2.5 text-sm font-bold text-white" style={{ background: 'var(--svc-accent)', boxShadow: chip('var(--svc-accent)') }}>SQ</span>
-        <span className="rounded-full px-4 py-2.5 text-sm font-semibold text-black/45">EN</span>
-        <span className="rounded-full px-4 py-2.5 text-sm font-semibold text-black/45">IT</span>
-      </div>
-    </div>
+    <TileIconBadge>
+      <IconSwitch />
+    </TileIconBadge>
   );
 }
 
 export function TileMirror() {
   return (
-    <div aria-hidden className="flex h-full w-full items-center justify-center gap-3">
-      {[
-        { label: 'Mirë se vini', pct: 24 },
-        { label: 'Welcome', pct: 12 },
-      ].map((c, i) => (
-        <div key={i} className="w-28 overflow-hidden rounded-xl bg-white p-3" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD }}>
-          <div className="relative mb-2 h-12 overflow-hidden rounded-md" style={{ background: `linear-gradient(135deg,${soft(c.pct + 12)},${soft(c.pct - 4 < 0 ? 4 : c.pct - 4)})`, boxShadow: GLOSS }}>
-            <div className="svc-sheen absolute -inset-y-2 left-0 w-6 bg-white/40 blur-md" />
-          </div>
-          <div className="text-[0.72rem] font-semibold text-[var(--svc-accent)]">{c.label}</div>
-          <div className="mt-1 h-1 w-2/3 rounded-full bg-black/10" />
-        </div>
-      ))}
-    </div>
+    <TileIconBadge>
+      <IconDictionary />
+    </TileIconBadge>
   );
 }
 
 export function TileReach() {
   return (
-    <div aria-hidden className="flex h-full w-full items-center justify-center">
-      <div className="flex h-28 w-28 flex-col items-center justify-center rounded-2xl bg-white" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD + ', ' + GLOSS }}>
-        <svg viewBox="0 0 24 24" className="h-11 w-11" fill="none" stroke="var(--svc-accent)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="9" /><path d="M3 12h18" /><path d="M12 3c2.6 2.4 2.6 15.6 0 18M12 3c-2.6 2.4-2.6 15.6 0 18" />
-        </svg>
-        <span className="mt-1.5 font-display text-base font-semibold text-[var(--svc-accent)]">4+ gjuhë</span>
-      </div>
-    </div>
+    <TileIconBadge>
+      <IconEarth />
+    </TileIconBadge>
   );
 }

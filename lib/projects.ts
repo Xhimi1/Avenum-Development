@@ -31,6 +31,10 @@ export interface Project {
   overviewImageFit?: 'contain' | 'cover';
   /** "Our approach" body copy on the case-study page */
   approach?: Bi;
+  /** excludes this project from the homepage Work slider while still showing it on the /portfolio grid */
+  hideFromHome?: boolean;
+  /** shows a faint "(Prototype)" label next to the project name wherever it's displayed */
+  isPrototype?: boolean;
 }
 
 export const PROJECTS: Project[] = [
@@ -39,8 +43,8 @@ export const PROJECTS: Project[] = [
     category: { en: 'Restaurant', sq: 'Restorant' },
     tagColor: '#c2883f',
     image: '/images/kroni-mockup.webp',
-    canvasColor: '#98E8DE',
-    overviewBg: '#98E8DE',
+    canvasColor: '#5996FF',
+    overviewBg: '#5996FF',
     slug: 'kroni-restaurant',
     heroImage: '/images/kroni-restaurant-hero.webp',
     overviewImages: ['/images/kroni-restaurant-overview-1.webp', '/images/kroni-restaurant-overview-2.webp'],
@@ -68,7 +72,7 @@ export const PROJECTS: Project[] = [
     name: 'Riva Restaurant',
     category: { en: 'Restaurant', sq: 'Restorant' },
     tagColor: '#b5657e',
-    image: '/images/riva-mockup.webp',
+    image: '/images/riva-restaurant-card.webp',
     canvasColor: '#8FA28A',
     overviewBg: '#8FA28A',
     slug: 'riva-restaurant',
@@ -123,7 +127,39 @@ export const PROJECTS: Project[] = [
     },
   },
   {
+    name: 'Angels Fitness',
+    isPrototype: true,
+    hideFromHome: true,
+    category: { en: 'Gym', sq: 'Palestër' },
+    tagColor: '#d94f4f',
+    image: '/images/angels-fitness-card.webp',
+    canvasColor: '#65DCD5',
+    overviewBg: '#65DCD5',
+    slug: 'angels-fitness',
+    heroImage: '/images/angels-fitness-hero.webp',
+    liveUrl: 'https://angels-fitness.vercel.app/',
+    overviewImages: ['/images/angels-fitness-overview-1.webp', '/images/angels-fitness-overview-2.webp'],
+    description: {
+      en: 'A bold, high-energy website for a premium gym in Tirana, built to turn visitors into members.',
+      sq: "Një faqe interneti e fuqishme dhe moderne për një palestër premium në Tiranë, e menduar për t'i kthyer vizitorët në anëtarë.",
+    },
+    services: [
+      { en: 'Website Design', sq: 'Dizajn Faqeje' },
+      { en: 'Class & Program Showcase', sq: 'Prezantimi i Programeve dhe Klasave' },
+      { en: 'Trainer Profiles', sq: 'Profilet e Trajnerëve' },
+      { en: 'Membership Pricing Plans', sq: 'Planet e Çmimeve për Anëtarësim' },
+      { en: 'Online Sign-Up', sq: 'Regjistrim Online' },
+      { en: 'Reviews & Testimonials', sq: 'Vlerësime dhe Përshtypje nga Klientët' },
+      { en: 'WhatsApp Contact Integration', sq: 'Kontakt i Drejtpërdrejtë në WhatsApp' },
+    ],
+    approach: {
+      en: 'The brief was to give a Tirana gym an online presence as intense as the training itself — something that felt premium, not like a generic gym template. We designed a dark, editorial look with oversized bold type and smooth animations that reveal each section as you scroll, making the site feel alive rather than static. Every part — the weekly schedule, trainer bios, pricing tiers, and real member reviews — was laid out to walk a visitor straight toward signing up, with a floating WhatsApp button keeping a real conversation always one tap away. The result feels bigger and more polished than a typical local gym site, which was the whole point.',
+      sq: "Kërkesa ishte t'i jepnim një palestre në Tiranë një prani online po aq intensive sa vetë stërvitja — diçka premium, jo si një faqe e zakonshme palestre. Krijuam një pamje të errët dhe elegante, me shkronja të mëdha e të forta dhe animacione të buta që zbulojnë çdo pjesë të faqes ndërsa lëviz poshtë, duke e bërë faqen të duket e gjallë dhe jo statike. Çdo pjesë — orari javor, trajnerët, planet e çmimeve dhe vlerësimet e vërteta të klientëve — u vendos në mënyrë që ta udhëheqë vizitorin drejt regjistrimit, ndërsa një buton WhatsApp gjithmonë i dukshëm e mban kontaktin real vetëm një klikim larg. Rezultati duket më i madh dhe më i kompletuar se një faqe e zakonshme palestre lokale — dhe pikërisht kjo ishte qëllimi.",
+    },
+  },
+  {
     name: 'Jim Estate',
+    isPrototype: true,
     category: { en: 'Real Estate', sq: 'Pasuri të Paluajtshme' },
     tagColor: '#3f9c8c',
     image: '/images/atom-mockup.webp',

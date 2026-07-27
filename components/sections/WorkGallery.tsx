@@ -97,12 +97,12 @@ export default function WorkGallery({
             <div className="max-w-2xl">
               <SplitText
                 as="h2"
-                className="font-display text-[clamp(2.1rem,5.5vw,4.6rem)] font-semibold leading-[0.95]"
+                className="font-display text-[clamp(2.1rem,5.5vw,4.6rem)] font-semibold leading-[0.95] text-[#0A2947]"
               >
                 {t(HEADING)}
               </SplitText>
               <FadeIn delay={0.15}>
-                <p className="mt-4 max-w-xl text-sm text-black md:text-base">{t(SUBHEADING)}</p>
+                <p className="mt-4 max-w-xl text-sm font-medium text-[#0A2947] md:text-base">{t(SUBHEADING)}</p>
               </FadeIn>
             </div>
 
@@ -148,7 +148,7 @@ export default function WorkGallery({
               : 'pointer-events-auto mt-14 flex flex-col gap-y-10 md:mt-20 md:flex-row md:gap-8 md:overflow-x-auto md:pb-4 md:snap-x md:snap-mandatory md:cursor-grab md:active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] md:[&::-webkit-scrollbar]:hidden'
           }
         >
-          {PROJECTS.map((project) => (
+          {PROJECTS.filter((project) => grid || !project.hideFromHome).map((project) => (
             <li
               key={project.name}
               data-work-card
@@ -164,7 +164,7 @@ export default function WorkGallery({
                 <div className="flex w-full flex-col gap-6 rounded-2xl border-8 border-[#E2E5FA] bg-white p-5 md:flex-row md:items-center md:gap-10 md:p-7">
                   {/* image — its own box, same border the row now has too */}
                   <div
-                    className="aspect-[1101/1500] w-full overflow-hidden rounded-lg bg-white md:aspect-[512/585] md:w-[22rem] md:flex-shrink-0 md:border-8 md:border-[#E2E5FA]"
+                    className="aspect-[1101/1500] w-full overflow-hidden rounded-lg bg-white md:aspect-[512/585] md:w-[22rem] md:flex-shrink-0"
                     style={{
                       background: project.canvasColor ?? 'linear-gradient(180deg, #D2EBFB 0%, #F3FAFF 100%)',
                     }}
@@ -192,11 +192,14 @@ export default function WorkGallery({
                     <span className="inline-block w-fit rounded-full bg-[#EEF0FF] px-3 py-1 text-[0.8rem] font-medium text-[#6367FF]">
                       {t(project.category)}
                     </span>
-                    <h3 className="mt-2 font-display text-2xl font-semibold md:text-3xl">
+                    <h3 className="mt-2 font-display text-2xl font-semibold text-[#0A2947] md:text-3xl">
                       {project.name}
+                      {project.isPrototype && (
+                        <span className="text-sm font-normal opacity-30 md:text-base"> (Prototype)</span>
+                      )}
                     </h3>
                     {project.description && (
-                      <p className="mt-3 max-w-md text-xs text-black md:text-sm">
+                      <p className="mt-3 max-w-md text-xs text-[#0A2947] md:text-sm">
                         {t(project.description)}
                       </p>
                     )}
@@ -227,8 +230,11 @@ export default function WorkGallery({
                     <span className="inline-block w-fit rounded-full bg-[#EEF0FF] px-3 py-1 text-[0.8rem] font-medium text-[#6367FF]">
                       {t(project.category)}
                     </span>
-                    <h3 className="mt-2 font-display text-2xl font-semibold md:text-3xl">
+                    <h3 className="mt-2 font-display text-2xl font-semibold text-[#0A2947] md:text-3xl">
                       {project.name}
+                      {project.isPrototype && (
+                        <span className="text-sm font-normal opacity-30 md:text-base"> (Prototype)</span>
+                      )}
                     </h3>
                     <button
                       type="button"

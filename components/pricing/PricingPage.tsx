@@ -201,15 +201,48 @@ const COMPARE_ROWS: Array<[Bi, CompareValue, CompareValue, CompareValue]> = [
   ],
 ];
 
-const STARS: Array<{ top: string; left: string; size: number; delay: string }> = [
+const STARS: Array<{ top: string; left: string; size: number; delay: string; bright?: boolean }> = [
   { top: '12%', left: '8%', size: 2, delay: '0s' },
-  { top: '22%', left: '85%', size: 3, delay: '0.6s' },
+  { top: '22%', left: '85%', size: 3, delay: '0.6s', bright: true },
   { top: '35%', left: '72%', size: 2, delay: '1.2s' },
   { top: '48%', left: '12%', size: 2, delay: '0.9s' },
   { top: '62%', left: '92%', size: 2, delay: '0.3s' },
-  { top: '75%', left: '20%', size: 3, delay: '1.5s' },
+  { top: '75%', left: '20%', size: 3, delay: '1.5s', bright: true },
   { top: '85%', left: '65%', size: 2, delay: '0.7s' },
   { top: '8%', left: '45%', size: 2, delay: '1.1s' },
+  { top: '5%', left: '65%', size: 2, delay: '0.4s' },
+  { top: '15%', left: '28%', size: 3, delay: '1.7s' },
+  { top: '28%', left: '5%', size: 2, delay: '0.2s' },
+  { top: '30%', left: '95%', size: 2, delay: '1.4s' },
+  { top: '40%', left: '38%', size: 2, delay: '0.8s' },
+  { top: '42%', left: '58%', size: 3, delay: '1.9s' },
+  { top: '55%', left: '25%', size: 2, delay: '0.5s' },
+  { top: '58%', left: '78%', size: 2, delay: '1.0s' },
+  { top: '68%', left: '48%', size: 3, delay: '0.1s', bright: true },
+  { top: '72%', left: '5%', size: 2, delay: '1.6s' },
+  { top: '80%', left: '88%', size: 2, delay: '0.9s' },
+  { top: '90%', left: '35%', size: 2, delay: '1.3s' },
+  { top: '92%', left: '55%', size: 3, delay: '0.6s' },
+  { top: '18%', left: '55%', size: 2, delay: '1.1s' },
+  { top: '10%', left: '95%', size: 2, delay: '0.3s' },
+  { top: '3%', left: '18%', size: 2, delay: '1.8s' },
+  { top: '20%', left: '15%', size: 2, delay: '0.5s' },
+  { top: '25%', left: '38%', size: 4, delay: '0.9s', bright: true },
+  { top: '32%', left: '20%', size: 2, delay: '1.3s' },
+  { top: '38%', left: '88%', size: 2, delay: '0.2s' },
+  { top: '45%', left: '48%', size: 2, delay: '1.6s' },
+  { top: '45%', left: '65%', size: 4, delay: '0.4s', bright: true },
+  { top: '50%', left: '5%', size: 2, delay: '1.0s' },
+  { top: '52%', left: '82%', size: 2, delay: '0.7s' },
+  { top: '60%', left: '35%', size: 2, delay: '1.4s' },
+  { top: '60%', left: '58%', size: 2, delay: '0.6s' },
+  { top: '65%', left: '15%', size: 4, delay: '1.9s', bright: true },
+  { top: '70%', left: '95%', size: 2, delay: '0.8s' },
+  { top: '78%', left: '42%', size: 2, delay: '0.3s' },
+  { top: '82%', left: '75%', size: 2, delay: '1.5s' },
+  { top: '88%', left: '12%', size: 2, delay: '1.1s' },
+  { top: '95%', left: '68%', size: 2, delay: '0.5s' },
+  { top: '95%', left: '25%', size: 2, delay: '1.2s' },
 ];
 
 /** Meta list + divider + feature checklist — shared by every tier card, always black-on-white. */
@@ -218,8 +251,8 @@ function TierMetaFeatures({ tier, t }: { tier: Tier; t: (bi: Bi) => string }) {
     <>
       <ul className="space-y-3">
         {tier.meta.map((m, mi) => (
-          <li key={mi} className="flex items-center gap-3 text-sm text-black">
-            <m.icon className="h-[18px] w-[18px] text-black/40" />
+          <li key={mi} className="flex items-center gap-3 text-sm text-[#0A2947]">
+            <m.icon className="h-[18px] w-[18px] text-[#6439FF]" />
             {t(m.label)}
           </li>
         ))}
@@ -227,12 +260,15 @@ function TierMetaFeatures({ tier, t }: { tier: Tier; t: (bi: Bi) => string }) {
 
       <ul className="mt-5 space-y-3">
         {tier.features.map((f, fi) => (
-          <li key={fi} className="flex items-start gap-3 text-sm text-black">
-            <span className="mt-0.5 flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full bg-black">
+          <li key={fi} className="flex items-start gap-3 text-sm text-[#0A2947]">
+            <span
+              className="mt-0.5 flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full"
+              style={{ background: 'color-mix(in srgb, #6439FF 25%, white)' }}
+            >
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="white"
+                stroke="#6439FF"
                 strokeWidth={2.5}
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -322,8 +358,15 @@ export default function PricingPage() {
             {STARS.map((s, i) => (
               <span
                 key={i}
-                className="svc-pulse absolute rounded-full bg-white/60"
-                style={{ top: s.top, left: s.left, width: s.size, height: s.size, animationDelay: s.delay }}
+                className={cn('svc-pulse absolute rounded-full', s.bright ? 'bg-white' : 'bg-white/60')}
+                style={{
+                  top: s.top,
+                  left: s.left,
+                  width: s.size,
+                  height: s.size,
+                  animationDelay: s.delay,
+                  boxShadow: s.bright ? '0 0 8px 2px rgba(255,255,255,0.8)' : undefined,
+                }}
               />
             ))}
             {/* fade into the black body below */}
@@ -353,7 +396,7 @@ export default function PricingPage() {
               {t({ en: 'Plans built for Albanian businesses.', sq: 'Plane të ndërtuara për bizneset shqiptare.' })}
             </SplitText>
             <FadeIn delay={0.4}>
-              <p className="subtext mx-auto mt-6 max-w-xl text-sm font-light md:text-base">
+              <p className="subtext mx-auto mt-6 max-w-xl text-sm font-normal md:text-base">
                 {t({
                   en: 'Premium websites at prices that make sense in Albania — clear packages, honest scope, no hidden costs.',
                   sq: 'Faqe interneti premium me çmime që kanë kuptim në Shqipëri — paketa të qarta, fushëveprim i sinqertë, pa kosto të fshehura.',
@@ -381,10 +424,10 @@ export default function PricingPage() {
                               <IconSpark className="h-5 w-5" />
                             </span>
 
-                            <h2 className="mt-5 font-display text-xl font-semibold text-black md:text-2xl">
+                            <h2 className="mt-5 font-display text-xl font-semibold text-[#0A2947] md:text-2xl">
                               {tier.name}
                             </h2>
-                            <p className="mt-2 text-sm leading-relaxed text-black">
+                            <p className="mt-2 text-sm leading-relaxed text-[#0A2947]">
                               {t(tier.desc)}
                             </p>
 

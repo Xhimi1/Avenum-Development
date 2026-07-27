@@ -289,7 +289,7 @@ export default function WorkServices() {
           </span>
           <SplitText
             as="h2"
-            className="mt-3 font-display text-[clamp(2.1rem,5.5vw,4.6rem)] font-semibold leading-[0.95] [text-wrap:balance] md:[text-wrap:normal]"
+            className="mt-3 font-display text-[clamp(2.1rem,5.5vw,4.6rem)] font-semibold leading-[0.95] text-[#0A2947] [text-wrap:balance] md:[text-wrap:normal]"
           >
             {t(HEADING)}
           </SplitText>

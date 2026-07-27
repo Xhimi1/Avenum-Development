@@ -1,5 +1,6 @@
 /* Detailed flat 2D graphics for the Booking & Reservations page. */
 import { soft, tint, deep, ELEV_LG, ELEV_MD, ELEV_SM, GLOSS, chip, HAIRLINE } from './depth';
+import { TileIconBadge, IconClock, IconUserGroup, IconBell } from './StreamlineIcons';
 
 export function BookingHero() {
   const days = Array.from({ length: 28 });
@@ -72,56 +73,24 @@ export function BookingHero() {
 
 export function TileSlots() {
   return (
-    <div aria-hidden className="flex h-full w-full items-center justify-center">
-      <div className="grid grid-cols-2 gap-2.5">
-        {['19:00', '19:30', '20:00', '20:30'].map((s, i) => (
-          <div
-            key={s}
-            className="flex h-12 w-24 items-center justify-center rounded-lg text-sm font-semibold"
-            style={
-              i === 2
-                ? { background: 'var(--svc-accent)', color: 'white', boxShadow: chip('var(--svc-accent)') }
-                : { background: 'white', color: 'rgba(0,0,0,0.55)', border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_SM }
-            }
-          >
-            {s}
-          </div>
-        ))}
-      </div>
-    </div>
+    <TileIconBadge>
+      <IconClock />
+    </TileIconBadge>
   );
 }
 
 export function TileGuests() {
   return (
-    <div aria-hidden className="flex h-full w-full items-center justify-center">
-      <div className="flex -space-x-3.5">
-        {[26, 38, 18, 46].map((pct, i) => (
-          <span
-            key={i}
-            className="flex h-14 w-14 items-center justify-center rounded-full border-[3px] border-white"
-            style={{ background: `linear-gradient(150deg,${soft(pct + 12)},${soft(pct - 4 < 0 ? 4 : pct - 4)})`, boxShadow: ELEV_SM, zIndex: 4 - i }}
-          >
-            <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="white" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
-            </svg>
-          </span>
-        ))}
-        <span className="flex h-14 w-14 items-center justify-center rounded-full border-[3px] border-white bg-white text-xs font-bold text-[var(--svc-accent)]" style={{ boxShadow: ELEV_SM }}>+9</span>
-      </div>
-    </div>
+    <TileIconBadge>
+      <IconUserGroup />
+    </TileIconBadge>
   );
 }
 
 export function TileReminder() {
   return (
-    <div aria-hidden className="flex h-full w-full items-center justify-center">
-      <div className="relative flex h-28 w-28 items-center justify-center rounded-2xl bg-white" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD + ', ' + GLOSS }}>
-        <svg viewBox="0 0 24 24" className="h-12 w-12" fill="none" stroke="var(--svc-accent)" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.7 21a2 2 0 0 1-3.4 0" />
-        </svg>
-        <span className="svc-blink absolute right-4 top-4 flex h-4 w-4 items-center justify-center rounded-full border-2 border-white text-[0.5rem] font-bold text-white" style={{ background: '#ff5f57' }}>3</span>
-      </div>
-    </div>
+    <TileIconBadge>
+      <IconBell />
+    </TileIconBadge>
   );
 }

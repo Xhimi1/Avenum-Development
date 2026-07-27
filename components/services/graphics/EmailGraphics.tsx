@@ -1,5 +1,6 @@
 /* Detailed flat 2D graphics for the Email Automation page. */
 import { soft, tint, deep, ELEV_LG, ELEV_MD, ELEV_SM, GLOSS, chip, HAIRLINE } from './depth';
+import { TileIconBadge, IconHierarchy, IconTarget, IconInboxOpen } from './StreamlineIcons';
 
 export function EmailHero() {
   return (
@@ -48,59 +49,24 @@ export function EmailHero() {
 
 export function TileFlow() {
   return (
-    <div aria-hidden className="flex h-full w-full items-center justify-center">
-      <div className="flex items-center">
-        {[0, 1, 2].map((i) => (
-          <div key={i} className="flex items-center">
-            <div
-              className="svc-pulse flex h-14 w-14 items-center justify-center rounded-xl bg-white"
-              style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_SM + ', ' + GLOSS, animationDelay: `${i * 0.35}s` }}
-            >
-              <span className="h-6 w-6 rounded-md" style={{ background: `linear-gradient(150deg,${soft(34 + i * 8)},${soft(16 + i * 6)})`, boxShadow: '0 2px 4px rgba(0,0,0,0.15)' }} />
-            </div>
-            {i < 2 && (
-              <span className="mx-1 h-0.5 w-6 rounded-full" style={{ background: `linear-gradient(90deg, ${tint(50)}, ${tint(20)})` }} />
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
+    <TileIconBadge>
+      <IconHierarchy />
+    </TileIconBadge>
   );
 }
 
 export function TileInbox() {
   return (
-    <div aria-hidden className="flex h-full w-full items-center justify-center">
-      <div className="w-48 rounded-xl bg-white p-3" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD }}>
-        {[70, 55, 42].map((w, i) => (
-          <div key={i} className="mb-2 flex items-center gap-2.5 rounded-md p-1.5 last:mb-0" style={i === 0 ? { background: soft(8) } : undefined}>
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full" style={{ background: `linear-gradient(150deg,${soft(24 + i * 8)},${soft(10 + i * 6)})`, boxShadow: ELEV_SM }}>
-              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="white" strokeWidth="1.8"><rect x="3" y="5" width="18" height="14" rx="1.5" /><path d="M4 7l8 5 8-5" /></svg>
-            </span>
-            <div className="flex-1">
-              <span className="block h-1.5 rounded-full bg-black/12" style={{ width: `${w}%` }} />
-              <span className="mt-1 block h-1.5 w-1/3 rounded-full bg-black/[0.06]" />
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+    <TileIconBadge>
+      <IconTarget />
+    </TileIconBadge>
   );
 }
 
 export function TileOpen() {
   return (
-    <div aria-hidden className="flex h-full w-full items-center justify-center">
-      <div className="relative flex h-32 w-32 items-center justify-center rounded-full bg-white" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD }}>
-        <svg viewBox="0 0 100 100" className="h-28 w-28 -rotate-90">
-          <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(0,0,0,0.07)" strokeWidth="10" />
-          <circle cx="50" cy="50" r="38" fill="none" stroke="var(--svc-accent)" strokeWidth="10" strokeLinecap="round" strokeDasharray="239" strokeDashoffset="72" style={{ filter: 'drop-shadow(0 3px 5px color-mix(in srgb, var(--svc-accent) 45%, transparent))' }} />
-        </svg>
-        <div className="absolute flex flex-col items-center">
-          <span className="font-display text-xl font-semibold text-[var(--svc-accent)]">70%</span>
-          <span className="text-[0.55rem] font-medium tracking-wide text-black/40">OPEN</span>
-        </div>
-      </div>
-    </div>
+    <TileIconBadge>
+      <IconInboxOpen />
+    </TileIconBadge>
   );
 }

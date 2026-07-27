@@ -143,7 +143,7 @@ export default function ServicePage({
           <div className="mx-auto w-full max-w-[90rem] px-6 md:px-12">
             <SplitText
               as="h2"
-              className="max-w-2xl font-display text-[clamp(1.9rem,4.5vw,3.4rem)] font-semibold leading-[1] tracking-normal"
+              className="max-w-2xl font-display text-[clamp(1.9rem,4.5vw,3.4rem)] font-semibold leading-[1] tracking-normal text-[#0A2947]"
             >
               {t(showcaseHeading)}
             </SplitText>
@@ -153,10 +153,13 @@ export default function ServicePage({
                 <FadeIn key={i} delay={i * 0.1}>
                   <div className="group flex h-full flex-col items-center rounded-md border border-black/15 bg-white p-8 text-center transition-transform duration-300 hover:-translate-y-1">
                     <div className="flex h-44 w-full items-center justify-center">{tile.graphic}</div>
-                    <h3 className="mt-7 font-display text-xl font-semibold tracking-normal md:text-2xl">
+                    <h3
+                      className="mt-7 font-display text-3xl font-semibold tracking-normal md:text-4xl"
+                      style={{ color: '#6439FF' }}
+                    >
                       {t(tile.title)}
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-black">{t(tile.subtitle)}</p>
+                    <p className="mt-2 text-sm leading-relaxed text-[#0A2947]">{t(tile.subtitle)}</p>
                   </div>
                 </FadeIn>
               ))}

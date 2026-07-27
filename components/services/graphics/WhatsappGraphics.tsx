@@ -1,5 +1,6 @@
 /* Detailed flat 2D graphics for the WhatsApp Automation page. */
 import { soft, tint, deep, ELEV_LG, ELEV_MD, ELEV_SM, GLOSS, chip, HAIRLINE } from './depth';
+import { TileIconBadge, IconReply, IconMegaphone, IconWifi } from './StreamlineIcons';
 
 export function WhatsappHero() {
   return (
@@ -55,48 +56,24 @@ export function WhatsappHero() {
 
 export function TileAutoReply() {
   return (
-    <div aria-hidden className="flex h-full w-full items-center justify-center">
-      <div className="w-44 space-y-2.5">
-        <div className="max-w-[80%] rounded-xl rounded-tl-sm bg-white px-3 py-2" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_SM }}>
-          <div className="h-1.5 w-24 rounded-full bg-black/12" />
-        </div>
-        <div className="ml-auto flex max-w-[80%] items-center gap-2 rounded-xl rounded-tr-sm px-3 py-2" style={{ background: 'var(--svc-accent)', boxShadow: chip('var(--svc-accent)') }}>
-          <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="white" stroke="none"><path d="M13 2 4.5 13.5H11L9.5 22 19 10h-6.5L13 2Z" /></svg>
-          <div className="flex-1">
-            <div className="h-1.5 w-full rounded-full bg-white/80" />
-            <div className="mt-1 h-1.5 w-2/3 rounded-full bg-white/50" />
-          </div>
-        </div>
-      </div>
-    </div>
+    <TileIconBadge>
+      <IconReply />
+    </TileIconBadge>
   );
 }
 
 export function TileBroadcast() {
   return (
-    <div aria-hidden className="flex h-full w-full items-center justify-center">
-      <div className="relative flex h-28 w-28 items-center justify-center">
-        <span className="absolute h-28 w-28 rounded-full border" style={{ borderColor: tint(22) }} />
-        <span className="svc-pulse absolute h-20 w-20 rounded-full border" style={{ borderColor: tint(45) }} />
-        <span className="svc-pulse absolute h-12 w-12 rounded-full" style={{ background: tint(14), animationDelay: '0.4s' }} />
-        <span className="flex h-14 w-14 items-center justify-center rounded-full" style={{ background: 'var(--svc-accent)', boxShadow: chip('var(--svc-accent)') }}>
-          <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z" /></svg>
-        </span>
-      </div>
-    </div>
+    <TileIconBadge>
+      <IconMegaphone />
+    </TileIconBadge>
   );
 }
 
 export function TileAlways() {
   return (
-    <div aria-hidden className="flex h-full w-full items-center justify-center">
-      <div className="flex h-28 w-28 flex-col items-center justify-center rounded-2xl bg-white" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD + ', ' + GLOSS }}>
-        <span className="font-display text-2xl font-semibold text-[var(--svc-accent)]">24/7</span>
-        <div className="mt-2 flex items-center gap-1">
-          <span className="svc-blink h-1.5 w-1.5 rounded-full" style={{ background: 'var(--svc-accent)' }} />
-          <span className="text-[0.55rem] font-medium tracking-wide text-black/40">ONLINE</span>
-        </div>
-      </div>
-    </div>
+    <TileIconBadge>
+      <IconWifi />
+    </TileIconBadge>
   );
 }

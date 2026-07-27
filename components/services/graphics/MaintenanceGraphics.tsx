@@ -1,5 +1,5 @@
 /* Detailed flat 2D graphics for the Maintenance & Support page. */
-import { soft, tint, ELEV_MD, ELEV_SM, GLOSS, HAIRLINE } from './depth';
+import { TileIconBadge, IconDatabaseCheck, IconSupport } from './StreamlineIcons';
 
 const GLASS_SHADOW = '0 14px 28px -12px rgba(0,0,0,0.45)';
 
@@ -81,43 +81,25 @@ export function MaintenanceHeroShowcase() {
 
 export function TileUptime() {
   return (
-    <div aria-hidden className="flex h-full w-full items-end justify-center gap-2">
-      {[42, 64, 52, 80, 68, 90, 74].map((h, i) => (
-        <span
-          key={i}
-          className="svc-pulse w-5 rounded-md"
-          style={{ height: `${h}%`, background: `linear-gradient(180deg, ${soft(30 + (i % 3) * 10)}, ${soft(12)})`, border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_SM, animationDelay: `${i * 0.15}s` }}
-        />
-      ))}
-    </div>
+    <TileIconBadge>
+      <IconDatabaseCheck />
+    </TileIconBadge>
   );
 }
 
 export function TileSecure() {
   return (
-    <div aria-hidden className="flex h-full w-full items-center justify-center">
-      <div className="flex h-28 w-28 items-center justify-center rounded-2xl bg-white" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD + ', ' + GLOSS }}>
-        <svg viewBox="0 0 24 24" className="h-12 w-12" fill="none" stroke="var(--svc-accent)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="5" y="11" width="14" height="9" rx="1.2" fill={soft(14)} />
-          <path d="M8 11V8a4 4 0 0 1 8 0v3" />
-          <circle cx="12" cy="15.5" r="1.4" fill="var(--svc-accent)" stroke="none" />
-        </svg>
-      </div>
-    </div>
+    <TileIconBadge>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/images/secure-svgrepo-com.svg" alt="" draggable={false} className="h-full w-full select-none" />
+    </TileIconBadge>
   );
 }
 
 export function TileSupport() {
   return (
-    <div aria-hidden className="flex h-full w-full items-center justify-center">
-      <div className="relative flex h-28 w-28 items-center justify-center rounded-full bg-white" style={{ border: `1px solid ${HAIRLINE}`, boxShadow: ELEV_MD }}>
-        <span className="svc-spin absolute inset-2.5 rounded-full border-[3px] border-dashed" style={{ borderColor: tint(35) }} />
-        <span className="flex h-16 w-16 items-center justify-center rounded-full" style={{ background: `linear-gradient(150deg,${soft(22)},${soft(8)})`, boxShadow: GLOSS }}>
-          <svg viewBox="0 0 24 24" className="h-9 w-9" fill="none" stroke="var(--svc-accent)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M4 12a8 8 0 0 1 16 0v5a2 2 0 0 1-2 2h-2v-6h4M4 12v5a2 2 0 0 0 2 2h2v-6H4" />
-          </svg>
-        </span>
-      </div>
-    </div>
+    <TileIconBadge>
+      <IconSupport />
+    </TileIconBadge>
   );
 }

@@ -108,15 +108,7 @@ export default function Footer({ theme = 'light' }: { theme?: 'light' | 'dark' }
               </Link>
             </li>
             <li>
-              <Link
-                href="/#about"
-                data-cursor
-                onClick={(e) => {
-                  e.preventDefault();
-                  goHash(aboutSection.id, aboutSection.accent, aboutSection.bg);
-                }}
-                className={linkClass}
-              >
+              <Link href="/about" data-cursor className={linkClass}>
                 {t(aboutSection.label)}
               </Link>
             </li>
@@ -178,6 +170,12 @@ export default function Footer({ theme = 'light' }: { theme?: 'light' | 'dark' }
           width, so it always spans edge-to-edge regardless of font metrics */}
       <div aria-hidden className="w-full select-none">
         <svg viewBox="0 0 1000 170" preserveAspectRatio="none" className="block h-auto w-full">
+          <defs>
+            <linearGradient id="avenum-fade" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="currentColor" stopOpacity="0.4" />
+              <stop offset="85%" stopColor="currentColor" stopOpacity="0" />
+            </linearGradient>
+          </defs>
           <text
             x="0"
             y="140"
@@ -186,7 +184,7 @@ export default function Footer({ theme = 'light' }: { theme?: 'light' | 'dark' }
             fontFamily="var(--font-display)"
             fontWeight="700"
             fontSize="150"
-            fill="currentColor"
+            fill="url(#avenum-fade)"
           >
             AVENUM
           </text>

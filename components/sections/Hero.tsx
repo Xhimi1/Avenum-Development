@@ -81,10 +81,10 @@ export default function Hero() {
         <div ref={contentRef}>
           <Kinetic factor={1.2}>
             <h1 className="text-balance font-display text-[clamp(3.4rem,10.5vw,7.5rem)] font-semibold leading-[0.95]">
-              <SplitText as="span" delay={1.75} className="block">
+              <SplitText as="span" delay={1.75} animate className="block">
                 {t(HEADING_LINE_1)}
               </SplitText>
-              <SplitText as="span" delay={1.9} className="block">
+              <SplitText as="span" delay={1.9} animate className="block">
                 {t(HEADING_LINE_2)}
               </SplitText>
             </h1>
@@ -94,7 +94,8 @@ export default function Hero() {
             as="p"
             type="words"
             delay={2.15}
-            className="subtext text-shadow-soft text-balance mx-auto mt-8 max-w-xl text-center text-sm font-light md:text-lg"
+            animate
+            className="subtext text-shadow-soft text-balance mx-auto mt-8 max-w-xl text-center text-sm font-normal md:text-lg"
           >
             {t(SUBTEXT)}
           </SplitText>

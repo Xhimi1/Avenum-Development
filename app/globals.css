@@ -20,6 +20,12 @@ body {
   overflow-x: clip;
 }
 
+/* Default body-text weight — any element with its own font-weight utility
+   (font-semibold, font-normal, etc.) still overrides this via specificity. */
+body {
+  font-weight: 500;
+}
+
 /* Lenis smooth-scroll plumbing */
 html.lenis,
 html.lenis body {
