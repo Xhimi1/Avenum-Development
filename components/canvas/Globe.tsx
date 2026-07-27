@@ -201,7 +201,7 @@ export default function Globe() {
   const quality = useStore((s) => s.quality);
   const isMobile = useIsMobile();
   const R = isMobile ? R_MOBILE : R_DESKTOP;
-  const dotCount = quality === 'low' ? 22000 : 60000;
+  const dotCount = quality === 'low' ? 16000 : 42000;
   const starCount = quality === 'low' ? 260 : 600;
 
   const [dots, setDots] = useState<Float32Array | null>(null);
