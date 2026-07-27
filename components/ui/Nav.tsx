@@ -23,6 +23,7 @@ const REMOTE_LINE = {
 };
 const PRICING_WASH = { accent: '#8b5cf6', bg: '#1c0f36' };
 const contactSection = SECTIONS.find((s) => s.id === 'contact')!;
+const aboutSection = SECTIONS.find((s) => s.id === 'about')!;
 
 export default function Nav() {
   const navigate = useStore((s) => s.navigate);
@@ -86,10 +87,11 @@ export default function Nav() {
     }
   };
 
-  // "Work" is the one nav item that opens its own page instead of scrolling
-  // to a homepage section.
+  // "Work" and "About" are nav items that open their own page instead of
+  // scrolling to a homepage section.
   const workSection = SECTIONS.find((s) => s.id === 'work')!;
   const goToWork = () => pageNavigate('/portfolio', { accent: workSection.accent, bg: workSection.bg });
+  const goToAbout = () => pageNavigate('/about', { accent: aboutSection.accent, bg: aboutSection.bg });
 
   // Stagger the links in on open, and quick-fade them out on close.
   useEffect(() => {
@@ -202,14 +204,14 @@ export default function Nav() {
                 </button>
               );
             }
-            // "About" points at the section right under the hero (the
-            // intro/mission copy), not its own position further down.
+            // "About" and "Work" open their own pages instead of scrolling
+            // to a homepage section.
             return (
               <button
                 key={s.id}
                 type="button"
                 data-cursor
-                onClick={() => (s.id === 'work' ? goToWork() : goToSection(s.id === 'about' ? 1 : i + 1))}
+                onClick={() => (s.id === 'work' ? goToWork() : s.id === 'about' ? goToAbout() : goToSection(i + 1))}
                 className={cn(
                   'text-xs tracking-normal transition-colors duration-300',
                   'text-[#BFC9D1] hover:text-white'
@@ -362,8 +364,8 @@ export default function Nav() {
                 </button>
               );
             }
-            // "About" points at the section right under the hero (the
-            // intro/mission copy), not its own position further down.
+            // "About" and "Work" open their own pages instead of scrolling
+            // to a homepage section.
             return (
               <button
                 key={s.id}
@@ -372,7 +374,8 @@ export default function Nav() {
                 onClick={() => {
                   setOpen(false);
                   if (s.id === 'work') goToWork();
-                  else goToSection(s.id === 'about' ? 1 : i);
+                  else if (s.id === 'about') goToAbout();
+                  else goToSection(i);
                 }}
                 className="flex items-baseline gap-4 py-4 text-left text-white"
               >

@@ -7,9 +7,11 @@ import ArrowRight from '@/components/ui/ArrowRight';
 import { useT } from '@/lib/i18n';
 import type { Bi } from '@/lib/i18n';
 import { useStore } from '@/lib/store';
+import { SECTIONS } from '@/lib/palette';
 import { prefersReducedMotion } from '@/lib/utils';
 
 const LEARN_MORE: Bi = { en: 'Learn more', sq: 'Mëso më shumë' };
+const aboutSection = SECTIONS.find((s) => s.id === 'about')!;
 
 const HEADING: Bi = {
   en: "We don't just build — we unfold passion with clear strategy.",
@@ -24,7 +26,7 @@ const PARAGRAPH: Bi = {
 export default function Services() {
   const sectionRef = useRef<HTMLElement>(null);
   const locale = useStore((s) => s.locale);
-  const navigate = useStore((s) => s.navigate);
+  const pageNavigate = useStore((s) => s.pageNavigate);
   const t = useT();
   const paragraph = t(PARAGRAPH);
 
@@ -95,7 +97,7 @@ export default function Services() {
           <button
             type="button"
             data-cursor
-            onClick={() => navigate(3)}
+            onClick={() => pageNavigate('/about', { accent: aboutSection.accent, bg: aboutSection.bg })}
             className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-xs font-medium tracking-normal text-black transition-colors duration-300 hover:text-[var(--accent)]"
           >
             {t(LEARN_MORE)}

@@ -16,13 +16,13 @@ import { whatsappHref } from '@/lib/contact';
 const EYEBROW: Bi = { en: 'About', sq: 'Rreth Nesh' };
 
 const HEADING: Bi = {
-  en: "A website isn't a business card — it's your best salesperson.",
-  sq: 'Ne, Avenum, besojmë se një faqe interneti nuk është kartëvizitë — është shitësi yt më i mirë.',
+  en: 'A small studio, big on results.',
+  sq: 'Një studio e vogël, me rezultate të mëdha.',
 };
 
 const SUBHEADING: Bi = {
-  en: "Avenum is a web agency based in Tirana. For 3 years we've been building professional, fast, unique websites — mainly for restaurants — giving your business the premium look it deserves, without the premium price.",
-  sq: 'Avenum është një agjenci web me bazë në Tiranë. Prej 3 vitesh ndërtojmë faqe interneti profesionale, të shpejta dhe unike — kryesisht për restorante — që i japin biznesit tënd pamjen premium që meriton, pa e bërë të shtrenjtë.',
+  en: 'Custom design, fast builds and real support — for businesses ready to grow.',
+  sq: 'Dizajn i personalizuar, ndërtim i shpejtë dhe mbështetje reale — për biznese gati të rriten.',
 };
 
 const HERO_CTA: Bi = { en: 'See our work', sq: 'Shiko punën' };
@@ -35,31 +35,31 @@ const STATS: Array<[string, Bi]> = [
 ];
 
 const MANIFESTO: Bi = {
-  en: 'We build beautiful, fast, unique websites — the kind that make your business stand out from the competition and bring in more customers.',
-  sq: 'Ne ndërtojmë faqe interneti të bukura, të shpejta dhe unike — që e dallojnë biznesin tënd nga konkurrenca dhe sjellin më shumë klientë.',
+  en: 'Good design. Fast websites. Real results.',
+  sq: 'Dizajn i mirë. Faqe të shpejta. Rezultate reale.',
 };
 
 const MISSION_EYEBROW: Bi = { en: 'Who we are', sq: 'Kush jemi ne' };
 
 const MISSION_BODY: Bi = {
-  en: 'Avenum is a web development agency based in Tirana, Albania, building websites, web apps and AI chatbots for businesses — mainly restaurants.',
-  sq: 'Avenum është një agjenci web me bazë në Tiranë, Shqipëri, që ndërton faqe interneti, aplikacione web dhe AI chatbot për biznese — kryesisht restorante.',
+  en: "We're a small team based in Tirana, building for restaurants, gyms and small businesses across Albania.",
+  sq: 'Jemi një ekip i vogël me bazë në Tiranë, që ndërton për restorante, palestra dhe biznese të vogla në të gjithë Shqipërinë.',
 };
 
 const MISSION_QUOTE: Bi = {
-  en: 'Based in Tirana, building for every city.',
-  sq: 'Me bazë në Tiranë, ndërtojmë për çdo qytet.',
+  en: 'One team, start to finish.',
+  sq: 'Një ekip, nga fillimi në fund.',
 };
 
 const MISSION_SUBQUOTE: Bi = {
-  en: 'Wherever your business is, we can work together.',
-  sq: 'Kudo që të jetë biznesi yt, mund të punojmë bashkë.',
+  en: 'Design, build and support — all in one place.',
+  sq: 'Dizajn, ndërtim dhe mbështetje — në një vend të vetëm.',
 };
 
 const VALUES_EYEBROW: Bi = { en: 'How we work', sq: 'Si punojmë' };
 const VALUES_HEADING: Bi = {
-  en: "We don't just build — we unfold passion with clear strategy.",
-  sq: 'Ne nuk ndërtojmë — shpalosim pasion me strategji të qartë.',
+  en: 'What you can expect.',
+  sq: 'Çfarë të presësh.',
 };
 
 interface Value {
@@ -106,40 +106,40 @@ const VALUES: Value[] = [
     icon: IconSpark,
     title: { en: 'Custom, not templates', sq: 'Personalizuar, jo shabllon' },
     body: {
-      en: 'Every site is designed from scratch around your business, not stitched together from a theme.',
-      sq: 'Çdo faqe dizajnohet nga e para për biznesin tënd, jo nga një temë gati e përdorur.',
+      en: 'No templates. Every site is designed just for you.',
+      sq: 'Pa shabllone. Çdo faqe dizajnohet posaçërisht për ty.',
     },
   },
   {
     icon: IconBolt,
     title: { en: 'Fast, on every phone', sq: 'E shpejtë, në çdo telefon' },
     body: {
-      en: 'Most of your visitors are on mobile — so every site we ship is built mobile-first and loads instantly.',
-      sq: 'Shumica e vizitorëve janë në celular — prandaj çdo faqe që ndërtojmë është mobile-first dhe ngarkohet menjëherë.',
+      en: 'Fast on every device, especially mobile.',
+      sq: 'E shpejtë në çdo pajisje, sidomos në celular.',
     },
   },
   {
     icon: IconGlobe,
     title: { en: 'Bilingual by default', sq: 'Dygjuhëshe si standard' },
     body: {
-      en: 'Every site we build works in Albanian and English out of the box, so no customer is left out.',
-      sq: 'Çdo faqe që ndërtojmë funksionon në shqip dhe anglisht që në fillim, që asnjë klient të mos mbetet jashtë.',
+      en: 'Every site works in Albanian and English.',
+      sq: 'Çdo faqe funksionon në shqip dhe anglisht.',
     },
   },
   {
     icon: IconHeart,
     title: { en: 'Honest pricing', sq: 'Çmime të sinqerta' },
     body: {
-      en: 'Premium websites at prices that make sense in Albania — clear packages, no hidden costs.',
-      sq: 'Faqe premium me çmime që kanë kuptim në Shqipëri — paketa të qarta, pa kosto të fshehura.',
+      en: 'Clear prices. No hidden costs.',
+      sq: 'Çmime të qarta. Pa kosto të fshehura.',
     },
   },
 ];
 
 const CTA_HEADING: Bi = { en: "Let's build something together.", sq: 'Le të ndërtojmë diçka bashkë.' };
 const CTA_BODY: Bi = {
-  en: "Tell us about your business — we'll tell you exactly what it costs and how long it takes, for free.",
-  sq: 'Na trego për biznesin tënd — do të të themi saktësisht sa kushton dhe sa kohë merr, falas.',
+  en: "Tell us about your business — we'll get back to you fast.",
+  sq: 'Na trego për biznesin tënd — do të të përgjigjemi shpejt.',
 };
 const CTA_LABEL: Bi = { en: 'Start your project', sq: 'Nis projektin tënd' };
 const CTA_WA_MESSAGE: Bi = { en: "Hi! I'd like to know more about Avenum.", sq: 'Përshëndetje! Do të doja të mësoja më shumë rreth Avenum.' };
@@ -245,12 +245,12 @@ export default function AboutPage() {
       <Nav />
 
       <main>
-        {/* deep-purple hero + stats backdrop, same treatment as Pricing's hero */}
+        {/* deep-teal hero + stats backdrop, same treatment as Pricing's hero */}
         <div className="relative">
           <div ref={bgRef} aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
             <div
               className="absolute inset-0"
-              style={{ background: 'linear-gradient(160deg, #2a1660 0%, #1b0f3d 45%, #140a30 100%)' }}
+              style={{ background: 'linear-gradient(160deg, #2d5f59 0%, #17433F 45%, #0d2622 100%)' }}
             />
             <div
               className="absolute inset-0"
@@ -261,7 +261,7 @@ export default function AboutPage() {
             />
             <div
               className="absolute -top-40 left-1/2 h-[42rem] w-[42rem] -translate-x-1/2 rounded-full blur-3xl"
-              style={{ background: 'radial-gradient(circle, rgba(140,110,255,0.28), transparent 70%)' }}
+              style={{ background: 'radial-gradient(circle, rgba(60,181,158,0.28), transparent 70%)' }}
             />
             {STARS.map((s, i) => (
               <span
@@ -286,7 +286,7 @@ export default function AboutPage() {
               <FadeIn className="mb-5 flex justify-center">
                 <span
                   className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide"
-                  style={{ backgroundColor: 'color-mix(in srgb, #a78bfa 18%, transparent)', color: '#a78bfa' }}
+                  style={{ backgroundColor: 'rgba(255,255,255,0.14)', color: '#ffffff' }}
                 >
                   {t(EYEBROW)}
                 </span>
@@ -295,7 +295,7 @@ export default function AboutPage() {
                 as="h1"
                 delay={0.15}
                 animate
-                className="font-display text-[clamp(2.2rem,6vw,4.4rem)] font-semibold leading-[1.02]"
+                className="font-display text-[clamp(2rem,5.5vw,3.8rem)] font-semibold leading-[1.05]"
               >
                 {t(HEADING)}
               </SplitText>
@@ -343,14 +343,13 @@ export default function AboutPage() {
               <FadeIn className="mb-4 flex">
                 <span
                   className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide"
-                  style={{ backgroundColor: 'color-mix(in srgb, #a78bfa 18%, transparent)', color: '#a78bfa' }}
+                  style={{ backgroundColor: 'rgba(255,255,255,0.14)', color: '#ffffff' }}
                 >
                   {t(MISSION_EYEBROW)}
                 </span>
               </FadeIn>
               <SplitText
                 as="h2"
-                animate
                 className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-semibold leading-[1.1]"
               >
                 {t(MANIFESTO)}
@@ -391,14 +390,13 @@ export default function AboutPage() {
               <FadeIn className="mb-4 flex">
                 <span
                   className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide"
-                  style={{ backgroundColor: 'color-mix(in srgb, #a78bfa 18%, transparent)', color: '#a78bfa' }}
+                  style={{ backgroundColor: 'rgba(255,255,255,0.14)', color: '#ffffff' }}
                 >
                   {t(VALUES_EYEBROW)}
                 </span>
               </FadeIn>
               <SplitText
                 as="h2"
-                animate
                 className="font-display text-[clamp(1.9rem,4.5vw,3.2rem)] font-semibold leading-[1.05]"
               >
                 {t(VALUES_HEADING)}
@@ -436,7 +434,6 @@ export default function AboutPage() {
         >
           <SplitText
             as="h2"
-            animate
             className="font-display text-[clamp(2.2rem,6.5vw,5rem)] font-semibold leading-[0.98]"
           >
             {t(CTA_HEADING)}
