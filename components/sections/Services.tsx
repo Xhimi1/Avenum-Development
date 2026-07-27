@@ -19,8 +19,8 @@ const HEADING: Bi = {
 };
 
 const PARAGRAPH: Bi = {
-  en: "Avenum is a web agency based in Tirana. For 3 years we've been building professional, fast, unique websites — mainly for restaurants — giving your business the premium look it deserves, without the premium price.",
-  sq: 'Avenum është një agjenci web me bazë në Tiranë. Prej 3 vitesh ndërtojmë faqe web profesionale, të shpejta dhe unike — kryesisht për restorante — që i japin biznesit tënd pamjen premium që meriton, pa e bërë të shtrenjtë.',
+  en: "Avenum is a web agency based in Tirana. For 3 years we've been building professional, fast, unique websites — during these 3 years we've learned that passion is what can bring success to anyone.",
+  sq: 'Avenum është një agjenci web me bazë në Tiranë. Prej 3 vitesh ndërtojmë faqe web profesionale, të shpejta dhe unike — gjatë këtyre 3 viteve kemi mësuar se pasioni është ajo që mund të sjellë suksesin për këdo.',
 };
 
 export default function Services() {
