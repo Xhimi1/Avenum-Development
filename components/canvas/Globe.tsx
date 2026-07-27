@@ -27,7 +27,6 @@ const REVEAL_SCALE = 0.62;
  *  the lerp. */
 const PEEK_SCALE_MOBILE = 0.6;
 
-const CYAN = '#00e5ff';
 const PURPLE = '#6367FF';
 
 const MOBILE_QUERY = '(max-width: 820px)';
@@ -248,7 +247,7 @@ export default function Globe() {
         new THREE.Line(
           new THREE.BufferGeometry().setFromPoints(curve.getPoints(64)),
           new THREE.LineBasicMaterial({
-            color: CYAN,
+            color: PURPLE,
             transparent: true,
             opacity: 0.5,
             blending: THREE.AdditiveBlending,
