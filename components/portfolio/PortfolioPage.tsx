@@ -14,7 +14,7 @@ const EYEBROW: Bi = { en: 'Portfolio', sq: 'Portofoli' };
 const HEADING: Bi = { en: 'Everything we’ve built.', sq: 'Gjithçka që kemi ndërtuar.' };
 const SUBHEADING: Bi = {
   en: 'A web design studio with 3+ years of experience and 20+ websites built for businesses across Albania.',
-  sq: 'Një studio dizajni web me 3+ vite përvojë dhe 20+ faqe interneti të ndërtuara për biznese në Shqipëri.',
+  sq: 'Një studio dizajni web me 3+ vite përvojë dhe 20+ faqe web të ndërtuara për biznese në Shqipëri.',
 };
 const CTA_LABEL: Bi = { en: 'Start your project', sq: 'Nis projektin tënd' };
 const WA_MESSAGE: Bi = { en: 'Hi! I want to start a project.', sq: 'Përshëndetje! Dua të nis një projekt.' };

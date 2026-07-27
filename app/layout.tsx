@@ -18,13 +18,13 @@ const jakartaBody = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'Avenum — Faqe interneti për restorante & biznese',
+  title: 'Avenum — Faqe web për restorante & biznese',
   description:
-    'Avenum është një agjenci web që ndërton faqe interneti të bukura, të shpejta dhe unike — kryesisht për restorante, që i dallojnë nga konkurrenca dhe u sjellin më shumë klientë.',
+    'Avenum është një agjenci web që ndërton faqe web të bukura, të shpejta dhe unike — kryesisht për restorante, që i dallojnë nga konkurrenca dhe u sjellin më shumë klientë.',
   openGraph: {
-    title: 'Avenum — Faqe interneti për restorante & biznese',
+    title: 'Avenum — Faqe web për restorante & biznese',
     description:
-      'Faqe interneti, aplikacione web dhe AI chatbot — ndërtuar me strategji, dizajn premium dhe SEO të përfshirë.',
+      'Faqe web, aplikacione web dhe AI chatbot — ndërtuar me strategji, dizajn premium dhe SEO të përfshirë.',
     type: 'website',
   },
 };

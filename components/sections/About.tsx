@@ -9,7 +9,7 @@ import { prefersReducedMotion } from '@/lib/utils';
 
 const MANIFESTO = {
   en: 'We build beautiful, fast, unique websites — the kind that make your business stand out from the competition and bring in more customers.',
-  sq: 'Ne ndërtojmë faqe interneti të bukura, të shpejta dhe unike — që e dallojnë biznesin tënd nga konkurrenca dhe sjellin më shumë klientë.',
+  sq: 'Ne ndërtojmë faqe web të bukura, të shpejta dhe unike — që e dallojnë biznesin tënd nga konkurrenca dhe sjellin më shumë klientë.',
 };
 
 const STATS: Array<[string, { en: string; sq: string }]> = [

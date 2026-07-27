@@ -11,7 +11,7 @@ import { clamp, smoothstep01 } from '@/lib/utils';
 
 /** Oversized on purpose: only the upper cap of the globe is in frame at rest. */
 const R_DESKTOP = 7.2;
-const R_MOBILE = 5.2;
+const R_MOBILE = 4.2;
 
 /** Index into SECTIONS/CAM_POINTS — the globe now lives at hero. */
 const HERO_INDEX = 0;
@@ -21,8 +21,14 @@ const REVEAL_START = 0.15;
 const REVEAL_END = 0.65;
 /** Shrink applied at full reveal so the whole sphere clears the frame. */
 const REVEAL_SCALE = 0.62;
+/** Extra shrink applied only to the resting peek state on mobile, so more of
+ *  the sphere is visible before the user scrolls — the post-scroll reveal
+ *  size (REVEAL_SCALE) is unaffected since this only scales the peek end of
+ *  the lerp. */
+const PEEK_SCALE_MOBILE = 0.6;
 
 const CYAN = '#00e5ff';
+const PURPLE = '#6367FF';
 
 const MOBILE_QUERY = '(max-width: 820px)';
 
@@ -196,7 +202,7 @@ export default function Globe() {
   const quality = useStore((s) => s.quality);
   const isMobile = useIsMobile();
   const R = isMobile ? R_MOBILE : R_DESKTOP;
-  const dotCount = quality === 'low' ? 16000 : 42000;
+  const dotCount = quality === 'low' ? 22000 : 60000;
   const starCount = quality === 'low' ? 260 : 600;
 
   const [dots, setDots] = useState<Float32Array | null>(null);
@@ -331,7 +337,7 @@ export default function Globe() {
   // far enough that the whole sphere fits in frame.
   const { peek, reveal } = useMemo(() => {
     const peek = isMobile
-      ? new THREE.Vector3(CENTERS.hero[0], CENTERS.hero[1] - 6, CENTERS.hero[2] + 3.4)
+      ? new THREE.Vector3(CENTERS.hero[0], CENTERS.hero[1] - 3.6, CENTERS.hero[2] + 2.2)
       : new THREE.Vector3(CENTERS.hero[0], CENTERS.hero[1] - 9, CENTERS.hero[2] + 4);
     const reveal = isMobile
       ? new THREE.Vector3(CENTERS.hero[0], CENTERS.hero[1], CENTERS.hero[2] - 6)
@@ -356,7 +362,7 @@ export default function Globe() {
     const revealT = smoothstep01(
       (sectionLocal(HERO_INDEX) - REVEAL_START) / (REVEAL_END - REVEAL_START)
     );
-    const revealScale = lerp(1, REVEAL_SCALE, revealT);
+    const revealScale = lerp(isMobile ? PEEK_SCALE_MOBILE : 1, REVEAL_SCALE, revealT);
     g.scale.setScalar(Math.max(scale.current, 0.0001) * revealScale);
 
     target.lerpVectors(peek, reveal, revealT);
@@ -400,9 +406,9 @@ export default function Globe() {
               <bufferAttribute attach="attributes-position" args={[dots, 3]} />
             </bufferGeometry>
             <pointsMaterial
-              size={R * 0.022}
+              size={R * 0.02}
               map={dotTexture()}
-              color={CYAN}
+              color={PURPLE}
               transparent
               depthWrite={false}
               sizeAttenuation

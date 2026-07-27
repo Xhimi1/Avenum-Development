@@ -399,7 +399,7 @@ export default function PricingPage() {
               <p className="subtext mx-auto mt-6 max-w-xl text-sm font-normal md:text-base">
                 {t({
                   en: 'Premium websites at prices that make sense in Albania — clear packages, honest scope, no hidden costs.',
-                  sq: 'Faqe interneti premium me çmime që kanë kuptim në Shqipëri — paketa të qarta, fushëveprim i sinqertë, pa kosto të fshehura.',
+                  sq: 'Faqe web premium me çmime që kanë kuptim në Shqipëri — paketa të qarta, fushëveprim i sinqertë, pa kosto të fshehura.',
                 })}
               </p>
             </FadeIn>

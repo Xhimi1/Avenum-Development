@@ -11,11 +11,11 @@ import { useStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { prefersReducedMotion } from '@/lib/utils';
 
-const HEADING_LINE_1 = { en: 'We build', sq: 'Ne ndërtojmë' };
-const HEADING_LINE_2 = { en: 'growth', sq: 'rritje' };
+const HEADING_LINE_1 = { en: 'Give your business', sq: 'Jepi biznesit tënd' };
+const HEADING_LINE_2 = { en: 'superpowers', sq: 'Superfuqi' };
 const SUBTEXT = {
   en: "We at Avenum believe a website isn't a business card — it's your best salesperson.",
-  sq: 'Ne, Avenum, besojmë se një faqe interneti nuk është kartëvizitë — është shitësi yt më i mirë.',
+  sq: 'Ne, Avenum, besojmë se një faqe web nuk është kartëvizitë — është shitësi yt më i mirë.',
 };
 const CTA_LABEL = { en: 'See our work', sq: 'Shiko punën' };
 const QUOTE = {
@@ -38,12 +38,16 @@ export default function Hero() {
 
   // The globe peeks under the button, then recedes into full view as this
   // pinned range scrolls (see Globe.tsx's REVEAL_START/END). The intro copy
-  // fades out early to clear the stage, and a quote fades in once the globe
-  // has fully revealed, then fades out again just before hero unpins.
+  // rides straight up out of the viewport at exactly scroll speed — the
+  // section is 220vh over a 100vh sticky pane, so the scrubbed timeline maps
+  // 120vh of scroll onto its 3 units, i.e. 40vh per unit; travelling one
+  // viewport height over 2.5 units keeps it 1:1 and reads as normal scroll
+  // rather than a fade. A quote then fades in once the globe has fully
+  // revealed, and fades out again just before hero unpins.
   // The quote animates as a single block (not per-word) so this timeline
   // never needs to rebuild when the text changes — e.g. on a language
   // switch, which would otherwise reset the whole scrubbed scroll mapping
-  // mid-scroll and visibly jolt the already-faded-out intro content.
+  // mid-scroll and visibly jolt the already-departed intro content.
   useLayoutEffect(() => {
     const section = sectionRef.current;
     if (!section || prefersReducedMotion()) return;
@@ -55,9 +59,16 @@ export default function Hero() {
             start: 'top top',
             end: 'bottom bottom',
             scrub: 0.6,
+            // the content's travel is derived from viewport height, so it has
+            // to be recomputed whenever ScrollTrigger refreshes (e.g. resize)
+            invalidateOnRefresh: true,
           },
         })
-        .to(contentRef.current, { opacity: 0, y: -40, duration: 0.6, ease: 'none' }, 0)
+        .to(
+          contentRef.current,
+          { y: () => -window.innerHeight, duration: 2.5, ease: 'none' },
+          0
+        )
         .fromTo(
           quoteTextRef.current,
           { yPercent: 40, opacity: 0 },
@@ -78,7 +89,7 @@ export default function Hero() {
   return (
     <section ref={sectionRef} id="hero" data-scene-section className="relative h-[220vh]">
       <div className="sticky top-0 flex h-screen flex-col items-center justify-start px-6 pt-28 text-center md:justify-center md:pt-0">
-        <div ref={contentRef}>
+        <div ref={contentRef} className="will-change-transform">
           <Kinetic factor={1.2}>
             <h1 className="text-balance font-display text-[clamp(3.4rem,10.5vw,7.5rem)] font-semibold leading-[0.95]">
               <SplitText as="span" delay={1.75} animate className="block">

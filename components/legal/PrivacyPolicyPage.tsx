@@ -10,7 +10,7 @@ const SECTIONS: LegalSection[] = [
     body: [
       {
         en: 'Avenum is a web development agency based in Tirana, Albania, building websites, web apps and AI chatbots for businesses — mainly restaurants.',
-        sq: 'Avenum është një agjenci web me bazë në Tiranë, Shqipëri, që ndërton faqe interneti, aplikacione web dhe AI chatbot për biznese — kryesisht restorante.',
+        sq: 'Avenum është një agjenci web me bazë në Tiranë, Shqipëri, që ndërton faqe web, aplikacione web dhe AI chatbot për biznese — kryesisht restorante.',
       },
     ],
   },

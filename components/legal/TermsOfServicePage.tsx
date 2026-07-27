@@ -10,7 +10,7 @@ const SECTIONS: LegalSection[] = [
     body: [
       {
         en: 'Avenum designs and builds websites, web apps and AI chatbots. Every project starts with a conversation so we can agree on scope, timeline and price before any work begins.',
-        sq: 'Avenum dizajnon dhe ndërton faqe interneti, aplikacione web dhe AI chatbot. Çdo projekt fillon me një bisedë, në mënyrë që të bihemi dakord për fushëveprimin, kohën dhe çmimin para se të fillojë çdo punë.',
+        sq: 'Avenum dizajnon dhe ndërton faqe web, aplikacione web dhe AI chatbot. Çdo projekt fillon me një bisedë, në mënyrë që të bihemi dakord për fushëveprimin, kohën dhe çmimin para se të fillojë çdo punë.',
       },
     ],
   },

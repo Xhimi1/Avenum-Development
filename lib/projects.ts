@@ -53,7 +53,7 @@ export const PROJECTS: Project[] = [
     liveUrl: 'https://kroni-restaurant.com',
     description: {
       en: 'A bilingual website for Kroni, a beachfront bar-restaurant-pizzeria with guest apartments in Velipojë, Albania.',
-      sq: 'Një faqe interneti dygjuhëshe për Kroni, një bar-restorant-piceri me apartamente për mysafirë buzë plazhit në Velipojë, Shqipëri.',
+      sq: 'Një faqe web dygjuhëshe për Kroni, një bar-restorant-piceri me apartamente për mysafirë buzë plazhit në Velipojë, Shqipëri.',
     },
     services: [
       { en: 'Website Design & Visual Identity', sq: 'Dizajn Faqeje & Identitet Vizual' },
@@ -111,7 +111,7 @@ export const PROJECTS: Project[] = [
     overviewImages: ['/images/platinum-fitness-overview-1.webp', '/images/platinum-fitness-overview-2.webp'],
     description: {
       en: 'A bilingual marketing site for a real gym in Albania, designed to turn visitors into WhatsApp sign-ups.',
-      sq: 'Një faqe interneti dygjuhëshe për një palestër reale në Shqipëri, e krijuar për të kthyer vizitorët në regjistrime përmes WhatsApp.',
+      sq: 'Një faqe web dygjuhëshe për një palestër reale në Shqipëri, e krijuar për të kthyer vizitorët në regjistrime përmes WhatsApp.',
     },
     services: [
       { en: 'Website Design & Development', sq: 'Dizajnim dhe Zhvillim Faqeje' },
@@ -141,7 +141,7 @@ export const PROJECTS: Project[] = [
     overviewImages: ['/images/angels-fitness-overview-1.webp', '/images/angels-fitness-overview-2.webp'],
     description: {
       en: 'A bold, high-energy website for a premium gym in Tirana, built to turn visitors into members.',
-      sq: "Një faqe interneti e fuqishme dhe moderne për një palestër premium në Tiranë, e menduar për t'i kthyer vizitorët në anëtarë.",
+      sq: "Një faqe web e fuqishme dhe moderne për një palestër premium në Tiranë, e menduar për t'i kthyer vizitorët në anëtarë.",
     },
     services: [
       { en: 'Website Design', sq: 'Dizajn Faqeje' },

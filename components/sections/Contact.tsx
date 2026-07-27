@@ -9,7 +9,7 @@ import { whatsappHref } from '@/lib/contact';
 
 const HEADING = { en: 'Ready to start your website?', sq: 'Gati të fillojmë faqen tënde?' };
 const CTA_LABEL = { en: 'Start your project', sq: 'Nis projektin tënd' };
-const WA_MESSAGE = { en: 'Hi! I want to start a website project.', sq: 'Përshëndetje! Dua të nis një projekt faqe interneti.' };
+const WA_MESSAGE = { en: 'Hi! I want to start a website project.', sq: 'Përshëndetje! Dua të nis një projekt faqe web.' };
 
 export default function Contact() {
   const t = useT();
