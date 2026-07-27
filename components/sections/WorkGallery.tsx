@@ -14,8 +14,8 @@ const HEADING: Bi = {
   sq: 'Projektet tona.',
 };
 const SUBHEADING: Bi = {
-  en: 'A handful of recent projects — each one designed, built and shipped to make an impression.',
-  sq: 'Disa nga projektet e fundit — secili i dizajnuar, ndërtuar dhe lançuar për të lënë përshtypje.',
+  en: "A few of our projects that we're proud of.",
+  sq: 'Disa nga projektet tona të cilat jemi krenarë për to.',
 };
 const CASE_STUDY_LABEL: Bi = { en: 'See case study', sq: 'Shiko studimin e rastit' };
 const VIEW_MORE_LABEL: Bi = { en: 'View more', sq: 'Shiko më shumë' };
