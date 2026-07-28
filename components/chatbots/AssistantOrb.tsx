@@ -190,9 +190,25 @@ function Orb({ x, y, R }: { x: number; y: number; R: number }) {
 export default function AssistantOrb() {
   const isDesktop = useIsDesktop();
   const R = isDesktop ? R_DESKTOP : R_MOBILE;
+
+  // The canvas keeps rendering every frame for as long as it's mounted,
+  // competing with scroll compositing for the main thread/GPU even once
+  // it's scrolled out of view below the hero. Stop the render loop entirely
+  // while off-screen and resume it when it scrolls back into view.
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(true);
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting));
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <div className="absolute inset-x-0 top-0 h-dvh" aria-hidden>
+    <div ref={wrapRef} className="absolute inset-x-0 top-0 h-dvh" aria-hidden>
       <Canvas
+        frameloop={visible ? 'always' : 'never'}
         dpr={[1, 2]}
         camera={{ fov: 45, position: [0, 0, 7.5] }}
         gl={{ alpha: true, antialias: true }}

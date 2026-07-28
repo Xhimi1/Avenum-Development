@@ -144,19 +144,12 @@ export default function ChatbotsPage() {
     document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Web fonts finishing late, or the dynamically-loaded AssistantOrb/ChatDemo
-  // mounting after initial render, can reflow the page after ScrollTrigger
-  // already measured it — leaving scroll-linked reveals (like the "how it
-  // works" cards and the manifesto text below) stuck mid-state or never
-  // firing until the next resize forces a recalculation. A ResizeObserver on
-  // the document catches any such layout shift, not just fonts, and
-  // refreshes every registered ScrollTrigger's start/end positions.
+  // Web fonts finishing late can reflow the hero (heading/button included)
+  // after ScrollTrigger already measured it, leaving above-the-fold reveals
+  // stuck at opacity 0 until the next scroll forces a recalculation. Refresh
+  // once fonts settle so they show immediately on load instead.
   useEffect(() => {
     document.fonts?.ready.then(() => ScrollTrigger.refresh()).catch(() => {});
-
-    const ro = new ResizeObserver(() => ScrollTrigger.refresh());
-    ro.observe(document.body);
-    return () => ro.disconnect();
   }, []);
 
   // On load the heading/subheading reveal first (SplitText/FadeIn), then the
