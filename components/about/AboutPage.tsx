@@ -6,6 +6,8 @@ import { cn, prefersReducedMotion } from '@/lib/utils';
 import { useT, type Bi } from '@/lib/i18n';
 import FadeIn from '@/components/ui/FadeIn';
 import SplitText from '@/components/ui/SplitText';
+import ScrollRevealText from '@/components/ui/ScrollRevealText';
+import RevealImage from '@/components/ui/RevealImage';
 import ArrowRight from '@/components/ui/ArrowRight';
 import Nav from '@/components/ui/Nav';
 import Footer from '@/components/ui/Footer';
@@ -31,29 +33,11 @@ const STATS: Array<[string, Bi]> = [
   ['3+', { en: 'Years of experience', sq: 'Vite përvojë' }],
   ['20+', { en: 'Projects delivered', sq: 'Projekte të realizuara' }],
   ['100%', { en: 'Client satisfaction', sq: 'Klientë të kënaqur' }],
-  ['2', { en: 'Languages, always', sq: 'Gjuhë, gjithmonë' }],
 ];
 
-const MANIFESTO: Bi = {
-  en: 'Good design. Fast websites. Real results.',
-  sq: 'Dizajn i mirë. Faqe të shpejta. Rezultate reale.',
-};
-
-const MISSION_EYEBROW: Bi = { en: 'Who we are', sq: 'Kush jemi ne' };
-
-const MISSION_BODY: Bi = {
-  en: "We're a small team based in Tirana, building for restaurants, gyms and small businesses across Albania.",
-  sq: 'Jemi një ekip i vogël me bazë në Tiranë, që ndërton për restorante, palestra dhe biznese të vogla në të gjithë Shqipërinë.',
-};
-
-const MISSION_QUOTE: Bi = {
-  en: 'One team, start to finish.',
-  sq: 'Një ekip, nga fillimi në fund.',
-};
-
-const MISSION_SUBQUOTE: Bi = {
-  en: 'Design, build and support — all in one place.',
-  sq: 'Dizajn, ndërtim dhe mbështetje — në një vend të vetëm.',
+const MISSION_TEXT: Bi = {
+  en: 'We are a web agency fully focused on strategy for growing your business — by making your business unique and by killing every competition.',
+  sq: 'Ne jemi një agjenci web e fokusuar tërësisht në strategjinë për rritjen e biznesit tuaj — duke e bërë biznesin tuaj unik dhe duke eliminuar çdo konkurrencë.',
 };
 
 const VALUES_EYEBROW: Bi = { en: 'How we work', sq: 'Si punojmë' };
@@ -63,47 +47,12 @@ const VALUES_HEADING: Bi = {
 };
 
 interface Value {
-  icon: (p: { className?: string }) => JSX.Element;
   title: Bi;
   body: Bi;
 }
 
-function IconSpark({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
-      <path d="M12 2c.6 5.4 4.6 9.4 10 10-5.4.6-9.4 4.6-10 10-.6-5.4-4.6-9.4-10-10 5.4-.6 9.4-4.6 10-10Z" />
-    </svg>
-  );
-}
-
-function IconBolt({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
-      <path d="M13 2 4.5 13.5H11L9.5 22 19 10h-6.5L13 2Z" />
-    </svg>
-  );
-}
-
-function IconGlobe({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round" aria-hidden className={className}>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M3 12h18M12 3c2.6 2.5 4 5.7 4 9s-1.4 6.5-4 9c-2.6-2.5-4-5.7-4-9s1.4-6.5 4-9Z" />
-    </svg>
-  );
-}
-
-function IconHeart({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
-      <path d="M12 20.5s-7.5-4.6-10-9.3C.4 8 1.7 4.5 5 3.6c2-.5 4 .3 5.2 2 .3.4.9.4 1.2 0 1.2-1.7 3.2-2.5 5.2-2 3.3.9 4.6 4.4 3 7.6-2.5 4.7-10 9.3-10 9.3Z" />
-    </svg>
-  );
-}
-
 const VALUES: Value[] = [
   {
-    icon: IconSpark,
     title: { en: 'Custom, not templates', sq: 'Personalizuar, jo shabllon' },
     body: {
       en: 'No templates. Every site is designed just for you.',
@@ -111,7 +60,6 @@ const VALUES: Value[] = [
     },
   },
   {
-    icon: IconBolt,
     title: { en: 'Fast, on every phone', sq: 'E shpejtë, në çdo telefon' },
     body: {
       en: 'Fast on every device, especially mobile.',
@@ -119,7 +67,6 @@ const VALUES: Value[] = [
     },
   },
   {
-    icon: IconGlobe,
     title: { en: 'Bilingual by default', sq: 'Dygjuhëshe si standard' },
     body: {
       en: 'Every site works in Albanian and English.',
@@ -127,7 +74,6 @@ const VALUES: Value[] = [
     },
   },
   {
-    icon: IconHeart,
     title: { en: 'Honest pricing', sq: 'Çmime të sinqerta' },
     body: {
       en: 'Clear prices. No hidden costs.',
@@ -167,62 +113,45 @@ const STARS: Array<{ top: string; left: string; size: number; delay: string; bri
   { top: '90%', left: '35%', size: 2, delay: '1.3s' },
 ];
 
-/** Mechanical-odometer digit reveal, same as the homepage About section —
- * each digit is a 0–9 reel that spins to land on its value. */
-function OdometerValue({ value }: { value: string }) {
+/** Count-up reveal: the numeric part ticks up from 0 to its target, suffix stays static. */
+function CountUpValue({ value }: { value: string }) {
   const ref = useRef<HTMLSpanElement>(null);
+  const match = value.match(/^(\d+)(.*)$/);
+  const target = match ? Number(match[1]) : 0;
+  const suffix = match ? match[2] : '';
 
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const reels = el.querySelectorAll<HTMLElement>('[data-reel]');
 
     if (prefersReducedMotion()) {
-      reels.forEach((reel) => {
-        gsap.set(reel, { yPercent: -Number(reel.dataset.digit) * 10 });
-      });
+      el.textContent = String(target);
       return;
     }
 
+    const counter = { val: 0 };
     const ctx = gsap.context(() => {
-      reels.forEach((reel, i) => {
-        gsap.fromTo(
-          reel,
-          { yPercent: 0 },
-          {
-            yPercent: -Number(reel.dataset.digit) * 10,
-            duration: 1.1,
-            delay: i * 0.06,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: el,
-              start: 'top 88%',
-              toggleActions: 'play none none reverse',
-            },
-          }
-        );
+      gsap.to(counter, {
+        val: target,
+        duration: 1.4,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 88%',
+          once: true,
+        },
+        onUpdate: () => {
+          el.textContent = String(Math.round(counter.val));
+        },
       });
     }, el);
     return () => ctx.revert();
-  }, [value]);
+  }, [target]);
 
   return (
-    <span ref={ref} className="inline-flex">
-      {value.split('').map((char, i) =>
-        /[0-9]/.test(char) ? (
-          <span key={i} className="inline-block h-[1em] overflow-hidden align-top leading-[1em]">
-            <span data-reel data-digit={char} className="block">
-              {Array.from({ length: 10 }, (_, d) => (
-                <span key={d} className="block h-[1em] leading-[1em]">
-                  {d}
-                </span>
-              ))}
-            </span>
-          </span>
-        ) : (
-          <span key={i}>{char}</span>
-        )
-      )}
+    <span className="inline-flex items-baseline">
+      <span ref={ref}>0</span>
+      <span>{suffix}</span>
     </span>
   );
 }
@@ -241,7 +170,7 @@ export default function AboutPage() {
   }, []);
 
   return (
-    <div className="isolate min-h-screen overflow-x-clip bg-black text-[#f2f4ff]">
+    <div className="isolate min-h-screen overflow-x-clip bg-[#0F0824] text-[#f2f4ff]">
       <Nav />
 
       <main>
@@ -250,7 +179,7 @@ export default function AboutPage() {
           <div ref={bgRef} aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
             <div
               className="absolute inset-0"
-              style={{ background: 'linear-gradient(160deg, #2d5f59 0%, #17433F 45%, #0d2622 100%)' }}
+              style={{ background: '#0F0824' }}
             />
             <div
               className="absolute inset-0"
@@ -261,7 +190,7 @@ export default function AboutPage() {
             />
             <div
               className="absolute -top-40 left-1/2 h-[42rem] w-[42rem] -translate-x-1/2 rounded-full blur-3xl"
-              style={{ background: 'radial-gradient(circle, rgba(60,181,158,0.28), transparent 70%)' }}
+              style={{ background: 'radial-gradient(circle, rgba(15,48,64,0.25), transparent 70%)' }}
             />
             {STARS.map((s, i) => (
               <span
@@ -277,55 +206,98 @@ export default function AboutPage() {
                 }}
               />
             ))}
-            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-black" />
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-[#0F0824]" />
           </div>
 
-          {/* hero */}
-          <section className="relative px-6 pt-24 text-center md:px-12 md:pt-28">
-            <div className="mx-auto max-w-3xl">
-              <FadeIn className="mb-5 flex justify-center">
-                <span
-                  className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide"
-                  style={{ backgroundColor: 'rgba(255,255,255,0.14)', color: '#ffffff' }}
+          {/* hero — content left, site mockup right on desktop, stacked on mobile */}
+          <section className="relative px-6 pt-24 md:px-12 md:pt-28">
+            <div className="mx-auto grid w-full max-w-6xl items-center gap-10 text-center md:grid-cols-2 md:gap-16 md:text-left">
+              <div>
+                <FadeIn className="mb-5 flex justify-center md:justify-start">
+                  <span
+                    className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide"
+                    style={{ backgroundColor: 'rgba(255,255,255,0.14)', color: '#ffffff' }}
+                  >
+                    {t(EYEBROW)}
+                  </span>
+                </FadeIn>
+                <SplitText
+                  as="h1"
+                  delay={0.15}
+                  animate
+                  className="font-display text-[clamp(2rem,5.5vw,3.8rem)] font-semibold leading-[1.05]"
                 >
-                  {t(EYEBROW)}
-                </span>
-              </FadeIn>
-              <SplitText
-                as="h1"
-                delay={0.15}
-                animate
-                className="font-display text-[clamp(2rem,5.5vw,3.8rem)] font-semibold leading-[1.05]"
-              >
-                {t(HEADING)}
-              </SplitText>
-              <FadeIn delay={0.4}>
-                <p className="subtext mx-auto mt-6 max-w-xl text-sm font-normal md:text-base">
-                  {t(SUBHEADING)}
-                </p>
-              </FadeIn>
-              <FadeIn delay={0.55} className="mt-8 flex justify-center">
-                <a
-                  href="/portfolio"
-                  data-cursor
-                  className="group inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-medium tracking-normal text-black shadow-lg transition-transform duration-300 hover:-translate-y-0.5"
-                >
-                  {t(HERO_CTA)}
-                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </a>
-              </FadeIn>
+                  {t(HEADING)}
+                </SplitText>
+                <FadeIn delay={0.4}>
+                  <p className="subtext mx-auto mt-6 max-w-xl text-sm font-normal md:mx-0 md:text-base">
+                    {t(SUBHEADING)}
+                  </p>
+                </FadeIn>
+                <FadeIn delay={0.55} className="mt-8 flex justify-center md:justify-start">
+                  <a
+                    href="/portfolio"
+                    data-cursor
+                    className="group inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-medium tracking-normal text-black shadow-lg transition-transform duration-300 hover:-translate-y-0.5"
+                  >
+                    {t(HERO_CTA)}
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </a>
+                </FadeIn>
+              </div>
+
+              <div className="relative max-md:-mx-6">
+                <RevealImage>
+                  <div className="relative overflow-hidden rounded-2xl max-md:aspect-[4/5] max-md:rounded-none max-md:[clip-path:polygon(0_28%,100%_0,100%_72%,0_100%)]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/images/AVENUM-MOCKUP%20(1).webp"
+                      alt="Avenum website mockup"
+                      className="w-full max-md:h-full max-md:object-cover"
+                    />
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute inset-0"
+                      style={{ background: 'linear-gradient(135deg, transparent 40%, #0F0824 100%)' }}
+                    />
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute inset-0"
+                      style={{ background: 'linear-gradient(-45deg, transparent 55%, #0F0824 100%)' }}
+                    />
+                  </div>
+                </RevealImage>
+
+                {/* stats, moved onto the image for mobile — sit outside the clipped/scaled
+                    image box so the curved top/bottom cuts and zoom never touch them */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-1/3 md:hidden"
+                  style={{ background: 'linear-gradient(to top, rgba(15,8,36,0.85), transparent)' }}
+                />
+                <div className="absolute inset-x-0 bottom-0 z-10 grid grid-cols-3 gap-3 p-5 md:hidden">
+                  {STATS.map(([value, label]) => (
+                    <div key={value}>
+                      <p className="font-display text-4xl font-semibold text-white">
+                        <CountUpValue value={value} />
+                      </p>
+                      <p className="subtext mt-1 text-[10px] leading-tight tracking-normal">{t(label)}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </section>
 
-          {/* stats — same odometer counters as the homepage About section */}
-          <section className="relative px-6 py-16 md:px-12 md:py-24">
-            <div className="mx-auto w-full max-w-5xl">
+          {/* stats — count-up counters, desktop only (moved onto the image on mobile) */}
+          <section className="relative hidden px-6 py-16 md:block md:px-12 md:py-24">
+            <div className="mx-auto w-full max-w-4xl">
               <div className="glass-soft rounded-3xl p-6 md:p-10">
-                <div className="grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-8">
+                <div className="grid grid-cols-3 gap-8">
                   {STATS.map(([value, label], i) => (
                     <FadeIn key={value} delay={i * 0.08}>
                       <p className="font-display text-4xl font-semibold text-white md:text-5xl">
-                        <OdometerValue value={value} />
+                        <CountUpValue value={value} />
                       </p>
                       <p className="subtext mt-2 text-xs tracking-normal">{t(label)}</p>
                     </FadeIn>
@@ -334,52 +306,26 @@ export default function AboutPage() {
               </div>
             </div>
           </section>
+
         </div>
 
-        {/* mission — manifesto + real project photography */}
+        {/* mission — scroll-linked reveal statement + project photography */}
         <section className="relative px-6 py-16 md:px-12 md:py-24">
           <div className="mx-auto grid w-full max-w-6xl items-center gap-10 md:grid-cols-2 md:gap-16">
-            <div>
-              <FadeIn className="mb-4 flex">
-                <span
-                  className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide"
-                  style={{ backgroundColor: 'rgba(255,255,255,0.14)', color: '#ffffff' }}
-                >
-                  {t(MISSION_EYEBROW)}
-                </span>
-              </FadeIn>
-              <SplitText
-                as="h2"
-                className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-semibold leading-[1.1]"
-              >
-                {t(MANIFESTO)}
-              </SplitText>
-              <FadeIn delay={0.15}>
-                <p className="subtext mt-5 max-w-md text-sm leading-relaxed md:text-base">{t(MISSION_BODY)}</p>
-              </FadeIn>
-              <FadeIn delay={0.3}>
-                <div className="mt-6 border-l-2 border-[#8b5cf6]/50 pl-4">
-                  <p className="text-sm font-medium text-white">{t(MISSION_QUOTE)}</p>
-                  <p className="subtext mt-1 text-xs">{t(MISSION_SUBQUOTE)}</p>
-                </div>
-              </FadeIn>
-            </div>
+            <ScrollRevealText
+              as="p"
+              className="font-display text-3xl font-medium leading-tight text-white md:text-4xl md:leading-tight"
+            >
+              {t(MISSION_TEXT)}
+            </ScrollRevealText>
 
-            <FadeIn delay={0.2}>
+            <RevealImage className="max-md:-mx-6 rounded-2xl max-md:rounded-none md:rounded-lg md:shadow-[0_30px_70px_-30px_rgba(0,0,0,0.6)]">
               <div className="relative">
-                <div className="overflow-hidden rounded-2xl" style={{ boxShadow: '0 30px 70px -30px rgba(0,0,0,0.6)' }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/images/kroni-restaurant-hero.webp" alt="" className="w-full" />
-                </div>
-                <div
-                  className="absolute -bottom-6 -left-6 hidden w-40 overflow-hidden rounded-xl border-4 border-black md:block"
-                  style={{ boxShadow: '0 20px 40px -18px rgba(0,0,0,0.65)' }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/images/riva-restaurant-hero.webp" alt="" className="w-full" />
-                </div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/images/chalet-booking-mockup.webp" alt="" className="w-full" />
+                <div aria-hidden className="pointer-events-none absolute inset-0 bg-[#6439FF]/[0.05]" />
               </div>
-            </FadeIn>
+            </RevealImage>
           </div>
         </section>
 
@@ -406,17 +352,12 @@ export default function AboutPage() {
             <div className="grid gap-5 md:grid-cols-2 md:gap-6">
               {VALUES.map((v, i) => (
                 <FadeIn key={i} delay={i * 0.08}>
-                  <div className="flex h-full gap-4 rounded-2xl bg-white p-6 text-[#0A2947] shadow-[0_20px_50px_-25px_rgba(0,0,0,0.5)]">
-                    <span
-                      className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full"
-                      style={{ background: 'color-mix(in srgb, #6439FF 15%, white)' }}
-                    >
-                      <v.icon className="h-5 w-5 text-[#6439FF]" />
+                  <div className="h-full p-6">
+                    <span className="subtext font-display text-lg font-semibold tracking-normal">
+                      ({String(i + 1).padStart(2, '0')})
                     </span>
-                    <div>
-                      <h3 className="font-display text-lg font-semibold">{t(v.title)}</h3>
-                      <p className="mt-1.5 text-sm leading-relaxed text-[#0A2947]/80">{t(v.body)}</p>
-                    </div>
+                    <h3 className="font-display mt-2 text-lg font-semibold text-white">{t(v.title)}</h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-white/80">{t(v.body)}</p>
                   </div>
                 </FadeIn>
               ))}
@@ -454,7 +395,7 @@ export default function AboutPage() {
         </section>
       </main>
 
-      <Footer theme="dark" />
+      <Footer theme="dark" bgClassName="bg-[#0F0824]" />
 
       <div aria-hidden className="grain pointer-events-none fixed inset-0 z-[60] opacity-[0.07] mix-blend-overlay" />
     </div>

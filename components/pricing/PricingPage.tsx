@@ -162,6 +162,42 @@ const TIERS: Tier[] = [
   },
 ];
 
+interface AgencyComparisonCard {
+  title: Bi;
+  body: Bi;
+}
+
+const AGENCY_COMPARISON: AgencyComparisonCard[] = [
+  {
+    title: { en: '100% custom design, not templates', sq: 'Dizajn 100% i personalizuar, jo shabllon' },
+    body: {
+      en: "Other agencies in Albania reuse the same templates for every client. We design every site from scratch, built around your brand.",
+      sq: 'Agjenci të tjera në Shqipëri riciklojnë të njëjtat shabllone për çdo klient. Ne dizajnojmë çdo faqe nga e para, ndërtuar rreth markës tënde.',
+    },
+  },
+  {
+    title: { en: 'One clear price. No surprises.', sq: 'Një çmim i qartë. Pa surpriza.' },
+    body: {
+      en: "No vague quotes, no hidden fees that show up after you've paid. You know the full cost before we start.",
+      sq: 'Pa oferta të paqarta, pa kosto të fshehura që dalin pasi ke paguar. E di koston e plotë para se të fillojmë.',
+    },
+  },
+  {
+    title: { en: 'Live in as little as two weeks', sq: 'Online brenda vetëm dy javësh' },
+    body: {
+      en: 'No months of delays or radio silence. Your dedicated team moves fast and keeps you updated the whole way.',
+      sq: 'Pa muaj vonesa apo heshtje. Ekipi yt i dedikuar lëviz shpejt dhe të mban të informuar gjatë gjithë kohës.',
+    },
+  },
+  {
+    title: { en: 'Real support after launch', sq: 'Marrëdhënie afatgjatë' },
+    body: {
+      en: 'Most agencies disappear the moment you pay. We stay reachable — real people, real answers, whenever you need us.',
+      sq: 'Shumica e agjencive zhduken sapo paguan. Ne mbetemi të gatshëm — njerëz realë, përgjigje reale, kurdo që na duhesh.',
+    },
+  },
+];
+
 type CompareValue = boolean | Bi;
 
 const COMPARE_ROWS: Array<[Bi, CompareValue, CompareValue, CompareValue]> = [
@@ -325,7 +361,7 @@ export default function PricingPage() {
   }, []);
 
   return (
-    <div className="isolate min-h-screen overflow-x-clip bg-black text-[#f2f4ff]">
+    <div className="isolate min-h-screen overflow-x-clip bg-[#0F0824] text-[#f2f4ff]">
       <Nav />
 
       <main>
@@ -339,7 +375,7 @@ export default function PricingPage() {
               className="absolute inset-0"
               style={{
                 background:
-                  'linear-gradient(160deg, #2a1660 0%, #1b0f3d 45%, #140a30 100%)',
+                  'linear-gradient(160deg, #2a1660 0%, #1b0f3d 45%, #0F0824 100%)',
               }}
             />
             {/* diagonal white light stripes */}
@@ -370,7 +406,7 @@ export default function PricingPage() {
               />
             ))}
             {/* fade into the black body below */}
-            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-black" />
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-[#0F0824]" />
           </div>
 
         {/* hero */}
@@ -567,6 +603,94 @@ export default function PricingPage() {
           </div>
         </section>
 
+        {/* why this investment — us vs. typical agencies in Albania */}
+        <section className="relative px-6 py-16 md:px-12 md:py-24">
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="mb-10 text-center md:mb-14">
+              <SplitText
+                as="h2"
+                animate
+                className="font-display text-[clamp(1.9rem,4.5vw,3.4rem)] font-semibold leading-[0.98]"
+              >
+                {t({ en: 'Why this investment is the best choice.', sq: 'Pse ky investim është zgjedhja më e mirë.' })}
+              </SplitText>
+              <FadeIn delay={0.15}>
+                <p className="subtext mx-auto mt-4 max-w-md text-sm">
+                  {t({
+                    en: "Here's how we stack up against typical web agencies in Albania.",
+                    sq: 'Ja si krahasohemi me agjencitë tipike web në Shqipëri.',
+                  })}
+                </p>
+              </FadeIn>
+            </div>
+
+            <FadeIn delay={0.2}>
+              <div className="relative">
+                <span aria-hidden className="absolute left-0 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 bg-[#a78bfa]" />
+                <span aria-hidden className="absolute right-0 top-0 h-2 w-2 translate-x-1/2 -translate-y-1/2 bg-[#a78bfa]" />
+                <span aria-hidden className="absolute bottom-0 left-0 h-2 w-2 -translate-x-1/2 translate-y-1/2 bg-[#a78bfa]" />
+                <span aria-hidden className="absolute bottom-0 right-0 h-2 w-2 translate-x-1/2 translate-y-1/2 bg-[#a78bfa]" />
+
+                <div className="overflow-hidden border border-white/10">
+                  <div className="grid grid-cols-1 md:grid-cols-3">
+                    {/* card 1 */}
+                    <div className="border-b border-white/10 p-8 md:border-r md:p-10">
+                      <h3 className="font-display text-2xl font-semibold leading-tight text-white md:text-3xl">
+                        {t(AGENCY_COMPARISON[0].title)}
+                      </h3>
+                      <p className="mt-4 text-base leading-relaxed text-white/60 md:text-lg">
+                        {t(AGENCY_COMPARISON[0].body)}
+                      </p>
+                    </div>
+
+                    {/* image */}
+                    <div className="min-h-[220px] overflow-hidden border-b border-white/10 md:border-r">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="/images/15436.webp" alt="" className="h-full w-full object-cover" />
+                    </div>
+
+                    {/* card 2 */}
+                    <div className="border-b border-white/10 p-8 md:p-10">
+                      <h3 className="font-display text-2xl font-semibold leading-tight text-white md:text-3xl">
+                        {t(AGENCY_COMPARISON[1].title)}
+                      </h3>
+                      <p className="mt-4 text-base leading-relaxed text-white/60 md:text-lg">
+                        {t(AGENCY_COMPARISON[1].body)}
+                      </p>
+                    </div>
+
+                    {/* card 3 — wide */}
+                    <div className="border-b border-white/10 p-8 md:col-span-2 md:border-b-0 md:border-r md:p-10">
+                      <h3 className="font-display text-2xl font-semibold leading-tight text-white md:text-3xl">
+                        {t(AGENCY_COMPARISON[2].title)}
+                      </h3>
+                      <p className="mt-4 max-w-lg text-base leading-relaxed text-white/60 md:text-lg">
+                        {t(AGENCY_COMPARISON[2].body)}
+                      </p>
+                    </div>
+
+                    {/* card 4 — highlighted */}
+                    <div
+                      className="p-8 md:p-10"
+                      style={{
+                        backgroundImage:
+                          'radial-gradient(130% 130% at 100% 100%, rgba(99,103,255,0.4), transparent 60%)',
+                      }}
+                    >
+                      <h3 className="font-display text-2xl font-semibold leading-tight text-white md:text-3xl">
+                        {t(AGENCY_COMPARISON[3].title)}
+                      </h3>
+                      <p className="mt-4 text-base leading-relaxed text-white/70 md:text-lg">
+                        {t(AGENCY_COMPARISON[3].body)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        </section>
+
         {/* CTA — same purple radial wash as the case-study pages' closing banner */}
         <section
           className="relative px-6 py-24 text-center md:px-12 md:py-36"
@@ -603,7 +727,7 @@ export default function PricingPage() {
         </section>
       </main>
 
-      <Footer theme="dark" />
+      <Footer theme="dark" bgClassName="bg-[#0F0824]" />
 
       <div
         aria-hidden

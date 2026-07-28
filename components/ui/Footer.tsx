@@ -32,7 +32,14 @@ const contactSection = SECTIONS.find((s) => s.id === 'contact')!;
 /** Full site footer — every service, every main section, legal pages — capped
  *  with a full-bleed wordmark. `theme="dark"` for the site's dark pages
  *  (home, pricing, chatbots); default "light" for the white ones. */
-export default function Footer({ theme = 'light' }: { theme?: 'light' | 'dark' }) {
+export default function Footer({
+  theme = 'light',
+  bgClassName,
+}: {
+  theme?: 'light' | 'dark';
+  /** overrides the dark theme's default bg-black, for pages with their own dark tint */
+  bgClassName?: string;
+}) {
   const t = useT();
   const pageNavigate = useStore((s) => s.pageNavigate);
   const dark = theme === 'dark';
@@ -50,7 +57,7 @@ export default function Footer({ theme = 'light' }: { theme?: 'light' | 'dark' }
     <footer
       className={cn(
         'relative overflow-hidden border-t',
-        dark ? 'border-white/10 bg-black text-white' : 'border-black/10 bg-white text-black'
+        dark ? cn('border-white/10 text-white', bgClassName ?? 'bg-black') : 'border-black/10 bg-white text-black'
       )}
     >
       <div className="mx-auto grid w-full max-w-[90rem] gap-10 px-6 pt-16 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:gap-6 md:px-12">

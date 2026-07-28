@@ -12,6 +12,7 @@ import Work from '@/components/sections/Work';
 import About from '@/components/sections/About';
 import Contact from '@/components/sections/Contact';
 import Footer from '@/components/ui/Footer';
+import BookCallPill from '@/components/ui/BookCallPill';
 import { useStore } from '@/lib/store';
 import { SECTIONS } from '@/lib/palette';
 import { scrollState } from '@/lib/scroll';
@@ -72,6 +73,7 @@ export default function Home() {
       <div className="relative z-10 pointer-events-auto">
         <Footer theme="dark" />
       </div>
+      <BookCallPill />
       <div aria-hidden className="grain pointer-events-none fixed inset-0 z-[60] opacity-[0.07] mix-blend-overlay" />
     </SmoothScroll>
   );

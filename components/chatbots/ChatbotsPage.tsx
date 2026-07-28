@@ -7,6 +7,7 @@ import { cn, prefersReducedMotion } from '@/lib/utils';
 import { useT } from '@/lib/i18n';
 import FadeIn from '@/components/ui/FadeIn';
 import SplitText from '@/components/ui/SplitText';
+import ScrollRevealText from '@/components/ui/ScrollRevealText';
 import ArrowRight from '@/components/ui/ArrowRight';
 import Nav from '@/components/ui/Nav';
 import Footer from '@/components/ui/Footer';
@@ -26,25 +27,20 @@ const HERO_SUB = {
 const CTA_PRIMARY = { en: 'Get your chatbot', sq: 'Merr chatbot-in tënd' };
 const CTA_SECONDARY = { en: 'See it in action', sq: 'Shiko si funksionon' };
 
-const DEMO_EYEBROW = { en: 'The demo', sq: 'Demoja' };
 const DEMO_HEADING = { en: 'Talk to one.', sq: 'Bisedo me një.' };
 const DEMO_SUB = {
   en: "Tap a message and watch Nova handle it — exactly like it would on your website, WhatsApp or Instagram.",
   sq: 'Prek një mesazh dhe shiko si e trajton Nova — pikërisht si do të bënte në faqen tënde, WhatsApp apo Instagram.',
 };
 
-const HOW_EYEBROW = { en: 'How it works', sq: 'Si funksionon' };
 const HOW_HEADING = {
   en: 'From message to booked table in seconds.',
   sq: 'Nga mesazhi te tavolina e rezervuar në sekonda.',
 };
-const STEP_LABEL = { en: 'Step', sq: 'Hapi' };
 
-const BUILD_EYEBROW = { en: 'The process', sq: 'Procesi' };
-const BUILD_HEADING = { en: 'How we build it.', sq: 'Si e ndërtojmë.' };
-const BUILD_SUB = {
-  en: 'A working demo of your own bot within a week, live in your restaurant within a month.',
-  sq: 'Një demo funksionale e bot-it tënd brenda një jave, online në restorantin tënd brenda një muaji.',
+const CHATBOT_TEXT = {
+  en: 'AI is changing how businesses operate. We build chatbots that automate bookings, answers and support — so your business runs on modern technology, not manual work.',
+  sq: 'AI po ndryshon mënyrën si funksionojnë bizneset. Ne ndërtojmë chatbot që automatizojnë rezervimet, përgjigjet dhe mbështetjen — që biznesi yt të funksionojë me teknologji moderne, jo me punë manuale.',
 };
 
 const CTA_HEADING = { en: 'Your front desk, automated.', sq: 'Recepsioni yt, i automatizuar.' };
@@ -54,51 +50,8 @@ const CTA_SUB = {
 };
 const CTA_FINAL = { en: 'Start your chatbot', sq: 'Nis chatbot-in tënd' };
 
-/* ---- small stroke icons for the 2D "how it works" graphics ---- */
-
-function IconChat({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden className={className}>
-      <path d="M21 12a8 8 0 0 1-8 8H4l2.4-2.4A8 8 0 1 1 21 12Z" />
-      <line x1="8" y1="10" x2="16" y2="10" />
-      <line x1="8" y1="13.5" x2="13" y2="13.5" />
-    </svg>
-  );
-}
-
-function IconBrain({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden className={className}>
-      <circle cx="12" cy="12" r="3.2" />
-      <path d="M12 2v3.5M12 18.5V22M2 12h3.5M18.5 12H22" />
-      <path d="M5 5l2.5 2.5M16.5 16.5 19 19M19 5l-2.5 2.5M7.5 16.5 5 19" />
-    </svg>
-  );
-}
-
-function IconPlug({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden className={className}>
-      <rect x="3" y="5" width="18" height="15" rx="2.5" />
-      <line x1="3" y1="10" x2="21" y2="10" />
-      <line x1="8" y1="2.5" x2="8" y2="5" />
-      <line x1="16" y1="2.5" x2="16" y2="5" />
-      <path d="m11 13.5 2.5 2L11 17.5" />
-    </svg>
-  );
-}
-
-function IconBolt({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden className={className}>
-      <path d="M13 2 4.5 13.5H11L9.5 22 19 10h-6.5L13 2Z" />
-    </svg>
-  );
-}
-
 const HOW_IT_WORKS = [
   {
-    icon: IconChat,
     title: { en: 'Guests write like they always do', sq: 'Mysafirët shkruajnë si gjithmonë' },
     desc: {
       en: 'On your website widget, WhatsApp, Instagram DMs or Messenger — no app to install.',
@@ -106,7 +59,6 @@ const HOW_IT_WORKS = [
     },
   },
   {
-    icon: IconBrain,
     title: { en: 'The AI understands intent', sq: 'AI kupton qëllimin' },
     desc: {
       en: 'Trained on your menu, hours, prices, policies and tone of voice.',
@@ -114,7 +66,6 @@ const HOW_IT_WORKS = [
     },
   },
   {
-    icon: IconPlug,
     title: { en: 'It connects to your tools', sq: 'Lidhet me mjetet e tua' },
     desc: {
       en: 'Reservation systems, CRMs and payments — wired in securely.',
@@ -122,7 +73,6 @@ const HOW_IT_WORKS = [
     },
   },
   {
-    icon: IconBolt,
     title: { en: 'It answers & takes action', sq: 'Përgjigjet & vepron' },
     desc: {
       en: 'Replies in seconds, books the table, upsells — and hands tricky cases to a human.',
@@ -131,52 +81,11 @@ const HOW_IT_WORKS = [
   },
 ];
 
-const BUILD_STEPS = [
-  {
-    phase: '01',
-    title: { en: 'We map your front desk', sq: 'Hartëzojmë recepsionin tënd' },
-    desc: {
-      en: 'One workshop: your most common questions, booking flows, edge cases and the systems you already use.',
-      sq: 'Një workshop i vetëm: pyetjet më të zakonshme, rrjedhat e rezervimit, rastet ekstreme dhe sistemet që përdor tashmë.',
-    },
-  },
-  {
-    phase: '02',
-    title: { en: 'The bot learns your business', sq: 'Bot-i mëson biznesin tënd' },
-    desc: {
-      en: 'Menu, schedules, prices, house rules and brand voice go in. It answers like your best employee — not a generic robot.',
-      sq: 'Menuja, oraret, çmimet, rregullat e shtëpisë dhe zëri i markës futen brenda. Përgjigjet si punonjësi yt më i mirë — jo si një robot gjenerik.',
-    },
-  },
-  {
-    phase: '03',
-    title: { en: 'Wired into your tools', sq: 'I lidhur me mjetet e tua' },
-    desc: {
-      en: 'Reservations, CRM, payments. Every action the bot takes lands in the systems you already trust.',
-      sq: 'Rezervime, CRM, pagesa. Çdo veprim i bot-it përfundon në sistemet që tashmë u beson.',
-    },
-  },
-  {
-    phase: '04',
-    title: { en: 'Live in weeks, sharper every week', sq: 'Online brenda javësh, më i mprehtë çdo javë' },
-    desc: {
-      en: 'We monitor real conversations, patch gaps and expand what it can do. You get a monthly report in plain language.',
-      sq: 'Ndjekim bisedat reale, mbyllim boshllëqet dhe zgjerojmë aftësitë e tij. Merr një raport mujor në gjuhë të thjeshtë.',
-    },
-  },
-];
-
-const STATS: Array<[string, { en: string; sq: string }]> = [
-  ['<10s', { en: 'Median reply time', sq: 'Koha mesatare e përgjigjes' }],
-  ['24/7', { en: 'Never off shift', sq: 'Kurrë jashtë orarit' }],
-  ['30+', { en: 'Languages spoken', sq: 'Gjuhë të folura' }],
-];
-
 // Background gradient's purple family — change BG_ACCENT to retint the whole page.
 // Same family as the Pricing page's background, darkened a notch.
 const BG_ACCENT = '#22124D';
 const BG_ACCENT_MID = '#160C31';
-const BG_ACCENT_DEEP = '#100826';
+const BG_ACCENT_DEEP = '#0F0824';
 const BG_GLOW = 'rgba(112, 88, 204, 0.28)';
 
 const STARS: Array<{ top: string; left: string; size: number; delay: string; bright?: boolean }> = [
@@ -212,9 +121,20 @@ const STARS: Array<{ top: string; left: string; size: number; delay: string; bri
   { top: '95%', left: '68%', size: 2, delay: '0.5s' },
 ];
 
+/** Corner markers for a bordered box — same border color as the box, filled
+ *  with the page background so they read as a notch, not a highlight. */
+function CornerSquares() {
+  return (
+    <>
+      <span aria-hidden className="absolute left-0 top-0 h-3 w-3 -translate-x-1/2 -translate-y-1/2 border border-white/10 bg-[#0F0824]" />
+      <span aria-hidden className="absolute right-0 top-0 h-3 w-3 translate-x-1/2 -translate-y-1/2 border border-white/10 bg-[#0F0824]" />
+      <span aria-hidden className="absolute bottom-0 left-0 h-3 w-3 -translate-x-1/2 translate-y-1/2 border border-white/10 bg-[#0F0824]" />
+      <span aria-hidden className="absolute bottom-0 right-0 h-3 w-3 translate-x-1/2 translate-y-1/2 border border-white/10 bg-[#0F0824]" />
+    </>
+  );
+}
+
 export default function ChatbotsPage() {
-  const buildSectionRef = useRef<HTMLElement>(null);
-  const buildLineRef = useRef<HTMLDivElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
   const t = useT();
   const waLink = whatsappHref(t(MAIL_SUBJECT));
@@ -248,32 +168,8 @@ export default function ChatbotsPage() {
     return () => ctx.revert();
   }, []);
 
-  // The build-steps line draws itself in as the timeline scrolls into view.
-  useLayoutEffect(() => {
-    const section = buildSectionRef.current;
-    const line = buildLineRef.current;
-    if (!section || !line || prefersReducedMotion()) return;
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        line,
-        { scaleY: 0 },
-        {
-          scaleY: 1,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 75%',
-            end: 'bottom 65%',
-            scrub: 0.5,
-          },
-        }
-      );
-    }, section);
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <div className="isolate min-h-screen overflow-x-clip bg-black text-[#f2f4ff]">
+    <div className="isolate min-h-screen overflow-x-clip bg-[#0F0824] text-[#f2f4ff]">
       <Nav />
 
       <main>
@@ -318,7 +214,7 @@ export default function ChatbotsPage() {
               />
             ))}
             {/* fade into the black body below */}
-            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-black" />
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-[#0F0824]" />
           </div>
 
           <AssistantOrb />
@@ -366,21 +262,7 @@ export default function ChatbotsPage() {
         {/* interactive demo */}
         <section id="demo" className="relative py-24 md:py-36">
           <div className="mx-auto w-full max-w-[90rem] px-6 md:px-12">
-            <FadeIn className="mb-20 flex justify-center gap-10 md:mb-28 md:gap-14">
-              {STATS.map(([value, label]) => (
-                <div key={value} className="text-center">
-                  <p className="font-display text-2xl font-semibold text-white md:text-4xl">
-                    {value}
-                  </p>
-                  <p className="subtext mt-1 text-xs tracking-normal">{t(label)}</p>
-                </div>
-              ))}
-            </FadeIn>
-
             <div className="mb-12 text-center md:mb-16">
-              <FadeIn>
-                <p className="mb-4 text-xs tracking-normal text-[#ff3d6e]">{t(DEMO_EYEBROW)}</p>
-              </FadeIn>
               <SplitText
                 as="h2"
                 className="font-display text-[clamp(2rem,5vw,4rem)] font-semibold leading-[0.98]"
@@ -404,9 +286,6 @@ export default function ChatbotsPage() {
         <section className="relative py-24 md:py-36">
           <div className="mx-auto w-full max-w-[90rem] px-6 md:px-12">
             <div className="mb-12 md:mb-20">
-              <FadeIn>
-                <p className="mb-4 text-xs tracking-normal text-[#ff3d6e]">{t(HOW_EYEBROW)}</p>
-              </FadeIn>
               <SplitText
                 as="h2"
                 className="font-display text-[clamp(2rem,5vw,4rem)] font-semibold leading-[0.98]"
@@ -415,69 +294,38 @@ export default function ChatbotsPage() {
               </SplitText>
             </div>
 
-            <div className="relative grid gap-10 md:grid-cols-4 md:gap-8">
+            <div className="relative grid grid-cols-1 border border-white/10 md:grid-cols-4">
+              <CornerSquares />
               {HOW_IT_WORKS.map((step, i) => (
-                <FadeIn key={i} delay={i * 0.12} className="relative">
-                  <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/15 bg-[#07070c] text-[#ff3d6e]">
-                    <step.icon className="h-6 w-6" />
-                  </div>
-                  <p className="mb-2 text-xs text-white/40">{t(STEP_LABEL)} {i + 1}</p>
-                  <h3 className="font-display text-lg font-semibold md:text-xl">{t(step.title)}</h3>
-                  <p className="subtext mt-2 text-sm leading-relaxed">{t(step.desc)}</p>
+                <FadeIn
+                  key={i}
+                  delay={i * 0.12}
+                  className={cn(
+                    'relative p-8',
+                    i < HOW_IT_WORKS.length - 1 && 'border-b border-white/10 md:border-b-0 md:border-r'
+                  )}
+                >
+                  <CornerSquares />
+                  <p className="mb-2 font-display text-lg font-semibold text-white">
+                    ({String(i + 1).padStart(2, '0')})
+                  </p>
+                  <h3 className="font-display text-xl font-semibold md:text-2xl">{t(step.title)}</h3>
+                  <p className="mt-4 text-base leading-relaxed text-white/70">{t(step.desc)}</p>
                 </FadeIn>
               ))}
             </div>
           </div>
         </section>
 
-        {/* how we build it */}
-        <section ref={buildSectionRef} className="relative py-24 md:py-36">
-          <div className="mx-auto w-full max-w-[90rem] px-6 md:px-12">
-            <div className="grid gap-12 md:grid-cols-[1fr_1.4fr] md:gap-20">
-              <div>
-                <FadeIn>
-                  <p className="mb-4 text-xs tracking-normal text-[#ff3d6e]">{t(BUILD_EYEBROW)}</p>
-                </FadeIn>
-                <SplitText
-                  as="h2"
-                  className="font-display text-[clamp(2rem,5vw,4rem)] font-semibold leading-[0.98]"
-                >
-                  {t(BUILD_HEADING)}
-                </SplitText>
-                <FadeIn delay={0.15}>
-                  <p className="subtext mt-4 max-w-sm text-sm md:text-base">
-                    {t(BUILD_SUB)}
-                  </p>
-                </FadeIn>
-              </div>
-
-              <div className="relative">
-                <div aria-hidden className="absolute left-0 top-0 h-full w-px bg-white/10" />
-                <div
-                  ref={buildLineRef}
-                  aria-hidden
-                  className="absolute left-0 top-0 h-full w-px origin-top bg-[#ff3d6e]"
-                  style={{ transform: 'scaleY(0)' }}
-                />
-                <ol className="space-y-12 pl-8">
-                  {BUILD_STEPS.map((step, i) => (
-                    <FadeIn key={step.phase} delay={i * 0.1}>
-                      <li className="relative">
-                        <span
-                          aria-hidden
-                          className="absolute -left-[37px] top-1.5 h-2.5 w-2.5 rounded-full bg-[#ff3d6e]"
-                        />
-                        <p className="text-xs tracking-normal text-[#ff3d6e]">{step.phase}</p>
-                        <h3 className="mt-2 font-display text-xl font-semibold md:text-2xl">
-                          {t(step.title)}
-                        </h3>
-                        <p className="subtext mt-2 max-w-lg text-sm leading-relaxed">{t(step.desc)}</p>
-                      </li>
-                    </FadeIn>
-                  ))}
-                </ol>
-              </div>
-            </div>
+        {/* chatbot manifesto — scroll-linked reveal statement */}
+        <section className="relative px-6 py-16 md:px-12 md:py-24">
+          <div className="mx-auto w-full max-w-4xl">
+            <ScrollRevealText
+              as="p"
+              className="font-display text-3xl font-medium leading-tight text-white md:text-4xl md:leading-tight"
+            >
+              {t(CHATBOT_TEXT)}
+            </ScrollRevealText>
           </div>
         </section>
 
@@ -509,7 +357,7 @@ export default function ChatbotsPage() {
         </section>
       </main>
 
-      <Footer theme="dark" />
+      <Footer theme="dark" bgClassName="bg-[#0F0824]" />
 
       <div
         aria-hidden

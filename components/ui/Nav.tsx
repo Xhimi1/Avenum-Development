@@ -160,155 +160,150 @@ export default function Nav() {
           servicesOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
         )}
       />
-      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-4 py-4 md:px-10 md:py-6">
-      {/* Desktop: one compact black pill, logo left, links right — centered
-          on the page, not stretched edge to edge. */}
-      <div
-        ref={servicesRef}
-        onMouseLeave={scheduleCloseServices}
-        className="pointer-events-auto relative hidden items-center gap-10 rounded-full border border-white/15 bg-black py-2 pl-6 pr-2 md:flex"
-      >
-        <Logo onClick={() => go(0)} className="text-2xl text-white" />
+      {/* full-width bar, border only at the bottom, always visible */}
+      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#0F0824]">
+        <div className="pointer-events-auto mx-auto flex w-full max-w-[90rem] items-center justify-between px-6 py-2.5 md:px-12">
+          <Logo onClick={() => go(0)} className="text-2xl text-white" />
 
-        <nav aria-label="Sections" className="flex items-center gap-4">
-          {SECTIONS.slice(1).map((s, i) => {
-            // Contact is rendered separately as a pill button, at the end.
-            if (s.id === 'contact') return null;
-            if (s.id === 'services') {
+          {/* Desktop links */}
+          <nav aria-label="Sections" className="hidden items-center gap-8 md:flex">
+            {SECTIONS.slice(1).map((s, i) => {
+              // Contact is rendered separately as a pill button, at the end.
+              if (s.id === 'contact') return null;
+              if (s.id === 'services') {
+                return (
+                  <div
+                    key={s.id}
+                    ref={servicesRef}
+                    onMouseLeave={scheduleCloseServices}
+                    className="relative"
+                  >
+                    <button
+                      type="button"
+                      data-cursor
+                      onClick={() => setServicesOpen((o) => !o)}
+                      onMouseEnter={openServices}
+                      aria-expanded={servicesOpen}
+                      className={cn(
+                        'flex items-center gap-1.5 text-xs tracking-normal transition-colors duration-300',
+                        'text-[#BFC9D1] hover:text-white'
+                      )}
+                    >
+                      {t(s.label)}
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden
+                        className={cn('h-3 w-3 transition-transform duration-300', servicesOpen && 'rotate-180')}
+                      >
+                        <polyline points="6 9 12 15 18 9" />
+                      </svg>
+                    </button>
+
+                    {/* dropdown — anchored under the Services link, fades in fast while sliding up into place */}
+                    <div
+                      onMouseEnter={openServices}
+                      onMouseLeave={scheduleCloseServices}
+                      className={cn(
+                        'absolute left-0 top-full z-10 mt-3 w-[22rem] rounded-md border border-white/15 bg-black shadow-2xl transition-all duration-150 ease-out',
+                        servicesOpen
+                          ? 'pointer-events-auto translate-y-0 opacity-100'
+                          : 'pointer-events-none translate-y-2 opacity-0'
+                      )}
+                    >
+                      <div className="p-2">
+                        <div className="grid grid-cols-2 gap-1">
+                          {NAV_SERVICES.map((svc) => (
+                            <button
+                              key={svc.href}
+                              type="button"
+                              data-cursor
+                              onClick={() => {
+                                setServicesOpen(false);
+                                goToService(svc.href, svc.accent);
+                              }}
+                              className="flex items-center gap-3 rounded-md px-3 py-2.5 text-left transition-colors duration-200 hover:bg-white/10"
+                            >
+                              <ServiceIcon id={svc.id} className="h-5 w-5 shrink-0 text-white" />
+                              <div className="min-w-0">
+                                <div className="text-xs font-medium text-white">{t(svc.title)}</div>
+                                <div className="mt-0.5 truncate text-[0.65rem] text-white/45">{t(svc.desc)}</div>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+              // "About" and "Work" open their own pages instead of scrolling
+              // to a homepage section.
               return (
                 <button
                   key={s.id}
                   type="button"
                   data-cursor
-                  onClick={() => setServicesOpen((o) => !o)}
-                  onMouseEnter={openServices}
-                  aria-expanded={servicesOpen}
+                  onClick={() => (s.id === 'work' ? goToWork() : s.id === 'about' ? goToAbout() : goToSection(i + 1))}
                   className={cn(
-                    'flex items-center gap-1.5 text-xs tracking-normal transition-colors duration-300',
+                    'text-xs tracking-normal transition-colors duration-300',
                     'text-[#BFC9D1] hover:text-white'
                   )}
                 >
                   {t(s.label)}
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden
-                    className={cn('h-3 w-3 transition-transform duration-300', servicesOpen && 'rotate-180')}
-                  >
-                    <polyline points="6 9 12 15 18 9" />
-                  </svg>
                 </button>
               );
-            }
-            // "About" and "Work" open their own pages instead of scrolling
-            // to a homepage section.
-            return (
-              <button
-                key={s.id}
-                type="button"
-                data-cursor
-                onClick={() => (s.id === 'work' ? goToWork() : s.id === 'about' ? goToAbout() : goToSection(i + 1))}
-                className={cn(
-                  'text-xs tracking-normal transition-colors duration-300',
-                  'text-[#BFC9D1] hover:text-white'
-                )}
-              >
-                {t(s.label)}
-              </button>
-            );
-          })}
-          <Link
-            href="/pricing"
-            data-cursor
-            onClick={(e) => {
-              e.preventDefault();
-              pageNavigate('/pricing', PRICING_WASH);
-            }}
-            className="text-xs tracking-normal text-[#BFC9D1] transition-colors duration-300 hover:text-white"
-          >
-            {t(PRICING_LABEL)}
-          </Link>
+            })}
+            <Link
+              href="/pricing"
+              data-cursor
+              onClick={(e) => {
+                e.preventDefault();
+                pageNavigate('/pricing', PRICING_WASH);
+              }}
+              className="text-xs tracking-normal text-[#BFC9D1] transition-colors duration-300 hover:text-white"
+            >
+              {t(PRICING_LABEL)}
+            </Link>
+            <LangToggle />
+            <button
+              type="button"
+              data-cursor
+              onClick={() => goToSection(SECTIONS.indexOf(contactSection))}
+              className="rounded-full bg-white px-4 py-1.5 text-xs font-medium tracking-normal text-black"
+            >
+              {t(contactSection.label)}
+            </button>
+          </nav>
+
+          {/* Mobile burger */}
           <button
             type="button"
-            data-cursor
-            onClick={() => goToSection(SECTIONS.indexOf(contactSection))}
-            className="rounded-full bg-white px-4 py-1.5 text-xs font-medium tracking-normal text-black"
+            onClick={() => setOpen((o) => !o)}
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            className="flex h-9 w-9 flex-col items-center justify-center gap-[6px] md:hidden"
           >
-            {t(contactSection.label)}
+            <span
+              className={cn(
+                'block h-[2px] w-6 rounded-full bg-white transition-all duration-300 ease-out motion-reduce:transition-none',
+                open && 'translate-y-[4px] rotate-45 bg-[var(--accent)]'
+              )}
+            />
+            <span
+              className={cn(
+                'block h-[2px] w-6 rounded-full bg-white transition-all duration-300 ease-out motion-reduce:transition-none',
+                open && '-translate-y-[4px] -rotate-45 bg-[var(--accent)]'
+              )}
+            />
           </button>
-        </nav>
-
-        {/* dropdown — same width as the pill, fades in fast while sliding up into place */}
-        <div
-          onMouseEnter={openServices}
-          onMouseLeave={scheduleCloseServices}
-          className={cn(
-            'absolute left-0 right-0 top-full z-10 mt-3 rounded-md border border-white/15 bg-black shadow-2xl transition-all duration-150 ease-out',
-            servicesOpen ? 'pointer-events-auto translate-y-0 opacity-100' : 'pointer-events-none translate-y-2 opacity-0'
-          )}
-        >
-          <div className="p-2">
-            <div className="grid grid-cols-2 gap-1">
-              {NAV_SERVICES.map((svc) => (
-                <button
-                  key={svc.href}
-                  type="button"
-                  data-cursor
-                  onClick={() => {
-                    setServicesOpen(false);
-                    goToService(svc.href, svc.accent);
-                  }}
-                  className="flex items-center gap-3 rounded-md px-3 py-2.5 text-left transition-colors duration-200 hover:bg-white/10"
-                >
-                  <ServiceIcon id={svc.id} className="h-5 w-5 shrink-0 text-white" />
-                  <div className="min-w-0">
-                    <div className="text-xs font-medium text-white">{t(svc.title)}</div>
-                    <div className="mt-0.5 truncate text-[0.65rem] text-white/45">{t(svc.desc)}</div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
-      </div>
-
-      {/* Language switcher — its own floating element, top-right, separate
-          from the pill entirely */}
-      <div className="pointer-events-auto fixed right-4 top-4 z-50 hidden md:right-10 md:top-6 md:block">
-        <LangToggle />
-      </div>
-
-      {/* Mobile: logo + burger, same black pill treatment — stays above the
-          full-screen menu (z-40) so it's still visible/clickable when open */}
-      <div className="pointer-events-auto relative z-50 flex w-full items-center justify-between rounded-full border border-white/15 bg-black px-4 py-2 md:hidden">
-        <Logo onClick={() => go(0)} className="text-2xl text-white" />
-
-        <button
-          type="button"
-          onClick={() => setOpen((o) => !o)}
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          className="flex h-9 w-9 flex-col items-center justify-center gap-[6px]"
-        >
-          <span
-            className={cn(
-              'block h-[2px] w-6 rounded-full bg-white transition-all duration-300 ease-out motion-reduce:transition-none',
-              open && 'translate-y-[4px] rotate-45 bg-[var(--accent)]'
-            )}
-          />
-          <span
-            className={cn(
-              'block h-[2px] w-6 rounded-full bg-white transition-all duration-300 ease-out motion-reduce:transition-none',
-              open && '-translate-y-[4px] -rotate-45 bg-[var(--accent)]'
-            )}
-          />
-        </button>
-      </div>
+      </header>
 
       {/* Mobile full-screen menu — circular clip-path reveal from the burger,
           driven by React state (no imperative timelines). */}
@@ -461,7 +456,6 @@ export default function Nav() {
           </div>
         </div>
       </div>
-      </header>
     </>
   );
 }
