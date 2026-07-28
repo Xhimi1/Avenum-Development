@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import PageWash from '@/components/ui/PageWash';
+import BookCallPill from '@/components/ui/BookCallPill';
 import './globals.css';
 
 const jakarta = Plus_Jakarta_Sans({
@@ -43,6 +44,7 @@ export default function RootLayout({
       <body className="bg-[#050a30] font-body text-[#f2f4ff] antialiased">
         <PageWash />
         {children}
+        <BookCallPill />
       </body>
     </html>
   );

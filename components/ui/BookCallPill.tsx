@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { useStore } from '@/lib/store';
 import { useT, type Bi } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
@@ -13,12 +15,28 @@ const WA_MESSAGE: Bi = {
 const TITLE: Bi = { en: 'Book a call', sq: 'Rezervo një bisedë' };
 const SUBTITLE: Bi = { en: 'Get started today', sq: 'Fillo sot' };
 
-/** Sticky bottom-right CTA — hidden over the hero, fades in once the user
- *  has scrolled past it into any other section. */
+/**
+ * Sticky bottom-right CTA — hidden over the hero, fades in once the user has
+ * scrolled past it. On the homepage that's driven by the scroll-tracked
+ * section index (SmoothScroll/Lenis); every other page has no such concept,
+ * so it just tracks native scroll position there instead.
+ */
 export default function BookCallPill() {
   const section = useStore((s) => s.section);
+  const pathname = usePathname();
+  const onHomePage = pathname === '/';
   const t = useT();
-  const visible = section > 0;
+
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    if (onHomePage) return;
+    const onScroll = () => setScrolled(window.scrollY > 300);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [onHomePage]);
+
+  const visible = onHomePage ? section > 0 : scrolled;
 
   return (
     <a

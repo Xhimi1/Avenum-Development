@@ -161,7 +161,7 @@ export default function Nav() {
         )}
       />
       {/* full-width bar, border only at the bottom, always visible */}
-      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#0F0824]">
+      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black">
         <div className="pointer-events-auto mx-auto flex w-full max-w-[90rem] items-center justify-between px-6 py-2.5 md:px-12">
           <Logo onClick={() => go(0)} className="text-2xl text-white" />
 
