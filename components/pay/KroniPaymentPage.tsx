@@ -1,6 +1,7 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Logo from '@/components/ui/Logo';
 
@@ -12,8 +13,19 @@ const PAY_OPTIONS = [
 ];
 
 export default function KroniPaymentPage() {
+  const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const paid = searchParams.get('paid') === '1';
+  const name = searchParams.get('name');
+
+  const [nameInput, setNameInput] = useState('');
+
+  const handleContinue = () => {
+    const trimmed = nameInput.trim();
+    if (!trimmed) return;
+    router.push(`${pathname}?name=${encodeURIComponent(trimmed)}`);
+  };
 
   return (
     <div className="isolate min-h-screen overflow-x-clip bg-[#0F0824] text-[#f2f4ff]">
@@ -37,10 +49,31 @@ export default function KroniPaymentPage() {
                 Kthehu në faqen kryesore
               </Link>
             </div>
+          ) : !name ? (
+            <div className="flex flex-col gap-4">
+              <input
+                type="text"
+                value={nameInput}
+                onChange={(e) => setNameInput(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleContinue()}
+                placeholder="Emri"
+                autoFocus
+                data-cursor
+                className="w-full rounded-2xl border border-white/10 bg-white/[0.03] px-6 py-6 text-center text-2xl font-semibold text-white placeholder:text-white/30 focus:border-white/30 focus:outline-none"
+              />
+              <button
+                type="button"
+                onClick={handleContinue}
+                data-cursor
+                className="w-full rounded-2xl bg-[#6439FF] px-6 py-6 text-xl font-bold text-white transition-opacity duration-300 hover:opacity-90"
+              >
+                Vazhdo
+              </button>
+            </div>
           ) : (
             <>
               <div className="text-center">
-                <h1 className="font-display text-5xl font-semibold leading-tight text-white">Mirë se vjen, Kroni.</h1>
+                <h1 className="font-display text-5xl font-semibold leading-tight text-white">Welcome Mr. {name}</h1>
                 <p className="subtext mt-4 text-base opacity-70 md:text-lg">
                   Çmimet më poshtë janë të siguruara nga PayPal.
                 </p>
