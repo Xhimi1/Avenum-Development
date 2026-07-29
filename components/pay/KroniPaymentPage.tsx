@@ -79,6 +79,13 @@ export default function KroniPaymentPage() {
                 </p>
               </div>
 
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/payment-image.webp"
+                alt="Faqja e Kroni Restaurant"
+                className="mt-8 w-full rounded-2xl border border-white/10 object-cover"
+              />
+
               <div className="mt-8">
                 <div className="mt-6 space-y-3">
                   {PAY_OPTIONS.map((opt, i) => (
