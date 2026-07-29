@@ -6,6 +6,7 @@ import { cn, prefersReducedMotion } from '@/lib/utils';
 import { useT, type Bi } from '@/lib/i18n';
 import FadeIn from '@/components/ui/FadeIn';
 import SplitText from '@/components/ui/SplitText';
+import RevealImage from '@/components/ui/RevealImage';
 import ArrowRight from '@/components/ui/ArrowRight';
 import Nav from '@/components/ui/Nav';
 import Footer from '@/components/ui/Footer';
@@ -351,9 +352,55 @@ export default function PricingPage() {
       <Nav />
 
       <main>
+        {/* hero — flat background (no gradient); image right / content left
+            on desktop, image before the heading on mobile. */}
+        <section className="relative px-6 pt-24 md:px-12 md:pt-28">
+          <div className="mx-auto grid w-full max-w-6xl items-center gap-10 text-center md:grid-cols-2 md:gap-16 md:text-left">
+            <div className="order-2 md:order-1">
+              <FadeIn className="mb-5 flex justify-center md:justify-start">
+                <span
+                  className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide"
+                  style={{
+                    backgroundColor: 'color-mix(in srgb, #a78bfa 18%, transparent)',
+                    color: '#a78bfa',
+                  }}
+                >
+                  {t({ en: 'Pricing', sq: 'Paketat' })}
+                </span>
+              </FadeIn>
+              <SplitText
+                as="h1"
+                delay={0.15}
+                animate
+                className="font-display text-[clamp(2.4rem,6.5vw,4.8rem)] font-semibold leading-[0.98]"
+              >
+                {t({ en: 'Plans built for Albanian businesses.', sq: 'Plane të ndërtuara për bizneset shqiptare.' })}
+              </SplitText>
+              <FadeIn delay={0.4}>
+                <p className="subtext mx-auto mt-6 max-w-xl text-sm font-normal md:mx-0 md:text-base">
+                  {t({
+                    en: 'Premium websites at prices that make sense in Albania — clear packages, honest scope, no hidden costs.',
+                    sq: 'Faqe web premium me çmime që kanë kuptim në Shqipëri — paketa të qarta, fushëveprim i sinqertë, pa kosto të fshehura.',
+                  })}
+                </p>
+              </FadeIn>
+            </div>
+
+            <div className="order-1 max-md:-mx-6 md:order-2">
+              <RevealImage className="rounded-2xl max-md:rounded-none md:rounded-lg md:shadow-[0_30px_70px_-30px_rgba(0,0,0,0.6)]">
+                <div className="relative">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/images/payment-image.webp" alt="" className="w-full" />
+                  <div aria-hidden className="pointer-events-none absolute inset-0 bg-[#6439FF]/[0.05]" />
+                </div>
+              </RevealImage>
+            </div>
+          </div>
+        </section>
+
         {/* deep-purple base, diagonal light stripes and a soft center glow —
-            scoped to the hero + plan cards only, same as the Chatbots page;
-            a black fade at the bottom blends into the plain black body below. */}
+            scoped to the plan cards, same as the Chatbots page; a black fade
+            at the bottom blends into the plain black body below. */}
         <div className="relative">
           <div ref={bgRef} aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
             {/* base purple gradient */}
@@ -394,39 +441,6 @@ export default function PricingPage() {
             {/* fade into the black body below */}
             <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-[#0F0824]" />
           </div>
-
-        {/* hero */}
-        <section className="relative px-6 pt-24 text-center md:px-12 md:pt-28">
-          <div className="mx-auto max-w-3xl">
-            <FadeIn className="mb-5 flex justify-center">
-              <span
-                className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide"
-                style={{
-                  backgroundColor: 'color-mix(in srgb, #a78bfa 18%, transparent)',
-                  color: '#a78bfa',
-                }}
-              >
-                {t({ en: 'Pricing', sq: 'Paketat' })}
-              </span>
-            </FadeIn>
-            <SplitText
-              as="h1"
-              delay={0.15}
-              animate
-              className="font-display text-[clamp(2.4rem,6.5vw,4.8rem)] font-semibold leading-[0.98]"
-            >
-              {t({ en: 'Plans built for Albanian businesses.', sq: 'Plane të ndërtuara për bizneset shqiptare.' })}
-            </SplitText>
-            <FadeIn delay={0.4}>
-              <p className="subtext mx-auto mt-6 max-w-xl text-sm font-normal md:text-base">
-                {t({
-                  en: 'Premium websites at prices that make sense in Albania — clear packages, honest scope, no hidden costs.',
-                  sq: 'Faqe web premium me çmime që kanë kuptim në Shqipëri — paketa të qarta, fushëveprim i sinqertë, pa kosto të fshehura.',
-                })}
-              </p>
-            </FadeIn>
-          </div>
-        </section>
 
         {/* plan cards */}
         <section className="relative px-6 py-16 md:px-12 md:py-24">
