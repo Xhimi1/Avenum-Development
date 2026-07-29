@@ -84,6 +84,11 @@ export default function KroniPaymentPage() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/images/PayPal_Logo_Icon_2014.svg" alt="PayPal" className="h-4 w-auto" />
                 </div>
+
+                <p className="subtext mx-auto mt-4 max-w-sm text-center text-xs opacity-70">
+                  Suporti juaj është ajo që na bën më të fortë. Ne do ofrojmë suport për ju 24/7 dhe do mbetemi
+                  përsëri në kontakt.
+                </p>
               </div>
             </>
           )}
