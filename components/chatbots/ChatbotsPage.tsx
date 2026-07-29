@@ -11,12 +11,10 @@ import ScrollRevealText from '@/components/ui/ScrollRevealText';
 import ArrowRight from '@/components/ui/ArrowRight';
 import Nav from '@/components/ui/Nav';
 import Footer from '@/components/ui/Footer';
-import { whatsappHref } from '@/lib/contact';
+import { whatsappHref, WA_MESSAGE } from '@/lib/contact';
 
 const AssistantOrb = dynamic(() => import('./AssistantOrb'), { ssr: false });
 const ChatDemo = dynamic(() => import('./ChatDemo'), { ssr: false });
-
-const MAIL_SUBJECT = { en: 'AI chatbot for my restaurant', sq: 'AI chatbot për restorantin tim' };
 
 
 const HERO_HEADING = { en: 'A chatbot that never misses a table.', sq: 'Një chatbot që nuk humbet asnjë rezervim.' };
@@ -137,7 +135,7 @@ function CornerSquares() {
 export default function ChatbotsPage() {
   const bgRef = useRef<HTMLDivElement>(null);
   const t = useT();
-  const waLink = whatsappHref(t(MAIL_SUBJECT));
+  const waLink = whatsappHref(WA_MESSAGE);
 
   const scrollToDemo = (e: React.MouseEvent) => {
     e.preventDefault();

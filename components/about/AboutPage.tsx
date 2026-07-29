@@ -11,7 +11,7 @@ import RevealImage from '@/components/ui/RevealImage';
 import ArrowRight from '@/components/ui/ArrowRight';
 import Nav from '@/components/ui/Nav';
 import Footer from '@/components/ui/Footer';
-import { whatsappHref } from '@/lib/contact';
+import { whatsappHref, WA_MESSAGE } from '@/lib/contact';
 
 /* ---- copy ---- */
 
@@ -88,7 +88,6 @@ const CTA_BODY: Bi = {
   sq: 'Na trego për biznesin tënd — do të të përgjigjemi shpejt.',
 };
 const CTA_LABEL: Bi = { en: 'Start your project', sq: 'Nis projektin tënd' };
-const CTA_WA_MESSAGE: Bi = { en: "Hi! I'd like to know more about Avenum.", sq: 'Përshëndetje! Do të doja të mësoja më shumë rreth Avenum.' };
 
 /** Count-up reveal: the numeric part ticks up from 0 to its target, suffix stays static. */
 function CountUpValue({ value }: { value: string }) {
@@ -332,7 +331,7 @@ export default function AboutPage() {
           </FadeIn>
           <FadeIn delay={0.3} className="mt-10">
             <a
-              href={whatsappHref(t(CTA_WA_MESSAGE))}
+              href={whatsappHref(WA_MESSAGE)}
               data-cursor
               className="inline-flex items-center gap-3 rounded-full bg-white px-12 py-6 text-base font-medium tracking-normal text-black"
             >

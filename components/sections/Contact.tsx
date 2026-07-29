@@ -5,11 +5,10 @@ import FadeIn from '@/components/ui/FadeIn';
 import MagneticButton from '@/components/ui/MagneticButton';
 import ArrowRight from '@/components/ui/ArrowRight';
 import { useT } from '@/lib/i18n';
-import { whatsappHref } from '@/lib/contact';
+import { whatsappHref, WA_MESSAGE } from '@/lib/contact';
 
 const HEADING = { en: 'Ready to start your website?', sq: 'Gati të fillojmë faqen tënde?' };
 const CTA_LABEL = { en: 'Start your project', sq: 'Nis projektin tënd' };
-const WA_MESSAGE = { en: 'Hi! I want to start a website project.', sq: 'Përshëndetje! Dua të nis një projekt faqe web.' };
 
 export default function Contact() {
   const t = useT();
@@ -26,7 +25,7 @@ export default function Contact() {
 
           <FadeIn delay={0.2} className="mt-12">
             <MagneticButton
-              href={whatsappHref(t(WA_MESSAGE))}
+              href={whatsappHref(WA_MESSAGE)}
               className="pointer-events-auto inline-block rounded-full bg-white px-12 py-6 text-base font-medium tracking-normal text-black transition-colors duration-300 hover:text-[var(--accent)]"
             >
               <span className="inline-flex items-center gap-3">

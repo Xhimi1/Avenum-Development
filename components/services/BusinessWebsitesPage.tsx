@@ -47,7 +47,6 @@ export default function BusinessWebsitesPage() {
         },
       ]}
       ctaHeading={{ en: 'Ready for a site that sells?', sq: 'Gati për një faqe që shet?' }}
-      mailSubject={{ en: 'Business website for my brand', sq: 'Faqe biznesi për markën time' }}
     />
   );
 }

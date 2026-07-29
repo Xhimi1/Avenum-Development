@@ -8,7 +8,7 @@ import ArrowRight from '@/components/ui/ArrowRight';
 import Nav from '@/components/ui/Nav';
 import OtherServices from './OtherServices';
 import Footer from '@/components/ui/Footer';
-import { whatsappHref } from '@/lib/contact';
+import { whatsappHref, WA_MESSAGE } from '@/lib/contact';
 
 export interface ServiceTile {
   graphic: ReactNode;
@@ -36,7 +36,6 @@ interface ServicePageProps {
   showcaseHeading: Bi;
   tiles: ServiceTile[];
   ctaHeading: Bi;
-  mailSubject: Bi;
 }
 
 /**
@@ -58,10 +57,9 @@ export default function ServicePage({
   showcaseHeading,
   tiles,
   ctaHeading,
-  mailSubject,
 }: ServicePageProps) {
   const t = useT();
-  const waLink = whatsappHref(t(mailSubject));
+  const waLink = whatsappHref(WA_MESSAGE);
   const accentVar = {
     '--svc-accent': accent,
     '--svc-accent2': accent2,

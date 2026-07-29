@@ -47,7 +47,6 @@ export default function BookingSystemsPage() {
         },
       ]}
       ctaHeading={{ en: 'Fill every table.', sq: 'Mbush çdo tavolinë.' }}
-      mailSubject={{ en: 'Booking system for my business', sq: 'Sistem rezervimi për biznesin tim' }}
     />
   );
 }

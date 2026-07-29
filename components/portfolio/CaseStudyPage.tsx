@@ -8,14 +8,13 @@ import OtherWork from './OtherWork';
 import { useT } from '@/lib/i18n';
 import type { Bi } from '@/lib/i18n';
 import type { Project } from '@/lib/projects';
-import { whatsappHref } from '@/lib/contact';
+import { whatsappHref, WA_MESSAGE } from '@/lib/contact';
 
 const OVERVIEW_HEADING: Bi = { en: 'Project overview', sq: 'Përmbledhje e projektit' };
 const APPROACH_HEADING: Bi = { en: 'Our approach', sq: 'Qasja jonë' };
 const IMAGE_PLACEHOLDER: Bi = { en: 'Image', sq: 'Imazh' };
 const CTA_HEADING: Bi = { en: 'Ready for a project like this?', sq: 'Gati për një projekt të tillë?' };
 const CTA_LABEL: Bi = { en: 'Contact us', sq: 'Na kontaktoni' };
-const WA_MESSAGE: Bi = { en: 'Hi! I want to start a project.', sq: 'Përshëndetje! Dua të nis një projekt.' };
 
 /** "https://kroni-restaurant.com/" -> "kroni-restaurant.com" for display in the live-site button */
 function displayUrl(url: string): string {
@@ -34,7 +33,7 @@ function displayUrl(url: string): string {
 export default function CaseStudyPage({ project }: { project: Project }) {
   const t = useT();
   const services = project.services ?? [];
-  const waLink = whatsappHref(t(WA_MESSAGE));
+  const waLink = whatsappHref(WA_MESSAGE);
 
   return (
     <div className="min-h-screen bg-white text-black">

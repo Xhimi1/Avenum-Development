@@ -9,7 +9,7 @@ import SplitText from '@/components/ui/SplitText';
 import ArrowRight from '@/components/ui/ArrowRight';
 import Nav from '@/components/ui/Nav';
 import Footer from '@/components/ui/Footer';
-import { whatsappHref } from '@/lib/contact';
+import { whatsappHref, WA_MESSAGE } from '@/lib/contact';
 
 
 /* ---- tiny inline icons ---- */
@@ -69,8 +69,6 @@ interface Tier {
   discountLabel?: Bi;
   per?: Bi;
   cta: Bi;
-  /** pre-filled message for this tier's WhatsApp CTA */
-  waMessage: Bi;
   featured?: boolean;
   meta: Array<{ icon: (p: { className?: string }) => JSX.Element; label: Bi }>;
   features: Bi[];
@@ -89,10 +87,6 @@ const TIERS: Tier[] = [
     discountLabel: { en: '76% OFF', sq: '76% ZBRITJE' },
     per: { en: '/ project', sq: '/ projekt' },
     cta: { en: 'Choose this plan', sq: 'Zgjidh këtë plan' },
-    waMessage: {
-      en: "Hi! I'm interested in the Starter plan.",
-      sq: 'Përshëndetje! Jam i interesuar për planin Starter.',
-    },
     meta: [
       { icon: IconLayers, label: { en: 'Up to 3 pages', sq: 'Deri në 3 faqe' } },
     ],
@@ -117,10 +111,6 @@ const TIERS: Tier[] = [
     discountLabel: { en: '80% OFF', sq: '80% ZBRITJE' },
     per: { en: '/ project', sq: '/ projekt' },
     cta: { en: 'Choose this plan', sq: 'Zgjidh këtë plan' },
-    waMessage: {
-      en: "Hi! I'm interested in the Signature plan.",
-      sq: 'Përshëndetje! Jam i interesuar për planin Signature.',
-    },
     featured: true,
     meta: [
       { icon: IconLayers, label: { en: 'Up to 10 pages', sq: 'Deri në 10 faqe' } },
@@ -143,10 +133,6 @@ const TIERS: Tier[] = [
     },
     price: { en: 'Custom', sq: 'Sipas kërkesës' },
     cta: { en: 'Contact us', sq: 'Na kontakto' },
-    waMessage: {
-      en: "Hi! I'm interested in the Partner plan.",
-      sq: 'Përshëndetje! Jam i interesuar për planin Partner.',
-    },
     meta: [
       { icon: IconClock, label: { en: 'Dedicated team', sq: 'Ekip i dedikuar' } },
       { icon: IconLayers, label: { en: 'Unlimited scope', sq: 'Fushëveprim i pakufizuar' } },
@@ -468,7 +454,7 @@ export default function PricingPage() {
                             </p>
 
                             <a
-                              href={whatsappHref(t(tier.waMessage))}
+                              href={whatsappHref(WA_MESSAGE)}
                               data-cursor
                               className="mt-6 flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-t from-[#4f52e0] to-[#6367FF] py-3.5 text-center text-sm font-medium tracking-normal text-white transition-opacity duration-300 hover:opacity-90"
                             >
@@ -502,7 +488,7 @@ export default function PricingPage() {
                               </p>
 
                               <a
-                                href={whatsappHref(t(tier.waMessage))}
+                                href={whatsappHref(WA_MESSAGE)}
                                 data-cursor
                                 className="mt-6 flex items-center justify-center gap-1.5 rounded-xl bg-white py-3.5 text-center text-sm font-medium tracking-normal text-black transition-colors duration-300 hover:bg-white/90"
                               >
@@ -716,7 +702,7 @@ export default function PricingPage() {
           </FadeIn>
           <FadeIn delay={0.3} className="mt-10">
             <a
-              href={whatsappHref(t({ en: "Hi! I'd like a free quote.", sq: 'Përshëndetje! Do të doja një ofertë falas.' }))}
+              href={whatsappHref(WA_MESSAGE)}
               data-cursor
               className="inline-flex items-center gap-3 rounded-full bg-white px-12 py-6 text-base font-medium tracking-normal text-black"
             >

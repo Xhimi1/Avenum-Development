@@ -8,7 +8,7 @@ import ArrowRight from '@/components/ui/ArrowRight';
 import WorkGallery from '@/components/sections/WorkGallery';
 import { useT } from '@/lib/i18n';
 import type { Bi } from '@/lib/i18n';
-import { whatsappHref } from '@/lib/contact';
+import { whatsappHref, WA_MESSAGE } from '@/lib/contact';
 
 const EYEBROW: Bi = { en: 'Portfolio', sq: 'Portofoli' };
 const HEADING: Bi = { en: 'Everything we’ve built.', sq: 'Gjithçka që kemi ndërtuar.' };
@@ -17,11 +17,10 @@ const SUBHEADING: Bi = {
   sq: 'Një studio dizajni web me 3+ vite përvojë dhe 20+ faqe web të ndërtuara për biznese në Shqipëri.',
 };
 const CTA_LABEL: Bi = { en: 'Start your project', sq: 'Nis projektin tënd' };
-const WA_MESSAGE: Bi = { en: 'Hi! I want to start a project.', sq: 'Përshëndetje! Dua të nis një projekt.' };
 
 export default function PortfolioPage() {
   const t = useT();
-  const waLink = whatsappHref(t(WA_MESSAGE));
+  const waLink = whatsappHref(WA_MESSAGE);
 
   return (
     <div className="min-h-screen bg-white text-black">

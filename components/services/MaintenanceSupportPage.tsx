@@ -47,7 +47,6 @@ export default function MaintenanceSupportPage() {
         },
       ]}
       ctaHeading={{ en: 'Leave the upkeep to us.', sq: 'Lëna mirëmbajtjen ne.' }}
-      mailSubject={{ en: 'Maintenance & support plan', sq: 'Plan mirëmbajtjeje & suporti' }}
     />
   );
 }

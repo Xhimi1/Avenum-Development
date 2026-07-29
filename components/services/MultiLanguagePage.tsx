@@ -47,7 +47,6 @@ export default function MultiLanguagePage() {
         },
       ]}
       ctaHeading={{ en: 'Welcome the whole world.', sq: 'Mirëprit të gjithë botën.' }}
-      mailSubject={{ en: 'Multi-language website', sq: 'Faqe shumëgjuhëshe' }}
     />
   );
 }

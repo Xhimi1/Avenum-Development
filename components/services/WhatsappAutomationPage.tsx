@@ -47,7 +47,6 @@ export default function WhatsappAutomationPage() {
         },
       ]}
       ctaHeading={{ en: 'Turn chats into clients.', sq: 'Kthe bisedat në klientë.' }}
-      mailSubject={{ en: 'WhatsApp automation for my business', sq: 'Automatizim WhatsApp për biznesin tim' }}
     />
   );
 }

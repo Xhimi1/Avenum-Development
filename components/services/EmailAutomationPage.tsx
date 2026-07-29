@@ -47,7 +47,6 @@ export default function EmailAutomationPage() {
         },
       ]}
       ctaHeading={{ en: 'Stay in touch, on autopilot.', sq: 'Rri në kontakt, automatikisht.' }}
-      mailSubject={{ en: 'Email automation for my business', sq: 'Automatizim email-i për biznesin tim' }}
     />
   );
 }
