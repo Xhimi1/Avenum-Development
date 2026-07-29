@@ -19,7 +19,7 @@ export default function KroniPaymentPage() {
       <main className="flex min-h-screen flex-col items-center justify-center px-6 py-16 md:px-12">
         <Logo className="mb-10 text-2xl text-white" />
 
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-lg">
           {paid ? (
             <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center md:p-10">
               <h1 className="font-display text-5xl font-semibold leading-tight text-white">Faleminderit!</h1>
@@ -33,7 +33,7 @@ export default function KroniPaymentPage() {
                 <h1 className="font-display text-5xl font-semibold leading-tight text-white">Mirë se vjen, Kroni.</h1>
               </div>
 
-              <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.03] p-6 md:p-8">
+              <div className="mt-8">
                 <h2 className="font-display text-center text-lg font-semibold text-white">Detajet e pagesës</h2>
 
                 <div className="mt-6 space-y-3">
@@ -42,7 +42,7 @@ export default function KroniPaymentPage() {
                       key={opt.url}
                       href={opt.url}
                       data-cursor
-                      className="flex flex-col items-center justify-center gap-1 rounded-xl bg-[#FB6C00] px-5 py-4 text-center text-white transition-opacity duration-300 hover:opacity-90"
+                      className="flex w-full flex-col items-center justify-center gap-1 rounded-xl bg-gradient-to-br from-[#FF97D0] to-[#6439FF] px-5 py-5 text-center text-white transition-opacity duration-300 hover:opacity-90"
                     >
                       <span className="text-lg font-bold">{opt.label}</span>
                       <span className="flex items-center gap-1.5 text-xs font-semibold text-white">
@@ -51,7 +51,7 @@ export default function KroniPaymentPage() {
                           <img
                             src="/images/emoji-smile-face.svg"
                             alt=""
-                            className="h-4 w-4 flex-shrink-0"
+                            className="h-4 w-4 flex-shrink-0 brightness-0 invert"
                           />
                         )}
                         {opt.note}
