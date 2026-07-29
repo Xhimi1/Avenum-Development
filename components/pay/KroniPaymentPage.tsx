@@ -8,7 +8,7 @@ const PAY_OPTIONS = [
   { label: 'Paguaj €100', note: 'Pa bakshësh', url: 'https://www.paypal.com/ncp/payment/PLB-WCA46ZQY6BNP' },
   { label: 'Paguaj €110', note: '+€10 bakshësh', url: 'https://www.paypal.com/ncp/payment/PLB-VPDVC5KRG8C2' },
   { label: 'Paguaj €125', note: '+€25 bakshësh', url: 'https://www.paypal.com/ncp/payment/PLB-ZMNAK5MCTSW5' },
-  { label: 'Paguaj €150', note: '+€50 bakshësh', url: 'https://www.paypal.com/ncp/payment/PLB-R39MGQ4QXUG2' },
+  { label: 'Paguaj €130', note: '+€30 bakshësh', url: 'https://www.paypal.com/ncp/payment/PLB-AMAPTADANVV3' },
 ];
 
 export default function KroniPaymentPage() {
@@ -43,17 +43,30 @@ export default function KroniPaymentPage() {
                       key={opt.url}
                       href={opt.url}
                       data-cursor
-                      className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white px-5 py-3.5 text-black transition-opacity duration-300 hover:opacity-90"
+                      className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white px-5 py-4 text-black transition-opacity duration-300 hover:opacity-90"
                     >
                       <span className="flex flex-col leading-tight">
-                        <span className="text-sm font-semibold">{opt.label}</span>
-                        <span className="text-xs text-black">{opt.note}</span>
+                        <span className="text-lg font-semibold">{opt.label}</span>
+                        <span className="mt-1 flex items-center gap-1.5 text-xs text-black">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src="/images/emoji-face-straight-satisfactory-svgrepo-com.svg"
+                            alt=""
+                            className="h-4 w-4 flex-shrink-0"
+                          />
+                          {opt.note}
+                        </span>
                       </span>
-                      <ArrowRight className="h-4 w-4 flex-shrink-0" />
+                      <ArrowRight className="h-6 w-6 flex-shrink-0" />
                     </a>
                   ))}
                 </div>
-                <p className="subtext mt-4 text-center text-xs">Përpunohet në mënyrë të sigurt nga PayPal.</p>
+
+                <div className="mt-5 flex items-center justify-center gap-2">
+                  <span className="subtext text-xs">Përpunohet në mënyrë të sigurt nga</span>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/images/PayPal_Logo_Icon_2014.svg" alt="PayPal" className="h-4 w-auto" />
+                </div>
               </div>
             </>
           )}

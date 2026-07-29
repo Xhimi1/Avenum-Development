@@ -1,5 +1,6 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { useT, type Bi } from '@/lib/i18n';
 import { whatsappHref } from '@/lib/contact';
 import ArrowRight from '@/components/ui/ArrowRight';
@@ -11,9 +12,13 @@ const WA_MESSAGE: Bi = {
 const TITLE: Bi = { en: 'Book a call', sq: 'Rezervo një bisedë' };
 const SUBTITLE: Bi = { en: 'Send us a message', sq: 'Na shkruaj një mesazh' };
 
-/** Sticky bottom-right CTA — visible on every page from the moment it loads. */
+/** Sticky bottom-right CTA — visible on every page from the moment it loads,
+ *  except private one-off pages like /pay/* which shouldn't nudge visitors
+ *  toward the general contact flow. */
 export default function BookCallPill() {
   const t = useT();
+  const pathname = usePathname();
+  if (pathname?.startsWith('/pay/')) return null;
 
   return (
     <a
