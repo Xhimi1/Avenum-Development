@@ -1,39 +1,17 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useT, type Bi } from '@/lib/i18n';
 import Logo from '@/components/ui/Logo';
 import ArrowRight from '@/components/ui/ArrowRight';
 
-const PAYMENT_LINK = 'https://www.paypal.com/ncp/payment/PLB-Q5MVS23NYQRK';
-
-const EYEBROW: Bi = { en: 'Payment', sq: 'Pagesë' };
-const WELCOME_TITLE: Bi = { en: 'Welcome, Kroni.', sq: 'Mirë se vjen, Kroni.' };
-const WELCOME_BODY: Bi = {
-  en: "This is your private payment page for the web development work we agreed on. Nothing here is linked from the rest of the site — this link is just for you.",
-  sq: 'Kjo është faqja jote private e pagesës për punën e zhvillimit web që ramë dakord. Asgjë këtu nuk lidhet me pjesën tjetër të faqes — ky link është vetëm për ty.',
-};
-
-const DESCRIPTION_TITLE: Bi = { en: 'Payment details', sq: 'Detajet e pagesës' };
-const DESCRIPTION_BODY: Bi = {
-  en: 'One-time payment for web development services provided by Avenum.',
-  sq: 'Pagesë një-herëshe për shërbimin e zhvillimit web nga Avenum.',
-};
-const TIP_NOTE: Bi = {
-  en: "If you'd like to add a tip, you can pick a total of €110, €125 or €150 on the next screen — totally optional.",
-  sq: 'Nëse dëshiron të shtosh një bakshish, në ekranin tjetër mund të zgjedhësh një total prej €110, €125 ose €150 — plotësisht opsionale.',
-};
-const PAY_LABEL: Bi = { en: 'Continue to payment', sq: 'Vazhdo te pagesa' };
-const PAY_NOTE: Bi = { en: 'Handled securely by PayPal.', sq: 'Përpunohet në mënyrë të sigurt nga PayPal.' };
-
-const THANKS_TITLE: Bi = { en: 'Thank you!', sq: 'Faleminderit!' };
-const THANKS_BODY: Bi = {
-  en: "Your payment went through. We'll be in touch shortly to get started on your website.",
-  sq: 'Pagesa u krye me sukses. Do të jemi në kontakt shpejt për të filluar punën për faqen tënde.',
-};
+const PAY_OPTIONS = [
+  { label: 'Paguaj €100', note: 'Pa bakshësh', url: 'https://www.paypal.com/ncp/payment/PLB-WCA46ZQY6BNP' },
+  { label: 'Paguaj €110', note: '+€10 bakshësh', url: 'https://www.paypal.com/ncp/payment/PLB-VPDVC5KRG8C2' },
+  { label: 'Paguaj €125', note: '+€25 bakshësh', url: 'https://www.paypal.com/ncp/payment/PLB-ZMNAK5MCTSW5' },
+  { label: 'Paguaj €150', note: '+€50 bakshësh', url: 'https://www.paypal.com/ncp/payment/PLB-R39MGQ4QXUG2' },
+];
 
 export default function KroniPaymentPage() {
-  const t = useT();
   const searchParams = useSearchParams();
   const paid = searchParams.get('paid') === '1';
 
@@ -49,10 +27,12 @@ export default function KroniPaymentPage() {
                 className="mb-5 inline-flex rounded-full px-4 py-1.5 text-xs font-medium tracking-wide"
                 style={{ backgroundColor: 'color-mix(in srgb, #6439FF 20%, transparent)', color: '#a78bfa' }}
               >
-                {t(EYEBROW)}
+                Pagesë
               </span>
-              <h1 className="font-display text-3xl font-semibold leading-tight text-white">{t(THANKS_TITLE)}</h1>
-              <p className="subtext mt-4 text-sm leading-relaxed">{t(THANKS_BODY)}</p>
+              <h1 className="font-display text-3xl font-semibold leading-tight text-white">Faleminderit!</h1>
+              <p className="subtext mt-4 text-sm leading-relaxed">
+                Pagesa u krye me sukses. Do të jemi në kontakt shpejt për të filluar punën për faqen tënde.
+              </p>
             </div>
           ) : (
             <>
@@ -61,31 +41,39 @@ export default function KroniPaymentPage() {
                   className="mb-5 inline-flex rounded-full px-4 py-1.5 text-xs font-medium tracking-wide"
                   style={{ backgroundColor: 'color-mix(in srgb, #6439FF 20%, transparent)', color: '#a78bfa' }}
                 >
-                  {t(EYEBROW)}
+                  Pagesë
                 </span>
-                <h1 className="font-display text-3xl font-semibold leading-tight text-white">{t(WELCOME_TITLE)}</h1>
-                <p className="subtext mt-4 text-sm leading-relaxed">{t(WELCOME_BODY)}</p>
+                <h1 className="font-display text-3xl font-semibold leading-tight text-white">Mirë se vjen, Kroni.</h1>
+                <p className="subtext mt-4 text-sm leading-relaxed">
+                  Kjo është faqja jote private e pagesës për punën e zhvillimit web që ramë dakord. Asgjë këtu nuk
+                  lidhet me pjesën tjetër të faqes — ky link është vetëm për ty.
+                </p>
               </div>
 
               <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.03] p-6 md:p-8">
-                <h2 className="font-display text-lg font-semibold text-white">{t(DESCRIPTION_TITLE)}</h2>
-                <p className="subtext mt-2 text-sm leading-relaxed">{t(DESCRIPTION_BODY)}</p>
+                <h2 className="font-display text-lg font-semibold text-white">Detajet e pagesës</h2>
+                <p className="subtext mt-2 text-sm leading-relaxed">
+                  Pagesë një-herëshe për shërbimin e zhvillimit web nga Avenum. Shuma bazë është €100 — nëse dëshiron,
+                  mund të shtosh edhe një bakshish më poshtë.
+                </p>
 
-                <div className="mt-6 flex items-baseline justify-between border-t border-white/10 pt-6">
-                  <span className="text-sm text-white/60">{t({ en: 'Base amount', sq: 'Shuma bazë' })}</span>
-                  <span className="font-display text-3xl font-semibold text-white">€100</span>
+                <div className="mt-6 space-y-3">
+                  {PAY_OPTIONS.map((opt) => (
+                    <a
+                      key={opt.url}
+                      href={opt.url}
+                      data-cursor
+                      className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white px-5 py-3.5 text-black transition-opacity duration-300 hover:opacity-90"
+                    >
+                      <span className="flex flex-col leading-tight">
+                        <span className="text-sm font-semibold">{opt.label}</span>
+                        <span className="text-xs text-black/50">{opt.note}</span>
+                      </span>
+                      <ArrowRight className="h-4 w-4 flex-shrink-0" />
+                    </a>
+                  ))}
                 </div>
-                <p className="subtext mt-3 text-xs leading-relaxed">{t(TIP_NOTE)}</p>
-
-                <a
-                  href={PAYMENT_LINK}
-                  data-cursor
-                  className="mt-6 flex items-center justify-center gap-2 rounded-full bg-white py-3.5 text-sm font-medium tracking-normal text-black transition-opacity duration-300 hover:opacity-90"
-                >
-                  {t(PAY_LABEL)}
-                  <ArrowRight className="h-4 w-4" />
-                </a>
-                <p className="subtext mt-3 text-center text-xs">{t(PAY_NOTE)}</p>
+                <p className="subtext mt-4 text-center text-xs">Përpunohet në mënyrë të sigurt nga PayPal.</p>
               </div>
             </>
           )}
