@@ -633,7 +633,7 @@ export default function PricingPage() {
                     {/* image */}
                     <div className="min-h-[220px] overflow-hidden border-b border-white/10 md:border-r">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="/images/15436.webp" alt="" className="h-full w-full object-cover" />
+                      <img src="/images/pricing-image.webp" alt="" className="h-full w-full object-cover" />
                     </div>
 
                     {/* card 2 */}

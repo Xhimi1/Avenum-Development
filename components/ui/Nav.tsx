@@ -251,13 +251,15 @@ export default function Nav() {
                             </button>
                           ))}
                         </div>
-                        <div className="relative">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src="/images/payment-image.webp"
-                            alt=""
-                            className="absolute inset-0 h-full w-full object-cover"
-                          />
+                        <div className="flex items-center justify-center p-6">
+                          <div className="relative h-48 w-full overflow-hidden [clip-path:polygon(0_10%,100%_0,100%_90%,0_100%)]">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src="/images/payment-image.webp"
+                              alt=""
+                              className="absolute inset-0 h-full w-full object-cover"
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>

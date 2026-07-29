@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import PageWash from '@/components/ui/PageWash';
 import BookCallPill from '@/components/ui/BookCallPill';
+import CookieConsent from '@/components/ui/CookieConsent';
 import './globals.css';
 
 const jakarta = Plus_Jakarta_Sans({
@@ -45,6 +46,7 @@ export default function RootLayout({
         <PageWash />
         {children}
         <BookCallPill />
+        <CookieConsent />
       </body>
     </html>
   );
