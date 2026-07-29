@@ -1,6 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import Logo from '@/components/ui/Logo';
 
 const PAY_OPTIONS = [
@@ -22,10 +23,19 @@ export default function KroniPaymentPage() {
         <div className="w-full max-w-lg">
           {paid ? (
             <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center md:p-10">
-              <h1 className="font-display text-5xl font-semibold leading-tight text-white">Faleminderit!</h1>
+              <h1 className="font-display text-5xl font-semibold leading-tight text-white">
+                Faleminderit për mbështetjen tuaj!
+              </h1>
               <p className="subtext mt-4 text-sm leading-relaxed">
-                Pagesa u krye me sukses. Do të jemi në kontakt shpejt për të filluar punën për faqen tënde.
+                Pagesa u krye me sukses dhe faqja jote është gati. Do të mbetemi në kontakt për çdo gjë tjetër që të nevojitet.
               </p>
+              <Link
+                href="/"
+                data-cursor
+                className="mt-8 inline-flex w-full items-center justify-center rounded-xl bg-[#6439FF] px-6 py-5 text-lg font-bold text-white transition-opacity duration-300 hover:opacity-90"
+              >
+                Kthehu në faqen kryesore
+              </Link>
             </div>
           ) : (
             <>
