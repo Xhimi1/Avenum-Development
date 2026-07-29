@@ -41,11 +41,12 @@ export default function KroniPaymentPage() {
             <>
               <div className="text-center">
                 <h1 className="font-display text-5xl font-semibold leading-tight text-white">Mirë se vjen, Kroni.</h1>
+                <p className="subtext mt-4 text-base opacity-70 md:text-lg">
+                  Çmimet më poshtë janë të siguruara nga PayPal.
+                </p>
               </div>
 
               <div className="mt-8">
-                <h2 className="font-display text-center text-lg font-semibold text-white">Detajet e pagesës</h2>
-
                 <div className="mt-6 space-y-3">
                   {PAY_OPTIONS.map((opt, i) => (
                     <a
