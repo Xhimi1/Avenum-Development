@@ -42,16 +42,24 @@ export default function KroniPaymentPage() {
                       key={opt.url}
                       href={opt.url}
                       data-cursor
-                      className="flex w-full flex-col items-center justify-center gap-1 rounded-xl bg-gradient-to-br from-[#FF97D0] to-[#6439FF] px-5 py-5 text-center text-white transition-opacity duration-300 hover:opacity-90"
+                      className="flex w-full flex-col items-center justify-center gap-1 rounded-xl bg-[#6439FF] px-5 py-5 text-center text-white transition-opacity duration-300 hover:opacity-90"
                     >
-                      <span className="text-lg font-bold">{opt.label}</span>
+                      <span className="flex items-center gap-2 text-lg font-bold">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src="/images/PayPal_Logo_Icon_2014.svg"
+                          alt=""
+                          className="h-5 w-5 flex-shrink-0 brightness-0 invert"
+                        />
+                        {opt.label}
+                      </span>
                       <span className="flex items-center gap-1.5 text-xs font-semibold text-white">
                         {i > 0 && (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img
                             src="/images/emoji-smile-face.svg"
                             alt=""
-                            className="h-4 w-4 flex-shrink-0 brightness-0 invert"
+                            className="h-4 w-4 flex-shrink-0"
                           />
                         )}
                         {opt.note}
