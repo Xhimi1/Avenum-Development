@@ -42,6 +42,14 @@ export default function Nav() {
   const [servicesOpen, setServicesOpen] = useState(false);
   const servicesRef = useRef<HTMLDivElement>(null);
   const servicesCloseTimeout = useRef<number | null>(null);
+  const headerRef = useRef<HTMLElement>(null);
+  const [headerHeight, setHeaderHeight] = useState(0);
+  useEffect(() => {
+    const measure = () => setHeaderHeight(headerRef.current?.offsetHeight ?? 0);
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, []);
   const clearServicesCloseTimeout = () => {
     if (servicesCloseTimeout.current != null) {
       window.clearTimeout(servicesCloseTimeout.current);
@@ -161,7 +169,10 @@ export default function Nav() {
         )}
       />
       {/* full-width bar, border only at the bottom, always visible */}
-      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black">
+      <header
+        ref={headerRef}
+        className="pointer-events-none fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black"
+      >
         <div className="pointer-events-auto mx-auto flex w-full max-w-[90rem] items-center justify-between px-6 py-2.5 md:px-12">
           <Logo onClick={() => go(0)} className="text-2xl text-white" />
 
@@ -204,19 +215,23 @@ export default function Nav() {
                       </svg>
                     </button>
 
-                    {/* dropdown — anchored under the Services link, fades in fast while sliding up into place */}
+                    {/* dropdown — full viewport width, flush under the header;
+                        a clip-path wipe grows it open top-down (not a slide/fade)
+                        and eases back to nothing on close. No corner radius:
+                        it reads as a shelf under the header, not a floating card. */}
                     <div
                       onMouseEnter={openServices}
                       onMouseLeave={scheduleCloseServices}
+                      style={{ top: headerHeight }}
                       className={cn(
-                        'absolute left-0 top-full z-10 mt-3 w-[22rem] rounded-md border border-white/15 bg-black shadow-2xl transition-all duration-150 ease-out',
+                        'fixed inset-x-0 z-10 overflow-hidden border-b border-white/15 bg-black shadow-2xl transition-[clip-path] duration-500 ease-out',
                         servicesOpen
-                          ? 'pointer-events-auto translate-y-0 opacity-100'
-                          : 'pointer-events-none translate-y-2 opacity-0'
+                          ? 'pointer-events-auto [clip-path:inset(0_0_0_0)]'
+                          : 'pointer-events-none [clip-path:inset(0_0_100%_0)]'
                       )}
                     >
-                      <div className="p-2">
-                        <div className="grid grid-cols-2 gap-1">
+                      <div className="mx-auto grid w-full max-w-6xl grid-cols-2">
+                        <div className="flex flex-col gap-1 p-6">
                           {NAV_SERVICES.map((svc) => (
                             <button
                               key={svc.href}
@@ -226,7 +241,7 @@ export default function Nav() {
                                 setServicesOpen(false);
                                 goToService(svc.href, svc.accent);
                               }}
-                              className="flex items-center gap-3 rounded-md px-3 py-2.5 text-left transition-colors duration-200 hover:bg-white/10"
+                              className="flex items-center gap-3 px-3 py-2.5 text-left transition-colors duration-200 hover:bg-white/10"
                             >
                               <ServiceIcon id={svc.id} className="h-5 w-5 shrink-0 text-white" />
                               <div className="min-w-0">
@@ -235,6 +250,14 @@ export default function Nav() {
                               </div>
                             </button>
                           ))}
+                        </div>
+                        <div className="relative">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src="/images/payment-image.webp"
+                            alt=""
+                            className="absolute inset-0 h-full w-full object-cover"
+                          />
                         </div>
                       </div>
                     </div>
