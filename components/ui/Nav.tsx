@@ -15,7 +15,7 @@ import Logo from '@/components/ui/Logo';
 import ServiceIcon from '@/components/services/ServiceIcon';
 import { EMAIL } from '@/lib/contact';
 
-const PRICING_LABEL = { en: 'Pricing', sq: 'Çmimet' };
+const PRICING_LABEL = { en: 'Pricing', sq: 'Paketat' };
 const BACK_LABEL = { en: 'Back', sq: 'Kthehu' };
 const REMOTE_LINE = {
   en: 'Tirana · we build for other cities too',

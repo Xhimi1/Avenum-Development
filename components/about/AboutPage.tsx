@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef } from 'react';
 import { gsap } from '@/lib/gsap';
-import { cn, prefersReducedMotion } from '@/lib/utils';
+import { prefersReducedMotion } from '@/lib/utils';
 import { useT, type Bi } from '@/lib/i18n';
 import FadeIn from '@/components/ui/FadeIn';
 import SplitText from '@/components/ui/SplitText';
@@ -18,8 +18,8 @@ import { whatsappHref } from '@/lib/contact';
 const EYEBROW: Bi = { en: 'About', sq: 'Rreth Nesh' };
 
 const HEADING: Bi = {
-  en: 'A small studio, big on results.',
-  sq: 'Një studio e vogël, me rezultate të mëdha.',
+  en: "Wherever you are, we're here to help.",
+  sq: 'Kudo që jeni, ju vijmë në ndihmë.',
 };
 
 const SUBHEADING: Bi = {
@@ -90,29 +90,6 @@ const CTA_BODY: Bi = {
 const CTA_LABEL: Bi = { en: 'Start your project', sq: 'Nis projektin tënd' };
 const CTA_WA_MESSAGE: Bi = { en: "Hi! I'd like to know more about Avenum.", sq: 'Përshëndetje! Do të doja të mësoja më shumë rreth Avenum.' };
 
-const STARS: Array<{ top: string; left: string; size: number; delay: string; bright?: boolean }> = [
-  { top: '12%', left: '8%', size: 2, delay: '0s' },
-  { top: '22%', left: '85%', size: 3, delay: '0.6s', bright: true },
-  { top: '35%', left: '72%', size: 2, delay: '1.2s' },
-  { top: '48%', left: '12%', size: 2, delay: '0.9s' },
-  { top: '62%', left: '92%', size: 2, delay: '0.3s' },
-  { top: '75%', left: '20%', size: 3, delay: '1.5s', bright: true },
-  { top: '85%', left: '65%', size: 2, delay: '0.7s' },
-  { top: '8%', left: '45%', size: 2, delay: '1.1s' },
-  { top: '5%', left: '65%', size: 2, delay: '0.4s' },
-  { top: '15%', left: '28%', size: 3, delay: '1.7s' },
-  { top: '28%', left: '5%', size: 2, delay: '0.2s' },
-  { top: '30%', left: '95%', size: 2, delay: '1.4s' },
-  { top: '40%', left: '38%', size: 2, delay: '0.8s' },
-  { top: '42%', left: '58%', size: 3, delay: '1.9s' },
-  { top: '55%', left: '25%', size: 2, delay: '0.5s' },
-  { top: '58%', left: '78%', size: 2, delay: '1.0s' },
-  { top: '68%', left: '48%', size: 3, delay: '0.1s', bright: true },
-  { top: '72%', left: '5%', size: 2, delay: '1.6s' },
-  { top: '80%', left: '88%', size: 2, delay: '0.9s' },
-  { top: '90%', left: '35%', size: 2, delay: '1.3s' },
-];
-
 /** Count-up reveal: the numeric part ticks up from 0 to its target, suffix stays static. */
 function CountUpValue({ value }: { value: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -177,36 +154,7 @@ export default function AboutPage() {
         {/* deep-teal hero + stats backdrop, same treatment as Pricing's hero */}
         <div className="relative">
           <div ref={bgRef} aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-            <div
-              className="absolute inset-0"
-              style={{ background: '#0F0824' }}
-            />
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  'repeating-linear-gradient(125deg, transparent 0px, transparent 130px, rgba(255,255,255,0.04) 175px, rgba(255,255,255,0.10) 210px, rgba(255,255,255,0.04) 245px, transparent 300px, transparent 430px)',
-              }}
-            />
-            <div
-              className="absolute -top-40 left-1/2 h-[42rem] w-[42rem] -translate-x-1/2 rounded-full blur-3xl"
-              style={{ background: 'radial-gradient(circle, rgba(15,48,64,0.25), transparent 70%)' }}
-            />
-            {STARS.map((s, i) => (
-              <span
-                key={i}
-                className={cn('svc-pulse absolute rounded-full', s.bright ? 'bg-white' : 'bg-white/60')}
-                style={{
-                  top: s.top,
-                  left: s.left,
-                  width: s.size,
-                  height: s.size,
-                  animationDelay: s.delay,
-                  boxShadow: s.bright ? '0 0 8px 2px rgba(255,255,255,0.8)' : undefined,
-                }}
-              />
-            ))}
-            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-[#0F0824]" />
+            <div className="absolute inset-0" style={{ background: '#0F0824' }} />
           </div>
 
           {/* hero — content left, site mockup right on desktop, stacked on mobile */}
@@ -225,7 +173,7 @@ export default function AboutPage() {
                   as="h1"
                   delay={0.15}
                   animate
-                  className="font-display text-[clamp(2rem,5.5vw,3.8rem)] font-semibold leading-[1.05]"
+                  className="font-display text-[clamp(1.6rem,4vw,2.8rem)] font-semibold leading-[1.05]"
                 >
                   {t(HEADING)}
                 </SplitText>
@@ -248,7 +196,7 @@ export default function AboutPage() {
 
               <div className="relative max-md:-mx-6">
                 <RevealImage>
-                  <div className="relative overflow-hidden rounded-2xl max-md:aspect-[4/5] max-md:rounded-none max-md:[clip-path:polygon(0_28%,100%_0,100%_72%,0_100%)]">
+                  <div className="relative overflow-hidden max-md:aspect-[4/5] max-md:[clip-path:polygon(0_28%,100%_0,100%_72%,0_100%)] md:rounded-none md:[clip-path:polygon(0_0,100%_8%,100%_100%,0_92%)]">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src="/images/AVENUM-MOCKUP%20(1).webp"

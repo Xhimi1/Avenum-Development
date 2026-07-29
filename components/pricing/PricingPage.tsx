@@ -420,7 +420,7 @@ export default function PricingPage() {
                   color: '#a78bfa',
                 }}
               >
-                {t({ en: 'Pricing', sq: 'Çmimet' })}
+                {t({ en: 'Pricing', sq: 'Paketat' })}
               </span>
             </FadeIn>
             <SplitText

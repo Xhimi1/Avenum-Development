@@ -118,6 +118,50 @@ html.lenis body {
   touch-action: pan-y !important;
 }
 
+/* A soft gray band, the same shape as the element, that grows outward from
+   its edge by an equal number of pixels on every side (animating `inset`,
+   not `transform: scale` — scale grows a wide-but-short pill's sides faster
+   than its top/bottom, since it multiplies each axis by its own dimension)
+   and fades out, repeating every few seconds — like a radar ping. `padding`
+   grows in lockstep with `inset` shrinking, so the masked-out hole in the
+   middle (content-box) always lands exactly on the element's original
+   footprint — the fill never overlaps the box's own content, at any point
+   in the animation, however transparent that content's own colors are.
+   Drop <span aria-hidden class="wave-ring" /> in as a child of a `relative`
+   element; it matches the parent's size/shape via `inset: 0` and
+   `border-radius: inherit`. */
+.wave-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(191, 201, 209, 0.5);
+  animation: wave-ring-pulse 3s ease-out infinite;
+  pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+@keyframes wave-ring-pulse {
+  0% {
+    inset: 0;
+    padding: 0;
+    opacity: 0.6;
+  }
+  100% {
+    inset: -14px;
+    padding: 14px;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wave-ring {
+    animation: none;
+    display: none;
+  }
+}
+
 /* ---- Flat 2D motion graphics for the white service-landing pages ---- */
 @keyframes svc-blob {
   0%, 100% { border-radius: 42% 58% 65% 35% / 45% 45% 55% 55%; }
