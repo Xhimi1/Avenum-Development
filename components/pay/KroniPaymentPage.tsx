@@ -23,13 +23,7 @@ export default function KroniPaymentPage() {
         <div className="w-full max-w-md">
           {paid ? (
             <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center md:p-10">
-              <span
-                className="mb-5 inline-flex rounded-full px-4 py-1.5 text-xs font-medium tracking-wide"
-                style={{ backgroundColor: 'color-mix(in srgb, #6439FF 20%, transparent)', color: '#a78bfa' }}
-              >
-                Pagesë
-              </span>
-              <h1 className="font-display text-3xl font-semibold leading-tight text-white">Faleminderit!</h1>
+              <h1 className="font-display text-5xl font-semibold leading-tight text-white">Faleminderit!</h1>
               <p className="subtext mt-4 text-sm leading-relaxed">
                 Pagesa u krye me sukses. Do të jemi në kontakt shpejt për të filluar punën për faqen tënde.
               </p>
@@ -37,25 +31,11 @@ export default function KroniPaymentPage() {
           ) : (
             <>
               <div className="text-center">
-                <span
-                  className="mb-5 inline-flex rounded-full px-4 py-1.5 text-xs font-medium tracking-wide"
-                  style={{ backgroundColor: 'color-mix(in srgb, #6439FF 20%, transparent)', color: '#a78bfa' }}
-                >
-                  Pagesë
-                </span>
-                <h1 className="font-display text-3xl font-semibold leading-tight text-white">Mirë se vjen, Kroni.</h1>
-                <p className="subtext mt-4 text-sm leading-relaxed">
-                  Kjo është faqja jote private e pagesës për punën e zhvillimit web që ramë dakord. Asgjë këtu nuk
-                  lidhet me pjesën tjetër të faqes — ky link është vetëm për ty.
-                </p>
+                <h1 className="font-display text-5xl font-semibold leading-tight text-white">Mirë se vjen, Kroni.</h1>
               </div>
 
               <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.03] p-6 md:p-8">
                 <h2 className="font-display text-lg font-semibold text-white">Detajet e pagesës</h2>
-                <p className="subtext mt-2 text-sm leading-relaxed">
-                  Pagesë një-herëshe për shërbimin e zhvillimit web nga Avenum. Shuma bazë është €100 — nëse dëshiron,
-                  mund të shtosh edhe një bakshish më poshtë.
-                </p>
 
                 <div className="mt-6 space-y-3">
                   {PAY_OPTIONS.map((opt) => (
@@ -67,7 +47,7 @@ export default function KroniPaymentPage() {
                     >
                       <span className="flex flex-col leading-tight">
                         <span className="text-sm font-semibold">{opt.label}</span>
-                        <span className="text-xs text-black/50">{opt.note}</span>
+                        <span className="text-xs text-black">{opt.note}</span>
                       </span>
                       <ArrowRight className="h-4 w-4 flex-shrink-0" />
                     </a>
