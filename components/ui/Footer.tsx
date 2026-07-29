@@ -19,6 +19,7 @@ const HOME_LABEL: Bi = { en: 'Home', sq: 'Kreu' };
 const PRICING_LABEL: Bi = { en: 'Pricing', sq: 'Paketat' };
 const PRIVACY_LABEL: Bi = { en: 'Privacy Policy', sq: 'Privatësia' };
 const TERMS_LABEL: Bi = { en: 'Terms of Service', sq: 'Kushtet' };
+const COOKIES_LABEL: Bi = { en: 'Cookie Policy', sq: 'Cookies' };
 const COPYRIGHT: Bi = {
   en: '© 2026 Avenum — All rights reserved',
   sq: '© 2026 Avenum — Të gjitha të drejtat e rezervuara',
@@ -161,6 +162,11 @@ export default function Footer({
             <li>
               <Link href="/terms-of-service" data-cursor className={linkClass}>
                 {t(TERMS_LABEL)}
+              </Link>
+            </li>
+            <li>
+              <Link href="/cookies" data-cursor className={linkClass}>
+                {t(COOKIES_LABEL)}
               </Link>
             </li>
           </ul>

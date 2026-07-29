@@ -15,8 +15,6 @@ import { whatsappHref, WA_MESSAGE } from '@/lib/contact';
 
 /* ---- copy ---- */
 
-const EYEBROW: Bi = { en: 'About', sq: 'Rreth Nesh' };
-
 const HEADING: Bi = {
   en: "Wherever you are, we're here to help.",
   sq: 'Kudo që jeni, ju vijmë në ndihmë.',
@@ -40,7 +38,6 @@ const MISSION_TEXT: Bi = {
   sq: 'Ne jemi një agjenci web e fokusuar tërësisht në strategjinë për rritjen e biznesit tuaj — duke e bërë biznesin tuaj unik dhe duke eliminuar çdo konkurrencë.',
 };
 
-const VALUES_EYEBROW: Bi = { en: 'How we work', sq: 'Si punojmë' };
 const VALUES_HEADING: Bi = {
   en: 'What you can expect.',
   sq: 'Çfarë të presësh.',
@@ -157,22 +154,14 @@ export default function AboutPage() {
           </div>
 
           {/* hero — content left, site mockup right on desktop, stacked on mobile */}
-          <section className="relative px-6 pt-24 md:px-12 md:pt-28">
+          <section className="relative px-6 pt-36 md:px-12 md:pt-40">
             <div className="mx-auto grid w-full max-w-6xl items-center gap-10 text-center md:grid-cols-2 md:gap-16 md:text-left">
               <div>
-                <FadeIn className="mb-5 flex justify-center md:justify-start">
-                  <span
-                    className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide"
-                    style={{ backgroundColor: 'rgba(255,255,255,0.14)', color: '#ffffff' }}
-                  >
-                    {t(EYEBROW)}
-                  </span>
-                </FadeIn>
                 <SplitText
                   as="h1"
                   delay={0.15}
                   animate
-                  className="font-display text-[clamp(1.6rem,4vw,2.8rem)] font-semibold leading-[1.05]"
+                  className="font-display text-[clamp(2.4rem,6.5vw,4.8rem)] font-semibold leading-[0.98]"
                 >
                   {t(HEADING)}
                 </SplitText>
@@ -193,7 +182,7 @@ export default function AboutPage() {
                 </FadeIn>
               </div>
 
-              <div className="relative max-md:-mx-6">
+              <div className="relative max-md:-mx-6 max-md:-mt-16">
                 <RevealImage>
                   <div className="relative overflow-hidden max-md:aspect-[4/5] max-md:[clip-path:polygon(0_28%,100%_0,100%_72%,0_100%)] md:rounded-none md:[clip-path:polygon(0_0,100%_8%,100%_100%,0_92%)]">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -280,14 +269,6 @@ export default function AboutPage() {
         <section className="relative px-6 py-16 md:px-12 md:py-24">
           <div className="mx-auto w-full max-w-6xl">
             <div className="mb-10 max-w-2xl md:mb-14">
-              <FadeIn className="mb-4 flex">
-                <span
-                  className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide"
-                  style={{ backgroundColor: 'rgba(255,255,255,0.14)', color: '#ffffff' }}
-                >
-                  {t(VALUES_EYEBROW)}
-                </span>
-              </FadeIn>
               <SplitText
                 as="h2"
                 className="font-display text-[clamp(1.9rem,4.5vw,3.2rem)] font-semibold leading-[1.05]"

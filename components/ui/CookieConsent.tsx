@@ -66,7 +66,7 @@ export default function CookieConsent() {
               <p className="text-sm font-semibold text-white">{t(TITLE)}</p>
               <p className="subtext mt-1 max-w-xl text-xs leading-relaxed">
                 {t(BODY)}{' '}
-                <Link href="/privacy-policy" className="underline underline-offset-2 hover:text-white">
+                <Link href="/cookies" className="underline underline-offset-2 hover:text-white">
                   {t(LEARN_MORE)}
                 </Link>
               </p>

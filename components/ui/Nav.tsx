@@ -230,8 +230,8 @@ export default function Nav() {
                           : 'pointer-events-none [clip-path:inset(0_0_100%_0)]'
                       )}
                     >
-                      <div className="mx-auto grid w-full max-w-6xl grid-cols-2">
-                        <div className="flex flex-col gap-1 p-6">
+                      <div className="mx-auto grid w-full max-w-3xl grid-cols-2 items-center gap-8 py-6">
+                        <div className="flex flex-col gap-1">
                           {NAV_SERVICES.map((svc) => (
                             <button
                               key={svc.href}
@@ -251,11 +251,11 @@ export default function Nav() {
                             </button>
                           ))}
                         </div>
-                        <div className="flex items-center justify-center p-6">
-                          <div className="relative h-48 w-full overflow-hidden [clip-path:polygon(0_10%,100%_0,100%_90%,0_100%)]">
+                        <div className="flex items-center justify-center">
+                          <div className="relative h-72 w-full overflow-hidden [clip-path:polygon(0_4%,100%_0,100%_96%,0_100%)]">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
-                              src="/images/payment-image.webp"
+                              src="/images/dropdown-image.webp"
                               alt=""
                               className="absolute inset-0 h-full w-full object-cover"
                             />

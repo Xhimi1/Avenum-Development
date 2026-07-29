@@ -1,8 +1,6 @@
 'use client';
 
-import { useLayoutEffect, useRef } from 'react';
-import { gsap } from '@/lib/gsap';
-import { cn, prefersReducedMotion } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { useT, type Bi } from '@/lib/i18n';
 import FadeIn from '@/components/ui/FadeIn';
 import SplitText from '@/components/ui/SplitText';
@@ -14,23 +12,6 @@ import { whatsappHref, WA_MESSAGE } from '@/lib/contact';
 
 
 /* ---- tiny inline icons ---- */
-
-function IconCheck({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden className={className}>
-      <circle cx="12" cy="12" r="9" opacity={0.35} />
-      <path d="m8.5 12.2 2.4 2.4 4.6-5" />
-    </svg>
-  );
-}
-
-function IconMinus({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden className={className}>
-      <line x1="7" y1="12" x2="17" y2="12" />
-    </svg>
-  );
-}
 
 function IconClock({ className }: { className?: string }) {
   return (
@@ -185,45 +166,6 @@ const AGENCY_COMPARISON: AgencyComparisonCard[] = [
   },
 ];
 
-type CompareValue = boolean | Bi;
-
-const COMPARE_ROWS: Array<[Bi, CompareValue, CompareValue, CompareValue]> = [
-  [{ en: 'Custom design', sq: 'Dizajn i personalizuar' }, true, true, true],
-  [
-    { en: 'Pages', sq: 'Faqe' },
-    { en: 'Up to 3', sq: 'Deri në 3' },
-    { en: 'Up to 10', sq: 'Deri në 10' },
-    { en: 'Unlimited', sq: 'Pa limit' },
-  ],
-  [
-    { en: 'Motion & animations', sq: 'Animacione & lëvizje' },
-    { en: 'Essentials', sq: 'Bazë' },
-    { en: 'Advanced', sq: 'Të avancuara' },
-    { en: 'Bespoke', sq: 'Të personalizuara' },
-  ],
-  [{ en: 'Edit content yourself, no code', sq: 'Modifiko vetë përmbajtjen, pa kod' }, false, true, true],
-  [
-    { en: 'E-commerce', sq: 'E-commerce' },
-    false,
-    { en: 'On request', sq: 'Sipas kërkesës' },
-    true,
-  ],
-  [{ en: 'AI chatbot', sq: 'AI chatbot' }, false, false, true],
-  [
-    { en: 'Languages', sq: 'Gjuhë' },
-    { en: '1', sq: '1' },
-    { en: 'AL · EN · IT', sq: 'AL · EN · IT' },
-    { en: 'Unlimited', sq: 'Pa limit' },
-  ],
-  [{ en: 'SEO & analytics', sq: 'SEO & analitika' }, true, true, true],
-  [
-    { en: 'Support after launch', sq: 'Mbështetje pas lançimit' },
-    { en: '1 month', sq: '1 muaj' },
-    { en: '3 months', sq: '3 muaj' },
-    { en: 'Ongoing', sq: 'Vazhdueshme' },
-  ],
-];
-
 const STARS: Array<{ top: string; left: string; size: number; delay: string; bright?: boolean }> = [
   { top: '12%', left: '8%', size: 2, delay: '0s' },
   { top: '22%', left: '85%', size: 3, delay: '0.6s', bright: true },
@@ -309,43 +251,8 @@ function TierMetaFeatures({ tier, t }: { tier: Tier; t: (bi: Bi) => string }) {
   );
 }
 
-function CompareCell({
-  value,
-  featured,
-  t,
-}: {
-  value: CompareValue;
-  featured?: boolean;
-  t: (bi: Bi) => string;
-}) {
-  if (value === true) {
-    return <IconCheck className={cn('mx-auto h-5 w-5', featured ? 'text-[#a78bfa]' : 'text-white/70')} />;
-  }
-  if (value === false) {
-    return <IconMinus className="mx-auto h-5 w-5 text-white/20" />;
-  }
-  return <span className={cn('text-xs', featured ? 'text-white' : 'text-white/70')}>{t(value)}</span>;
-}
-
 export default function PricingPage() {
   const t = useT();
-  const bgRef = useRef<HTMLDivElement>(null);
-
-  // On load the heading/subheading reveal first (SplitText/FadeIn), then the
-  // decorative background — gradient, light stripes, glow — fades in over the
-  // flat base color a beat later.
-  useLayoutEffect(() => {
-    const bg = bgRef.current;
-    if (!bg || prefersReducedMotion()) return;
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        bg,
-        { opacity: 0 },
-        { opacity: 1, duration: 2.6, ease: 'power2.out', delay: 0.7 }
-      );
-    });
-    return () => ctx.revert();
-  }, []);
 
   return (
     <div className="isolate min-h-screen overflow-x-clip bg-[#0F0824] text-[#f2f4ff]">
@@ -356,7 +263,7 @@ export default function PricingPage() {
             scoped to the hero + plan cards only, same as the Chatbots page;
             a black fade at the bottom blends into the plain black body below. */}
         <div className="relative">
-          <div ref={bgRef} aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
             {/* base purple gradient */}
             <div
               className="absolute inset-0"
@@ -399,17 +306,6 @@ export default function PricingPage() {
         {/* hero */}
         <section className="relative px-6 pt-24 text-center md:px-12 md:pt-28">
           <div className="mx-auto max-w-3xl">
-            <FadeIn className="mb-5 flex justify-center">
-              <span
-                className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide"
-                style={{
-                  backgroundColor: 'color-mix(in srgb, #a78bfa 18%, transparent)',
-                  color: '#a78bfa',
-                }}
-              >
-                {t({ en: 'Pricing', sq: 'Paketat' })}
-              </span>
-            </FadeIn>
             <SplitText
               as="h1"
               delay={0.15}
@@ -522,81 +418,12 @@ export default function PricingPage() {
         </section>
         </div>
 
-        {/* comparison */}
-        <section className="relative px-6 py-16 md:px-12 md:py-24">
-          <div className="mx-auto w-full max-w-6xl">
-            <div className="mb-10 text-center md:mb-14">
-              <SplitText
-                as="h2"
-                animate
-                className="font-display text-[clamp(1.9rem,4.5vw,3.4rem)] font-semibold leading-[0.98]"
-              >
-                {t({ en: 'Compare the plans.', sq: 'Krahaso planet.' })}
-              </SplitText>
-              <FadeIn delay={0.15}>
-                <p className="subtext mx-auto mt-4 max-w-md text-sm">
-                  {t({
-                    en: 'Everything each package includes, side by side.',
-                    sq: 'Gjithçka që përfshin çdo paketë, krah për krah.',
-                  })}
-                </p>
-              </FadeIn>
-            </div>
-
-            <FadeIn delay={0.2}>
-              <div className="glass overflow-hidden rounded-3xl bg-white/[0.02]">
-                <div className="overflow-x-auto">
-                  <table className="w-full min-w-[640px] text-left">
-                    <thead>
-                      <tr className="border-b border-white/10">
-                        <th className="px-5 py-5 text-xs font-normal tracking-normal text-white/40 md:px-7">
-                          {t({ en: 'What you get', sq: 'Çfarë përfshin' })}
-                        </th>
-                        {TIERS.map((tier) => (
-                          <th
-                            key={tier.id}
-                            className={cn(
-                              'px-4 py-5 text-center font-display text-sm font-semibold md:text-base',
-                              tier.featured && 'bg-[#8b5cf6]/[0.18] text-[#c4b5fd]'
-                            )}
-                          >
-                            {tier.name}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {COMPARE_ROWS.map(([label, ...values], ri) => (
-                        <tr key={ri} className="border-b border-white/5 last:border-0">
-                          <td className="px-5 py-4 text-sm text-white/75 md:px-7">{t(label)}</td>
-                          {values.map((v, i) => (
-                            <td
-                              key={i}
-                              className={cn(
-                                'px-4 py-4 text-center',
-                                TIERS[i].featured && 'bg-[#8b5cf6]/[0.18]'
-                              )}
-                            >
-                              <CompareCell value={v} featured={TIERS[i].featured} t={t} />
-                            </td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
-        </section>
-
         {/* why this investment — us vs. typical agencies in Albania */}
         <section className="relative px-6 py-16 md:px-12 md:py-24">
           <div className="mx-auto w-full max-w-6xl">
             <div className="mb-10 text-center md:mb-14">
               <SplitText
                 as="h2"
-                animate
                 className="font-display text-[clamp(1.9rem,4.5vw,3.4rem)] font-semibold leading-[0.98]"
               >
                 {t({ en: 'Why this investment is the best choice.', sq: 'Pse ky investim është zgjedhja më e mirë.' })}
@@ -685,7 +512,6 @@ export default function PricingPage() {
             <div className="order-2 md:order-1">
               <SplitText
                 as="h2"
-                animate
                 className="font-display text-[clamp(2.2rem,6.5vw,5rem)] font-semibold leading-[0.98]"
               >
                 {t({ en: 'Still deciding?', sq: 'Ende në mëdyshje?' })}
