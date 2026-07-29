@@ -41,6 +41,14 @@ export default function KroniPaymentPage() {
               <p className="subtext mt-4 text-sm leading-relaxed">
                 Pagesa u krye me sukses dhe faqja jote është gati. Do të mbetemi në kontakt për çdo gjë tjetër që të nevojitet.
               </p>
+
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/payment-image.webp"
+                alt="Faqja e Kroni Restaurant"
+                className="mt-6 w-full rounded-2xl border border-white/10 object-cover"
+              />
+
               <Link
                 href="/"
                 data-cursor
@@ -78,13 +86,6 @@ export default function KroniPaymentPage() {
                   Çmimet më poshtë janë të siguruara nga PayPal.
                 </p>
               </div>
-
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/images/payment-image.webp"
-                alt="Faqja e Kroni Restaurant"
-                className="mt-8 w-full rounded-2xl border border-white/10 object-cover"
-              />
 
               <div className="mt-8">
                 <div className="mt-6 space-y-3">
