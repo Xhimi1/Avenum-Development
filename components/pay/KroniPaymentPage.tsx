@@ -5,7 +5,7 @@ import { useT, type Bi } from '@/lib/i18n';
 import Logo from '@/components/ui/Logo';
 import ArrowRight from '@/components/ui/ArrowRight';
 
-const PAYMENT_LINK = 'https://www.paypal.com/ncp/payment/PLB-AZ9HNERNWM7U';
+const PAYMENT_LINK = 'https://www.paypal.com/ncp/payment/PLB-Q5MVS23NYQRK';
 
 const EYEBROW: Bi = { en: 'Payment', sq: 'Pagesë' };
 const WELCOME_TITLE: Bi = { en: 'Welcome, Kroni.', sq: 'Mirë se vjen, Kroni.' };
@@ -19,7 +19,11 @@ const DESCRIPTION_BODY: Bi = {
   en: 'One-time payment for web development services provided by Avenum.',
   sq: 'Pagesë një-herëshe për shërbimin e zhvillimit web nga Avenum.',
 };
-const PAY_LABEL: Bi = { en: 'Pay €100 securely', sq: 'Paguaj €100 në mënyrë të sigurt' };
+const TIP_NOTE: Bi = {
+  en: "If you'd like to add a tip, you can pick a total of €110, €125 or €150 on the next screen — totally optional.",
+  sq: 'Nëse dëshiron të shtosh një bakshish, në ekranin tjetër mund të zgjedhësh një total prej €110, €125 ose €150 — plotësisht opsionale.',
+};
+const PAY_LABEL: Bi = { en: 'Continue to payment', sq: 'Vazhdo te pagesa' };
 const PAY_NOTE: Bi = { en: 'Handled securely by PayPal.', sq: 'Përpunohet në mënyrë të sigurt nga PayPal.' };
 
 const THANKS_TITLE: Bi = { en: 'Thank you!', sq: 'Faleminderit!' };
@@ -68,9 +72,10 @@ export default function KroniPaymentPage() {
                 <p className="subtext mt-2 text-sm leading-relaxed">{t(DESCRIPTION_BODY)}</p>
 
                 <div className="mt-6 flex items-baseline justify-between border-t border-white/10 pt-6">
-                  <span className="text-sm text-white/60">{t({ en: 'Total due', sq: 'Totali për pagesë' })}</span>
+                  <span className="text-sm text-white/60">{t({ en: 'Base amount', sq: 'Shuma bazë' })}</span>
                   <span className="font-display text-3xl font-semibold text-white">€100</span>
                 </div>
+                <p className="subtext mt-3 text-xs leading-relaxed">{t(TIP_NOTE)}</p>
 
                 <a
                   href={PAYMENT_LINK}
