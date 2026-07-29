@@ -2,13 +2,12 @@
 
 import { useSearchParams } from 'next/navigation';
 import Logo from '@/components/ui/Logo';
-import ArrowRight from '@/components/ui/ArrowRight';
 
 const PAY_OPTIONS = [
-  { label: 'Paguaj €100', note: 'Pa bakshësh', url: 'https://www.paypal.com/ncp/payment/PLB-WCA46ZQY6BNP' },
-  { label: 'Paguaj €110', note: '+€10 bakshësh', url: 'https://www.paypal.com/ncp/payment/PLB-VPDVC5KRG8C2' },
-  { label: 'Paguaj €125', note: '+€25 bakshësh', url: 'https://www.paypal.com/ncp/payment/PLB-ZMNAK5MCTSW5' },
-  { label: 'Paguaj €130', note: '+€30 bakshësh', url: 'https://www.paypal.com/ncp/payment/PLB-AMAPTADANVV3' },
+  { label: 'Paguaj €100', note: 'Pa suport', url: 'https://www.paypal.com/ncp/payment/PLB-WCA46ZQY6BNP' },
+  { label: 'Paguaj €110', note: '+€10 suport', url: 'https://www.paypal.com/ncp/payment/PLB-VPDVC5KRG8C2' },
+  { label: 'Paguaj €125', note: '+€25 suport', url: 'https://www.paypal.com/ncp/payment/PLB-ZMNAK5MCTSW5' },
+  { label: 'Paguaj €130', note: '+€30 suport', url: 'https://www.paypal.com/ncp/payment/PLB-AMAPTADANVV3' },
 ];
 
 export default function KroniPaymentPage() {
@@ -35,29 +34,28 @@ export default function KroniPaymentPage() {
               </div>
 
               <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.03] p-6 md:p-8">
-                <h2 className="font-display text-lg font-semibold text-white">Detajet e pagesës</h2>
+                <h2 className="font-display text-center text-lg font-semibold text-white">Detajet e pagesës</h2>
 
                 <div className="mt-6 space-y-3">
-                  {PAY_OPTIONS.map((opt) => (
+                  {PAY_OPTIONS.map((opt, i) => (
                     <a
                       key={opt.url}
                       href={opt.url}
                       data-cursor
-                      className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white px-5 py-4 text-black transition-opacity duration-300 hover:opacity-90"
+                      className="flex flex-col items-center justify-center gap-1 rounded-xl bg-[#FB6C00] px-5 py-4 text-center text-white transition-opacity duration-300 hover:opacity-90"
                     >
-                      <span className="flex flex-col leading-tight">
-                        <span className="text-lg font-semibold">{opt.label}</span>
-                        <span className="mt-1 flex items-center gap-1.5 text-xs text-black">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <span className="text-lg font-bold">{opt.label}</span>
+                      <span className="flex items-center gap-1.5 text-xs font-semibold text-white">
+                        {i > 0 && (
+                          // eslint-disable-next-line @next/next/no-img-element
                           <img
-                            src="/images/emoji-face-straight-satisfactory-svgrepo-com.svg"
+                            src="/images/emoji-smile-face.svg"
                             alt=""
                             className="h-4 w-4 flex-shrink-0"
                           />
-                          {opt.note}
-                        </span>
+                        )}
+                        {opt.note}
                       </span>
-                      <ArrowRight className="h-6 w-6 flex-shrink-0" />
                     </a>
                   ))}
                 </div>
