@@ -330,9 +330,10 @@ export default function Nav() {
         </div>
       </header>
 
-      {/* Mobile full-screen menu — a clip-path wipe grows it open top-down
-          (not a slide/fade), driven by React state (no imperative timelines).
-          Slower than the old circular reveal so the expand actually reads. */}
+      {/* Mobile full-screen menu — same black as the header, so its clip-path
+          wipe (no fade — pure expand, growing from the very top down) reads
+          as the header's own bottom border extending into a full panel,
+          not a separate floating overlay. */}
       <div
         id="mobile-menu"
         role="dialog"
@@ -341,11 +342,11 @@ export default function Nav() {
         aria-hidden={!open}
         style={{
           clipPath: open ? 'inset(0 0 0 0)' : 'inset(0 0 100% 0)',
-          transitionProperty: 'clip-path, opacity',
+          transitionProperty: 'clip-path',
         }}
         className={cn(
-          'fixed inset-0 z-40 flex flex-col justify-between overflow-hidden bg-[#0a0a0d] px-6 pb-10 pt-28 duration-[900ms] [transition-timing-function:cubic-bezier(0.76,0,0.24,1)] motion-reduce:transition-none md:hidden',
-          open ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
+          'fixed inset-0 z-40 flex flex-col justify-between overflow-hidden bg-black px-6 pb-10 pt-28 duration-[900ms] [transition-timing-function:cubic-bezier(0.76,0,0.24,1)] motion-reduce:transition-none md:hidden',
+          open ? 'pointer-events-auto' : 'pointer-events-none'
         )}
       >
         <nav
@@ -437,7 +438,7 @@ export default function Nav() {
         {/* Services drill-in — slides over the full menu from the right */}
         <div
           className={cn(
-            'absolute inset-0 flex flex-col bg-[#0a0a0d] px-6 pb-10 pt-28 transition-transform duration-300 ease-out',
+            'absolute inset-0 flex flex-col bg-black px-6 pb-10 pt-28 transition-transform duration-300 ease-out',
             mobileServicesOpen ? 'translate-x-0' : 'translate-x-full'
           )}
         >
