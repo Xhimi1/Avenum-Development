@@ -330,8 +330,9 @@ export default function Nav() {
         </div>
       </header>
 
-      {/* Mobile full-screen menu — circular clip-path reveal from the burger,
-          driven by React state (no imperative timelines). */}
+      {/* Mobile full-screen menu — a clip-path wipe grows it open top-down
+          (not a slide/fade), driven by React state (no imperative timelines).
+          Slower than the old circular reveal so the expand actually reads. */}
       <div
         id="mobile-menu"
         role="dialog"
@@ -339,13 +340,11 @@ export default function Nav() {
         aria-label="Menu"
         aria-hidden={!open}
         style={{
-          clipPath: open
-            ? 'circle(150% at calc(100% - 34px) 38px)'
-            : 'circle(0% at calc(100% - 34px) 38px)',
+          clipPath: open ? 'inset(0 0 0 0)' : 'inset(0 0 100% 0)',
           transitionProperty: 'clip-path, opacity',
         }}
         className={cn(
-          'fixed inset-0 z-40 flex flex-col justify-between overflow-hidden bg-[#0a0a0d] px-6 pb-10 pt-28 duration-[600ms] [transition-timing-function:cubic-bezier(0.76,0,0.24,1)] motion-reduce:transition-none md:hidden',
+          'fixed inset-0 z-40 flex flex-col justify-between overflow-hidden bg-[#0a0a0d] px-6 pb-10 pt-28 duration-[900ms] [transition-timing-function:cubic-bezier(0.76,0,0.24,1)] motion-reduce:transition-none md:hidden',
           open ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
         )}
       >
