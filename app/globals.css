@@ -5,6 +5,8 @@
 :root {
   --accent: #4d6bff;
   --subtext: #ffffff;
+  /* headings only — body text stays on the Plus Jakarta Sans var set in layout.tsx */
+  --font-display: 'Libertinus Serif', serif;
 }
 
 html {
