@@ -1,12 +1,21 @@
 import type { Metadata, Viewport } from 'next';
 import { Plus_Jakarta_Sans } from 'next/font/google';
-import '@fontsource/libertinus-serif/400.css';
-import '@fontsource/libertinus-serif/600.css';
-import '@fontsource/libertinus-serif/700.css';
+import localFont from 'next/font/local';
 import PageWash from '@/components/ui/PageWash';
 import BookCallPill from '@/components/ui/BookCallPill';
 import CookieConsent from '@/components/ui/CookieConsent';
 import './globals.css';
+
+const clashDisplay = localFont({
+  src: [
+    { path: '../fonts/clash-display/ClashDisplay-Regular.woff2', weight: '400', style: 'normal' },
+    { path: '../fonts/clash-display/ClashDisplay-Medium.woff2', weight: '500', style: 'normal' },
+    { path: '../fonts/clash-display/ClashDisplay-Semibold.woff2', weight: '600', style: 'normal' },
+    { path: '../fonts/clash-display/ClashDisplay-Bold.woff2', weight: '700', style: 'normal' },
+  ],
+  variable: '--font-display',
+  display: 'swap',
+});
 
 const jakartaBody = Plus_Jakarta_Sans({
   subsets: ['latin', 'latin-ext'],
@@ -37,7 +46,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="sq" className={jakartaBody.variable}>
+    <html lang="sq" className={`${clashDisplay.variable} ${jakartaBody.variable}`}>
       <body className="bg-[#050a30] font-body text-[#f2f4ff] antialiased">
         <PageWash />
         {children}
