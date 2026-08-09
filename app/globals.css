@@ -7,6 +7,12 @@
   --subtext: #ffffff;
 }
 
+/* Hero titles get more deliberate, evenly-distributed line breaks instead
+   of a lonely short last line. */
+h1 {
+  text-wrap: balance;
+}
+
 .font-display {
   letter-spacing: -0.03em;
 }
