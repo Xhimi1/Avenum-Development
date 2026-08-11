@@ -16,65 +16,47 @@ const STATS: Array<[string, { en: string; sq: string }]> = [
   ['3+', { en: 'Years of experience', sq: 'Vite përvojë' }],
   ['20+', { en: 'Projects delivered', sq: 'Projekte të realizuara' }],
   ['100%', { en: 'Client satisfaction', sq: 'Klientë të kënaqur' }],
-  ['2', { en: 'Languages, always', sq: 'Gjuhë, gjithmonë' }],
 ];
 
-/** Mechanical-odometer digit reveal: each digit is a 0–9 reel that spins to
- * land on its value; non-digit characters (+, %) just sit in place. */
-function OdometerValue({ value }: { value: string }) {
+/** Count-up reveal: the numeric part ticks up from 0 to its target, suffix stays static. */
+function CountUpValue({ value }: { value: string }) {
   const ref = useRef<HTMLSpanElement>(null);
+  const match = value.match(/^(\d+)(.*)$/);
+  const target = match ? Number(match[1]) : 0;
+  const suffix = match ? match[2] : '';
 
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const reels = el.querySelectorAll<HTMLElement>('[data-reel]');
 
     if (prefersReducedMotion()) {
-      reels.forEach((reel) => {
-        gsap.set(reel, { yPercent: -Number(reel.dataset.digit) * 10 });
-      });
+      el.textContent = String(target);
       return;
     }
 
+    const counter = { val: 0 };
     const ctx = gsap.context(() => {
-      reels.forEach((reel, i) => {
-        gsap.fromTo(
-          reel,
-          { yPercent: 0 },
-          {
-            yPercent: -Number(reel.dataset.digit) * 10,
-            duration: 1.1,
-            delay: i * 0.06,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: el,
-              start: 'top 88%',
-              toggleActions: 'play none none reverse',
-            },
-          }
-        );
+      gsap.to(counter, {
+        val: target,
+        duration: 1.4,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 88%',
+          once: true,
+        },
+        onUpdate: () => {
+          el.textContent = String(Math.round(counter.val));
+        },
       });
     }, el);
     return () => ctx.revert();
-  }, [value]);
+  }, [target]);
 
   return (
-    <span ref={ref} className="inline-flex">
-      {value.split('').map((char, i) =>
-        /[0-9]/.test(char) ? (
-          <span key={i} className="inline-block h-[1em] overflow-hidden align-top leading-[1em]">
-            <span data-reel data-digit={char} className="block">
-              {Array.from({ length: 10 }, (_, d) => (
-                <span key={d} className="block h-[1em] leading-[1em]">
-                  {d}
-                </span>
-              ))}
-            </span>
-          </span>
-        ) : (
-          <span key={i}>{char}</span>
-        )
-      )}
+    <span className="inline-flex items-baseline">
+      <span ref={ref}>0</span>
+      <span>{suffix}</span>
     </span>
   );
 }
@@ -132,11 +114,11 @@ export default function About() {
               ))}
             </p>
 
-            <div className="mt-8 grid grid-cols-2 gap-6 md:mt-12 md:grid-cols-4 md:gap-8">
+            <div className="mt-8 grid grid-cols-3 gap-6 md:mt-12 md:gap-8">
               {STATS.map(([value, label], i) => (
                 <FadeIn key={value} delay={i * 0.08}>
                   <p className="font-display text-4xl font-semibold text-white md:text-5xl">
-                    <OdometerValue value={value} />
+                    <CountUpValue value={value} />
                   </p>
                   <p className="subtext mt-2 text-xs tracking-normal">
                     {t(label)}

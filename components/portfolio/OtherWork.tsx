@@ -20,7 +20,7 @@ export default function OtherWork({ currentSlug }: { currentSlug: string }) {
 
   return (
     <section className="mx-auto mt-20 w-full max-w-5xl md:mt-28">
-      <h2 className="font-display text-3xl font-medium text-[#0A2947] md:text-4xl">{t(HEADING)}</h2>
+      <h2 className="font-display text-3xl font-medium text-[#333D6D] md:text-4xl">{t(HEADING)}</h2>
 
       <div className="mt-8 border-t border-black">
         {others.map((p) => (
@@ -31,7 +31,7 @@ export default function OtherWork({ currentSlug }: { currentSlug: string }) {
             onClick={() => pageNavigate(`/portfolio/${p.slug}`, { accent: p.tagColor, bg: '#0b0a16' })}
             className="group flex w-full items-center justify-between gap-6 border-b border-black py-8 text-left transition-colors duration-300 hover:bg-black/[0.02]"
           >
-            <h3 className="min-w-0 font-display text-xl font-bold leading-none text-[#0A2947] md:text-2xl">
+            <h3 className="min-w-0 font-display text-xl font-bold leading-none text-[#333D6D] md:text-2xl">
               {p.name}
               {p.isPrototype && (
                 <span className="text-sm font-normal opacity-30 md:text-base"> (Prototype)</span>

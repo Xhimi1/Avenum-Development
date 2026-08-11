@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef } from 'react';
 import { gsap } from '@/lib/gsap';
 import SplitText from '@/components/ui/SplitText';
 import ArrowRight from '@/components/ui/ArrowRight';
+import ClipRevealImage from '@/components/ui/ClipRevealImage';
 import { useT } from '@/lib/i18n';
 import type { Bi } from '@/lib/i18n';
 import { useStore } from '@/lib/store';
@@ -65,44 +66,50 @@ export default function Services() {
       ref={sectionRef}
       id="services"
       data-scene-section
-      className="relative flex min-h-screen flex-col justify-between gap-10 py-24 md:min-h-0 md:justify-start md:py-32"
+      className="relative bg-white py-24 md:py-32"
     >
       <div className="mx-auto w-full max-w-[90rem] px-6 md:px-12">
-        <div className="max-w-2xl">
-          <SplitText
-            as="h2"
-            animate
-            className="text-shadow-soft font-display text-[clamp(2.1rem,5.5vw,4.6rem)] font-semibold leading-[0.95]"
-          >
-            {t(HEADING)}
-          </SplitText>
-        </div>
-      </div>
-
-      <div className="mx-auto w-full max-w-[90rem] px-6 md:px-12">
-        <div className="max-w-md">
-          <p aria-label={paragraph} className="text-sm leading-relaxed text-white md:text-base">
-            {paragraph.split(' ').map((word, i) => (
-              <span
-                key={i}
-                aria-hidden
-                data-whoweare-word
-                className="mr-[0.28em] inline-block opacity-0 last:mr-0"
+        <div className="md:grid md:grid-cols-2 md:items-center md:gap-12">
+          <div className="flex flex-col gap-10">
+            <div className="max-w-2xl">
+              <SplitText
+                as="h2"
+                className="font-display text-[clamp(2.1rem,5.5vw,4.6rem)] font-semibold leading-[0.95] text-[#333D6D]"
               >
-                {word}
-              </span>
-            ))}
-          </p>
+                {t(HEADING)}
+              </SplitText>
+            </div>
 
-          <button
-            type="button"
-            data-cursor
-            onClick={() => pageNavigate('/about', { accent: aboutSection.accent, bg: aboutSection.bg })}
-            className="pointer-events-auto mt-6 inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-xs font-medium tracking-normal text-black transition-colors duration-300 hover:text-[var(--accent)]"
-          >
-            {t(LEARN_MORE)}
-            <ArrowRight className="h-3.5 w-3.5" />
-          </button>
+            <div className="max-w-md">
+              <p aria-label={paragraph} className="text-sm leading-relaxed text-[#333D6D] md:text-base">
+                {paragraph.split(' ').map((word, i) => (
+                  <span
+                    key={i}
+                    aria-hidden
+                    data-whoweare-word
+                    className="mr-[0.28em] inline-block opacity-0 last:mr-0"
+                  >
+                    {word}
+                  </span>
+                ))}
+              </p>
+
+              <button
+                type="button"
+                data-cursor
+                onClick={() => pageNavigate('/about', { accent: aboutSection.accent, bg: aboutSection.bg })}
+                className="pointer-events-auto mt-6 inline-flex items-center gap-2 rounded-full bg-[#6367FF] px-8 py-4 text-xs font-medium tracking-normal text-white transition-colors duration-300 hover:bg-[#4f52e0]"
+              >
+                {t(LEARN_MORE)}
+                <ArrowRight className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          </div>
+
+          <ClipRevealImage
+            src="/images/dropdown-image.webp"
+            className="mt-10 aspect-[4/3] w-full rounded-3xl md:mt-0"
+          />
         </div>
       </div>
     </section>

@@ -97,12 +97,12 @@ export default function WorkGallery({
             <div className="max-w-2xl">
               <SplitText
                 as="h2"
-                className="font-display text-[clamp(2.1rem,5.5vw,4.6rem)] font-semibold leading-[0.95] text-[#0A2947]"
+                className="font-display text-[clamp(2.1rem,5.5vw,4.6rem)] font-semibold leading-[0.95] text-[#462C7D]"
               >
                 {t(HEADING)}
               </SplitText>
               <FadeIn delay={0.15}>
-                <p className="mt-4 max-w-xl text-sm font-medium text-[#0A2947] md:text-base">{t(SUBHEADING)}</p>
+                <p className="mt-4 max-w-xl text-sm font-medium text-[#462C7D] md:text-base">{t(SUBHEADING)}</p>
               </FadeIn>
             </div>
 
@@ -192,7 +192,7 @@ export default function WorkGallery({
                     <span className="inline-block w-fit rounded-full bg-[#EEF0FF] px-3 py-1 text-[0.8rem] font-medium text-[#6367FF]">
                       {t(project.category)}
                     </span>
-                    <h3 className="mt-2 font-display text-2xl font-semibold text-[#0A2947] md:text-3xl">
+                    <h3 className="mt-2 font-display text-2xl font-semibold text-[#333D6D] md:text-3xl">
                       {project.name}
                       {project.isPrototype && (
                         <span className="text-sm font-normal opacity-30 md:text-base"> (Prototype)</span>
@@ -230,7 +230,7 @@ export default function WorkGallery({
                     <span className="inline-block w-fit rounded-full bg-[#EEF0FF] px-3 py-1 text-[0.8rem] font-medium text-[#6367FF]">
                       {t(project.category)}
                     </span>
-                    <h3 className="mt-2 font-display text-2xl font-semibold text-[#0A2947] md:text-3xl">
+                    <h3 className="mt-2 font-display text-2xl font-semibold text-[#333D6D] md:text-3xl">
                       {project.name}
                       {project.isPrototype && (
                         <span className="text-sm font-normal opacity-30 md:text-base"> (Prototype)</span>

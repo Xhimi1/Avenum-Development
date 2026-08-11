@@ -7,7 +7,7 @@ import { useT, type Bi } from '@/lib/i18n';
 import FadeIn from '@/components/ui/FadeIn';
 import SplitText from '@/components/ui/SplitText';
 import ScrollRevealText from '@/components/ui/ScrollRevealText';
-import RevealImage from '@/components/ui/RevealImage';
+import ClipRevealImage from '@/components/ui/ClipRevealImage';
 import ArrowRight from '@/components/ui/ArrowRight';
 import Nav from '@/components/ui/Nav';
 import Footer from '@/components/ui/Footer';
@@ -183,26 +183,12 @@ export default function AboutPage() {
               </div>
 
               <div className="relative max-md:-mx-6 max-md:-mt-16">
-                <RevealImage>
-                  <div className="relative overflow-hidden max-md:aspect-[4/5] max-md:[clip-path:polygon(0_28%,100%_0,100%_72%,0_100%)] md:rounded-none md:[clip-path:polygon(0_0,100%_8%,100%_100%,0_92%)]">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/images/AVENUM-MOCKUP%20(1).webp"
-                      alt="Avenum website mockup"
-                      className="w-full max-md:h-full max-md:object-cover"
-                    />
-                    <div
-                      aria-hidden
-                      className="pointer-events-none absolute inset-0"
-                      style={{ background: 'linear-gradient(135deg, transparent 40%, #0F0824 100%)' }}
-                    />
-                    <div
-                      aria-hidden
-                      className="pointer-events-none absolute inset-0"
-                      style={{ background: 'linear-gradient(-45deg, transparent 55%, #0F0824 100%)' }}
-                    />
-                  </div>
-                </RevealImage>
+                <ClipRevealImage
+                  src="/images/AVENUM-MOCKUP%20(1).webp"
+                  alt="Avenum website mockup"
+                  className="max-md:aspect-[4/5] max-md:[clip-path:polygon(0_28%,100%_0,100%_72%,0_100%)] md:rounded-none md:[clip-path:polygon(0_0,100%_8%,100%_100%,0_92%)]"
+                  imgClassName="max-md:h-full md:h-auto"
+                />
 
                 {/* stats, moved onto the image for mobile — sit outside the clipped/scaled
                     image box so the curved top/bottom cuts and zoom never touch them */}
@@ -255,13 +241,12 @@ export default function AboutPage() {
               {t(MISSION_TEXT)}
             </ScrollRevealText>
 
-            <RevealImage className="max-md:-mx-6 rounded-2xl max-md:rounded-none md:rounded-lg md:shadow-[0_30px_70px_-30px_rgba(0,0,0,0.6)]">
-              <div className="relative">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/images/chalet-booking-mockup.webp" alt="" className="w-full" />
-                <div aria-hidden className="pointer-events-none absolute inset-0 bg-[#6439FF]/[0.05]" />
-              </div>
-            </RevealImage>
+            <ClipRevealImage
+              src="/images/chalet-booking-mockup.webp"
+              className="max-md:-mx-6 rounded-2xl max-md:rounded-none md:rounded-lg md:shadow-[0_30px_70px_-30px_rgba(0,0,0,0.6)]"
+            >
+              <div aria-hidden className="pointer-events-none absolute inset-0 bg-[#6439FF]/[0.05]" />
+            </ClipRevealImage>
           </div>
         </section>
 

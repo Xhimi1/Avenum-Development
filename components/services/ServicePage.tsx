@@ -141,7 +141,7 @@ export default function ServicePage({
           <div className="mx-auto w-full max-w-[90rem] px-6 md:px-12">
             <SplitText
               as="h2"
-              className="max-w-2xl font-display text-[clamp(1.9rem,4.5vw,3.4rem)] font-semibold leading-[1] tracking-normal text-[#0A2947]"
+              className="max-w-2xl font-display text-[clamp(1.9rem,4.5vw,3.4rem)] font-semibold leading-[1] tracking-normal text-[#333D6D]"
             >
               {t(showcaseHeading)}
             </SplitText>

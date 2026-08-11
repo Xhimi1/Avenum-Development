@@ -64,7 +64,7 @@ export default function CaseStudyPage({ project }: { project: Project }) {
                 {t(project.category)}
               </span>
             </FadeIn>
-            <h1 className="mt-6 font-display text-4xl font-medium leading-[1.05] tracking-normal text-[#0A2947] [text-wrap:balance] md:text-[clamp(1.5rem,3.4vw,2.4rem)]">
+            <h1 className="mt-6 font-display text-4xl font-medium leading-[1.05] tracking-normal text-[#333D6D] [text-wrap:balance] md:text-[clamp(1.5rem,3.4vw,2.4rem)]">
               {project.name}
               {project.isPrototype && (
                 <span className="ml-1 align-middle text-base font-normal opacity-30 md:text-lg"> (Prototype)</span>
@@ -111,7 +111,7 @@ export default function CaseStudyPage({ project }: { project: Project }) {
 
         {/* project overview — two mockups, side by side on desktop, stacked on mobile */}
         <section className="mx-auto mt-20 w-full max-w-5xl md:mt-28">
-          <h2 className="font-display text-3xl font-medium text-[#0A2947] md:text-4xl">{t(OVERVIEW_HEADING)}</h2>
+          <h2 className="font-display text-3xl font-medium text-[#333D6D] md:text-4xl">{t(OVERVIEW_HEADING)}</h2>
           <div className="mt-8 flex flex-col gap-6 md:flex-row md:gap-8">
             {/* first mockup — plain placeholder */}
             <FadeIn className="flex-1">
@@ -176,7 +176,7 @@ export default function CaseStudyPage({ project }: { project: Project }) {
         {/* our approach */}
         {project.approach && (
           <section className="mx-auto mt-20 w-full max-w-5xl md:mt-28">
-            <h2 className="font-display text-3xl font-medium text-[#0A2947] md:text-4xl">{t(APPROACH_HEADING)}</h2>
+            <h2 className="font-display text-3xl font-medium text-[#333D6D] md:text-4xl">{t(APPROACH_HEADING)}</h2>
             <FadeIn delay={0.1}>
               <p className="mt-5 max-w-2xl text-sm leading-relaxed text-[#0A2947] md:text-base">
                 {t(project.approach)}

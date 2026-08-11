@@ -64,7 +64,7 @@ export default function Footer({
       <div className="mx-auto grid w-full max-w-[90rem] gap-10 px-6 pt-16 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:gap-6 md:px-12">
         <div className="max-w-xs">
           <Logo className={cn('text-3xl', dark && 'text-white')} />
-          <p className={cn('mt-4 text-sm leading-relaxed', dark ? 'text-white/55' : 'text-black/55')}>
+          <p className={cn('mt-4 text-sm leading-relaxed', dark ? 'text-white/55' : 'text-[#333D6D]/55')}>
             {t(TAGLINE)}
           </p>
         </div>
@@ -174,7 +174,7 @@ export default function Footer({
       </div>
 
       <div className={cn('mt-12 border-t px-6 py-6 md:px-12', dark ? 'border-white/10' : 'border-black/10')}>
-        <p className={cn('mx-auto w-full max-w-[90rem] text-xs tracking-normal', dark ? 'text-white/50' : 'text-black/50')}>
+        <p className={cn('mx-auto w-full max-w-[90rem] text-xs tracking-normal', dark ? 'text-white/50' : 'text-[#333D6D]/50')}>
           {t(COPYRIGHT)}
         </p>
       </div>

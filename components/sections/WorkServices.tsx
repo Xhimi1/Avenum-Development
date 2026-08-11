@@ -289,7 +289,7 @@ export default function WorkServices() {
           </span>
           <SplitText
             as="h2"
-            className="mt-3 font-display text-[clamp(2.1rem,5.5vw,4.6rem)] font-semibold leading-[0.95] text-[#0A2947] [text-wrap:balance] md:[text-wrap:normal]"
+            className="mt-3 font-display text-[clamp(2.1rem,5.5vw,4.6rem)] font-semibold leading-[0.95] text-[#333D6D] [text-wrap:balance] md:[text-wrap:normal]"
           >
             {t(HEADING)}
           </SplitText>
@@ -349,7 +349,7 @@ export default function WorkServices() {
                   className={
                     isHot
                       ? 'relative z-10 order-1 font-display text-5xl font-semibold text-white md:order-2 md:mt-5 md:text-3xl'
-                      : 'relative z-10 order-1 font-display text-4xl font-bold text-black md:order-2 md:mt-5 md:text-xl md:font-semibold'
+                      : 'relative z-10 order-1 font-display text-4xl font-bold text-[#333D6D] md:order-2 md:mt-5 md:text-xl md:font-semibold'
                   }
                 >
                   {t(s.title)}
@@ -367,7 +367,7 @@ export default function WorkServices() {
                   className={
                     isHot
                       ? 'relative z-10 order-3 mt-16 text-sm leading-relaxed text-white md:mt-2 md:text-xs'
-                      : 'relative z-10 order-3 mt-10 text-sm leading-relaxed text-black md:mt-2 md:text-xs md:text-black'
+                      : 'relative z-10 order-3 mt-10 text-sm leading-relaxed text-[#333D6D] md:mt-2 md:text-xs'
                   }
                 >
                   {t(s.desc)}

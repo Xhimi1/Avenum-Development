@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { useT, type Bi } from '@/lib/i18n';
 import FadeIn from '@/components/ui/FadeIn';
 import SplitText from '@/components/ui/SplitText';
-import RevealImage from '@/components/ui/RevealImage';
+import ClipRevealImage from '@/components/ui/ClipRevealImage';
 import ArrowRight from '@/components/ui/ArrowRight';
 import Nav from '@/components/ui/Nav';
 import Footer from '@/components/ui/Footer';
@@ -343,7 +343,7 @@ export default function PricingPage() {
                               <IconSpark className="h-5 w-5" />
                             </span>
 
-                            <h2 className="mt-5 font-display text-xl font-semibold text-[#0A2947] md:text-2xl">
+                            <h2 className="mt-5 font-display text-xl font-semibold text-[#333D6D] md:text-2xl">
                               {tier.name}
                             </h2>
                             <p className="mt-2 text-sm leading-relaxed text-[#0A2947]">
@@ -537,13 +537,12 @@ export default function PricingPage() {
             </div>
 
             <div className="order-1 max-md:-mx-6 md:order-2">
-              <RevealImage className="rounded-2xl max-md:rounded-none md:rounded-lg md:shadow-[0_30px_70px_-30px_rgba(0,0,0,0.6)]">
-                <div className="relative">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/images/payment-image.webp" alt="" className="w-full" />
-                  <div aria-hidden className="pointer-events-none absolute inset-0 bg-[#6439FF]/[0.05]" />
-                </div>
-              </RevealImage>
+              <ClipRevealImage
+                src="/images/payment-image.webp"
+                className="rounded-2xl max-md:rounded-none md:rounded-lg md:shadow-[0_30px_70px_-30px_rgba(0,0,0,0.6)]"
+              >
+                <div aria-hidden className="pointer-events-none absolute inset-0 bg-[#6439FF]/[0.05]" />
+              </ClipRevealImage>
             </div>
           </div>
         </section>

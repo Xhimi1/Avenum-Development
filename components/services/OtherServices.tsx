@@ -22,7 +22,7 @@ export default function OtherServices({ currentHref }: { currentHref: string }) 
       <div className="mx-auto w-full max-w-6xl px-6 md:px-12">
         <SplitText
           as="h2"
-          className="font-display text-[clamp(1.9rem,4.5vw,3.4rem)] font-semibold leading-[1] tracking-normal text-[#0A2947]"
+          className="font-display text-[clamp(1.9rem,4.5vw,3.4rem)] font-semibold leading-[1] tracking-normal text-[#333D6D]"
         >
           {t(HEADING)}
         </SplitText>
@@ -44,7 +44,7 @@ export default function OtherServices({ currentHref }: { currentHref: string }) 
               </span>
               <div className="flex min-w-0 flex-col gap-4">
                 <div>
-                  <div className="truncate font-display text-base font-semibold">{t(svc.title)}</div>
+                  <div className="truncate font-display text-base font-semibold text-[#333D6D]">{t(svc.title)}</div>
                   <div className="mt-0.5 truncate text-xs text-[#0A2947]/55">{t(svc.desc)}</div>
                 </div>
 

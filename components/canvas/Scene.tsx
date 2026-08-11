@@ -6,9 +6,7 @@ import { PerformanceMonitor } from '@react-three/drei';
 import CameraRig from './CameraRig';
 import Atmosphere from './Atmosphere';
 import HeroBlob from './HeroBlob';
-import ServicesCluster from './ServicesCluster';
 import AboutOrbit from './AboutOrbit';
-import Globe from './Globe';
 import Shards from './Shards';
 import { useStore } from '@/lib/store';
 import { CAM_POINTS } from '@/lib/path';
@@ -41,9 +39,7 @@ export default function Scene() {
           <Atmosphere />
           <CameraRig />
           <HeroBlob />
-          <ServicesCluster />
           <AboutOrbit />
-          <Globe />
           <Shards />
         </PerformanceMonitor>
       </Canvas>
