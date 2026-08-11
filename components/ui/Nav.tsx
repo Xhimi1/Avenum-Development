@@ -36,6 +36,29 @@ export default function Nav() {
   const burgerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
+  // Bar behavior driven by scroll position, not CSS `position: sticky`:
+  // stays put and visible the whole time (no hide/slide interaction) —
+  // transparent at the top, then once scrolled past a threshold it docks
+  // flush to the top with a background and the purple brand name, and
+  // stays that way for the rest of the page. Reads `window.scrollY`
+  // directly (not `scrollState.y`) so it works on every page —
+  // `scrollState` is only kept in sync by <SmoothScroll>, which is mounted
+  // just on the homepage; Lenis still drives the real window scroll there
+  // too, so this stays accurate on the homepage as well.
+  const [dockedBg, setDockedBg] = useState(false);
+  const dockedRef = useRef(dockedBg);
+  useEffect(() => {
+    const tick = () => {
+      const next = window.scrollY >= window.innerHeight * 0.6;
+      if (next !== dockedRef.current) {
+        dockedRef.current = next;
+        setDockedBg(next);
+      }
+    };
+    gsap.ticker.add(tick);
+    return () => gsap.ticker.remove(tick);
+  }, []);
+
   // Desktop renders the menu as a small anchored card — close it on an
   // outside click, like any dropdown. (Mobile's full-screen panel covers
   // the whole viewport, so this effectively never fires there.)
@@ -103,11 +126,19 @@ export default function Nav() {
     };
   }, [open]);
 
-  // Close on Escape and when the viewport grows to desktop.
+  // Close on Escape and when the viewport grows to desktop. Also tracks the
+  // breakpoint itself — on mobile, the docked bar's background hides while
+  // the full-screen menu is open (so it reads as one solid black panel);
+  // on desktop, the small anchored card doesn't cover the bar, so it stays.
+  const [isDesktop, setIsDesktop] = useState(false);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
     const mq = window.matchMedia('(min-width: 768px)');
-    const onMq = () => mq.matches && setOpen(false);
+    const onMq = () => {
+      setIsDesktop(mq.matches);
+      if (mq.matches) setOpen(false);
+    };
+    onMq();
     window.addEventListener('keydown', onKey);
     mq.addEventListener('change', onMq);
     return () => {
@@ -115,6 +146,7 @@ export default function Nav() {
       mq.removeEventListener('change', onMq);
     };
   }, []);
+  const bgVisible = dockedBg && (!open || isDesktop);
 
   const go = (i: number) => {
     setOpen(false);
@@ -123,16 +155,43 @@ export default function Nav() {
 
   return (
     <>
-      {/* full-width bar, always transparent */}
-      <header className="pointer-events-none fixed inset-x-0 top-4 z-50 md:top-8">
-        <div className="pointer-events-auto mx-auto flex w-full max-w-[90rem] items-center justify-between px-6 py-2.5 md:px-12">
+      {/* Not docked: `absolute` (not `fixed`) — it sits at the top of the
+          page and scrolls away with the rest of the content, like any
+          normal block, no JS-driven hide animation. Once scrolled past the
+          threshold it switches to `fixed` and docks flush to the top with
+          a background and the purple brand name, staying stuck from there. */}
+      <header
+        className={cn(
+          'pointer-events-none inset-x-0 z-50',
+          dockedBg ? 'fixed top-0' : 'absolute top-4 md:top-8'
+        )}
+      >
+        {/* background lives on its own layer behind the content — keeping
+            it off the transform-animated `fixed` element avoids an
+            iOS/mobile Safari bug where a blurred layer can render over
+            (and hide) its own children. On mobile it hides while the
+            full-screen menu is open, so the bar reads as part of that
+            solid black panel instead of showing its own light bg through it.
+            Always mounted (not conditionally rendered) so the opacity
+            change can actually transition instead of popping in. */}
+        <div
+          aria-hidden
+          className={cn(
+            'absolute inset-0 rounded-b-[32px] bg-[#F3F4F4] shadow-xl shadow-black/[0.07] transition-opacity duration-300 ease-out',
+            bgVisible ? 'opacity-100' : 'opacity-0'
+          )}
+        />
+        <div className="pointer-events-auto relative mx-auto flex w-full max-w-[90rem] items-center justify-between px-6 py-4 md:px-12 md:py-3">
           <button
             type="button"
             data-cursor
             onClick={() => go(0)}
             aria-label="Avenum — back to top"
-            className="font-display text-3xl font-bold md:text-4xl"
-            style={{ color: open || onDarkPage ? '#ffffff' : '#061E29' }}
+            className={cn(
+              'font-display font-bold transition-colors duration-300 ease-out',
+              dockedBg ? 'text-4xl md:text-5xl' : 'text-3xl md:text-4xl'
+            )}
+            style={{ color: bgVisible ? '#6367FF' : open ? '#ffffff' : onDarkPage ? '#ffffff' : '#061E29' }}
           >
             Avenum
           </button>
@@ -147,18 +206,24 @@ export default function Nav() {
             aria-label={open ? 'Close menu' : 'Open menu'}
             aria-expanded={open}
             aria-controls="mobile-menu"
-            className="flex h-11 w-11 flex-col items-center justify-center gap-[5px] rounded-full border border-black/15 bg-white/70 backdrop-blur-md"
+            className="flex h-11 w-11 flex-col items-center justify-center gap-[3px] rounded-full bg-[#DDDDDD]/70"
           >
             <span
               className={cn(
-                'block h-[2px] w-5 rounded-full bg-black',
-                open && 'translate-y-[3.5px] rotate-45'
+                'block h-[3px] w-5 rounded-full bg-[#6367FF]',
+                open && 'translate-y-[6px] rotate-45'
               )}
             />
             <span
               className={cn(
-                'block h-[2px] w-5 rounded-full bg-black',
-                open && '-translate-y-[3.5px] -rotate-45'
+                'block h-[3px] w-5 rounded-full bg-[#6367FF]',
+                open && 'opacity-0'
+              )}
+            />
+            <span
+              className={cn(
+                'block h-[3px] w-5 rounded-full bg-[#6367FF]',
+                open && '-translate-y-[6px] -rotate-45'
               )}
             />
           </button>

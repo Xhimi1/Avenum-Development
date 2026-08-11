@@ -7,7 +7,7 @@ import Loader from '@/components/ui/Loader';
 import Nav from '@/components/ui/Nav';
 import ColorWash from '@/components/ui/ColorWash';
 import Hero from '@/components/sections/Hero';
-import Services from '@/components/sections/Services';
+import WhoWeAre from '@/components/sections/WhoWeAre';
 import Work from '@/components/sections/Work';
 import About from '@/components/sections/About';
 import Contact from '@/components/sections/Contact';
@@ -64,7 +64,7 @@ export default function Home() {
       <Nav />
       <main className="pointer-events-none relative z-10">
         <Hero />
-        <Services />
+        <WhoWeAre />
         <Work />
         <About />
         <Contact />

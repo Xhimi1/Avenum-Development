@@ -24,7 +24,7 @@ const PARAGRAPH: Bi = {
   sq: 'Avenum është një agjenci web me bazë në Tiranë. Prej 3 vitesh ndërtojmë faqe web profesionale, të shpejta dhe unike — gjatë këtyre 3 viteve kemi mësuar se pasioni është ajo që mund të sjellë suksesin për këdo.',
 };
 
-export default function Services() {
+export default function WhoWeAre() {
   const sectionRef = useRef<HTMLElement>(null);
   const locale = useStore((s) => s.locale);
   const pageNavigate = useStore((s) => s.pageNavigate);
@@ -81,7 +81,7 @@ export default function Services() {
             </div>
 
             <div className="max-w-md">
-              <p aria-label={paragraph} className="text-sm leading-relaxed text-[#333D6D] md:text-base">
+              <p aria-label={paragraph} className="text-base leading-relaxed text-[#333D6D] md:text-lg">
                 {paragraph.split(' ').map((word, i) => (
                   <span
                     key={i}
