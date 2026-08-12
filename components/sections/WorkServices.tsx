@@ -41,6 +41,27 @@ function MiniPhotoStack() {
   );
 }
 
+/** Phone silhouette with a minimal login form inside for the "Web
+ *  development" card — flush against the card's bottom edge, with space
+ *  around it on the other three sides. */
+function PhoneMockup() {
+  return (
+    <div className="absolute inset-0 flex items-end justify-center">
+      <div className="relative flex h-[78%] w-[70%] flex-col items-center justify-end gap-2.5 overflow-hidden rounded-t-[2.25rem] border-x-8 border-t-8 border-black bg-white px-6 pb-4 md:w-[65%] md:px-2">
+        <div className="absolute left-1/2 top-3 h-4 w-16 -translate-x-1/2 rounded-full bg-black" />
+        <span className="font-body text-lg font-semibold text-black">Log in</span>
+        <div className="flex w-full flex-col gap-1.5">
+          <span className="w-full rounded-md bg-gray-100 px-2.5 py-1.5 font-body text-[9px] text-gray-400">Email</span>
+          <span className="w-full rounded-md bg-gray-100 px-2.5 py-1.5 font-body text-[9px] text-gray-400">Password</span>
+        </div>
+        <span className="mt-1 w-full rounded-md bg-[#6367FF] py-1.5 text-center font-body text-[9px] font-medium text-white">
+          Log in
+        </span>
+      </div>
+    </div>
+  );
+}
+
 /** Google-style ranking list for the "SEO & Growth" card — your result on
  *  top (bigger, full white), two faded competitor rows underneath. The top
  *  row slides up into place from below once it scrolls into view. */
@@ -103,94 +124,6 @@ function SeoRankingGraphic() {
   );
 }
 
-/** Small floating score badge (same ring design as <PerformanceBadge>, just
- *  smaller and single) — sits absolutely in a corner, on top of everything else. */
-function SeoScoreBadge() {
-  const size = 96;
-  const stroke = 7;
-  const radius = (size - stroke) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const value = 100;
-
-  const rootRef = useRef<HTMLDivElement>(null);
-  const circleRef = useRef<SVGCircleElement | null>(null);
-  const numberRef = useRef<HTMLSpanElement | null>(null);
-  const played = useRef(false);
-
-  useEffect(() => {
-    const el = rootRef.current;
-    if (!el) return;
-
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting || played.current) return;
-        played.current = true;
-        io.disconnect();
-
-        const circle = circleRef.current;
-        const numberEl = numberRef.current;
-        if (!circle || !numberEl) return;
-
-        if (prefersReducedMotion()) {
-          circle.style.strokeDashoffset = '0';
-          numberEl.textContent = String(value);
-          return;
-        }
-
-        gsap.fromTo(
-          circle,
-          { strokeDashoffset: circumference },
-          { strokeDashoffset: 0, duration: 1.4, ease: 'power2.out' }
-        );
-
-        const counter = { val: 0 };
-        gsap.to(counter, {
-          val: value,
-          duration: 1.4,
-          ease: 'power2.out',
-          onUpdate: () => {
-            numberEl.textContent = String(Math.round(counter.val));
-          },
-        });
-      },
-      { threshold: 0.4 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [circumference]);
-
-  return (
-    <div ref={rootRef} className="flex flex-col items-center gap-2">
-      <div className="relative flex aspect-square h-20 w-auto items-center justify-center">
-        <svg viewBox={`0 0 ${size} ${size}`} className="h-full w-full -rotate-90">
-          <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="#E4E4E7" strokeWidth={stroke} />
-          <circle
-            ref={(el) => { circleRef.current = el; }}
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            fill="none"
-            stroke="#22C55E"
-            strokeWidth={stroke}
-            strokeLinecap="round"
-            strokeDasharray={circumference}
-            strokeDashoffset={circumference}
-          />
-        </svg>
-        <span ref={(el) => { numberRef.current = el; }} className="absolute font-body text-2xl font-normal tracking-normal text-black">
-          0
-        </span>
-      </div>
-      <span className="font-body text-sm font-normal tracking-normal text-black">SEO</span>
-    </div>
-  );
-}
-
-const SCORES = [
-  { value: 99, label: 'Performance' },
-  { value: 100, label: 'Accessibility' },
-];
-
 /** Blue line/area chart in a white stat card for the "Analytics & Client
  *  Relationships" card — the line draws in and the gradient fill fades in
  *  once the card scrolls into view. */
@@ -232,11 +165,11 @@ function AnalyticsChart() {
   }, []);
 
   return (
-    <div ref={rootRef} className="-mr-8 flex h-full w-full items-start justify-end">
-      <div className="w-full max-w-[170px] rounded-2xl bg-white p-3.5 shadow-sm">
-        <p className="font-body text-[0.65rem] text-gray-500">Total viewers this month</p>
-        <p className="mt-1 font-body text-base font-semibold text-black">24,800</p>
-        <svg viewBox="0 0 200 70" className="mt-2.5 h-12 w-full" preserveAspectRatio="none">
+    <div ref={rootRef} className="flex h-full w-full items-center justify-center">
+      <div className="w-full max-w-[260px] rounded-2xl bg-white p-5 shadow-sm">
+        <p className="font-body text-xs text-gray-500">Total viewers this month</p>
+        <p className="mt-1 font-body text-xl font-semibold text-black">24,800</p>
+        <svg viewBox="0 0 200 70" className="mt-3 h-20 w-full" preserveAspectRatio="none">
           <defs>
             <linearGradient id="analyticsSalesGradient" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#3B6BFF" stopOpacity="0.35" />
@@ -322,112 +255,16 @@ function AiOrb() {
   );
 }
 
-/** Circular progress rings (green stroke, no fill) for the "Web development"
- *  card — the ring draws in and the number counts up from zero once the
- *  card scrolls into view. */
-function PerformanceBadge() {
-  const size = 160;
-  const stroke = 10;
-  const radius = (size - stroke) / 2;
-  const circumference = 2 * Math.PI * radius;
-
-  const rootRef = useRef<HTMLDivElement>(null);
-  const circleRefs = useRef<(SVGCircleElement | null)[]>([]);
-  const numberRefs = useRef<(HTMLSpanElement | null)[]>([]);
-  const played = useRef(false);
-
-  useEffect(() => {
-    const el = rootRef.current;
-    if (!el) return;
-
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting || played.current) return;
-        played.current = true;
-        io.disconnect();
-
-        SCORES.forEach((s, i) => {
-          const circle = circleRefs.current[i];
-          const numberEl = numberRefs.current[i];
-          if (!circle || !numberEl) return;
-          const rawOffset = circumference * (1 - s.value / 100);
-          // round line caps eat into a small gap — enforce a minimum so a
-          // near-100 score still visibly isn't a closed ring.
-          const offset = s.value >= 100 ? 0 : Math.max(rawOffset, stroke * 1.5);
-
-          if (prefersReducedMotion()) {
-            circle.style.strokeDashoffset = String(offset);
-            numberEl.textContent = String(s.value);
-            return;
-          }
-
-          gsap.fromTo(
-            circle,
-            { strokeDashoffset: circumference },
-            { strokeDashoffset: offset, duration: 1.4, ease: 'power2.out' }
-          );
-
-          const counter = { val: 0 };
-          gsap.to(counter, {
-            val: s.value,
-            duration: 1.4,
-            ease: 'power2.out',
-            onUpdate: () => {
-              numberEl.textContent = String(Math.round(counter.val));
-            },
-          });
-        });
-      },
-      { threshold: 0.4 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [circumference]);
-
-  return (
-    <div ref={rootRef} className="flex h-full w-full items-center justify-center gap-10">
-      {SCORES.map((s, i) => (
-        <div key={s.label} className="flex flex-col items-center gap-2">
-          <div className="relative flex aspect-square h-24 w-auto items-center justify-center md:h-28">
-            <svg viewBox={`0 0 ${size} ${size}`} className="h-full w-full -rotate-90">
-              <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="#E4E4E7" strokeWidth={stroke} />
-              <circle
-                ref={(el) => { circleRefs.current[i] = el; }}
-                cx={size / 2}
-                cy={size / 2}
-                r={radius}
-                fill="none"
-                stroke="#22C55E"
-                strokeWidth={stroke}
-                strokeLinecap="round"
-                strokeDasharray={circumference}
-                strokeDashoffset={circumference}
-              />
-            </svg>
-            <span
-              ref={(el) => { numberRefs.current[i] = el; }}
-              className="absolute font-body text-4xl font-normal tracking-normal text-black"
-            >
-              0
-            </span>
-          </div>
-          <span className="font-body text-lg font-normal tracking-normal text-black">{s.label}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 const SERVICES: Service[] = [
   {
     id: 'design',
     title: { en: 'Stunning web design', sq: 'Dizajn web mahnitës' },
-    desc: { en: 'Interfaces that look and feel premium, tailored to your brand.', sq: 'Ndërfaqe që duken premium, të përshtatura për markën tënde.' },
+    desc: { en: 'A website that looks premium and fits your brand.', sq: 'Një faqe që duket premium dhe përshtatet me markën tënde.' },
   },
   {
     id: 'development',
     title: { en: 'Web development', sq: 'Zhvillim web' },
-    desc: { en: 'Fast, reliable builds that scale with your business.', sq: 'Ndërtime të shpejta e të qëndrueshme që rriten me biznesin tënd.' },
+    desc: { en: 'A fast, reliable website that grows with your business.', sq: 'Një faqe e shpejtë dhe e qëndrueshme që rritet me biznesin tënd.' },
   },
   {
     id: 'seo',
@@ -442,12 +279,12 @@ const SERVICES: Service[] = [
   {
     id: 'analytics',
     title: { en: 'Analytics & Client Relationships', sq: 'Analitika & Marrëdhënie me Klientët' },
-    desc: { en: 'Track performance and stay close to every customer.', sq: 'Ndiq performancën dhe qëndro afër çdo klienti.' },
+    desc: { en: "See what's working and stay close to every customer.", sq: 'Shiko çfarë funksionon dhe qëndro afër çdo klienti.' },
   },
   {
     id: 'booking',
     title: { en: 'Booking systems', sq: 'Sisteme Rezervimi' },
-    desc: { en: 'Let customers book and reserve straight from your site.', sq: 'Klientët rezervojnë drejtpërdrejt nga faqja jote.' },
+    desc: { en: 'Let customers book straight from your site.', sq: 'Klientët rezervojnë drejtpërdrejt nga faqja jote.' },
   },
 ];
 
@@ -473,25 +310,9 @@ export default function WorkServices() {
           {SERVICES.map((s, i) => (
             <li key={s.id} className="flex flex-col">
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl bg-[#F2F2F3] p-8">
-                {i === 4 && (
-                  <div
-                    className="absolute bottom-0 left-12 right-0 top-12 rounded-tl-2xl bg-cover bg-top"
-                    style={{
-                      backgroundImage:
-                        "linear-gradient(to bottom right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.55) 100%), url('/images/jim-estate-hero.webp')",
-                    }}
-                  />
-                )}
                 {i === 0 && <MiniPhotoStack />}
-                {i === 1 && <PerformanceBadge />}
-                {i === 2 && (
-                  <>
-                    <SeoRankingGraphic />
-                    <div className="absolute bottom-3 right-3 z-10">
-                      <SeoScoreBadge />
-                    </div>
-                  </>
-                )}
+                {i === 1 && <PhoneMockup />}
+                {i === 2 && <SeoRankingGraphic />}
                 {i === 3 && <AiOrb />}
                 {i === 4 && (
                   <div className="relative z-10 h-full w-full">

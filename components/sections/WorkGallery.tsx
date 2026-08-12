@@ -17,7 +17,8 @@ const SUBHEADING: Bi = {
   en: "A few of our projects that we're proud of.",
   sq: 'Disa nga projektet tona të cilat jemi krenarë për to.',
 };
-const CASE_STUDY_LABEL: Bi = { en: 'See case study', sq: 'Shiko studimin e rastit' };
+const CASE_STUDY_LABEL: Bi = { en: 'See the project', sq: 'Shiko projektin' };
+const EXPLORE_WORK_LABEL: Bi = { en: 'Explore work', sq: 'Eksploro projektin' };
 const VIEW_MORE_LABEL: Bi = { en: 'View more', sq: 'Shiko më shumë' };
 
 /**
@@ -223,41 +224,43 @@ export default function WorkGallery({
                   <div
                     className={
                       mobileSlider
-                        ? 'flex h-full flex-col overflow-hidden rounded-2xl border-8 border-[#E2E5FA] bg-white px-5 pt-5 md:px-7 md:pt-7'
-                        : 'overflow-hidden rounded-2xl border-8 border-[#E2E5FA] bg-white px-5 pt-5 md:flex md:h-full md:flex-col md:px-7 md:pt-7'
+                        ? 'flex h-full flex-col overflow-hidden rounded-2xl border-8 border-[#E2E5FA] bg-white px-5 pt-5 ring-4 ring-white md:px-7 md:pt-7'
+                        : 'overflow-hidden rounded-2xl border-8 border-[#E2E5FA] bg-white px-5 pt-5 ring-4 ring-white md:flex md:h-full md:flex-col md:px-7 md:pt-7'
                     }
+                    style={{
+                      backgroundImage: 'radial-gradient(rgba(75,85,99,0.25) 0.75px, transparent 1px)',
+                      backgroundSize: '16px 16px',
+                    }}
                   >
-                    <span className="inline-block w-fit rounded-full bg-[#EEF0FF] px-3 py-1 text-[0.8rem] font-medium text-[#6367FF]">
-                      {t(project.category)}
-                    </span>
-                    <h3 className="mt-2 font-display text-3xl font-semibold text-[#333D6D] md:text-4xl">
-                      {project.name}
-                      {project.isPrototype && (
-                        <span className="text-sm font-normal opacity-30 md:text-base"> (Prototype)</span>
-                      )}
-                    </h3>
-                    <button
-                      type="button"
-                      data-cursor
-                      aria-label={t(CASE_STUDY_LABEL)}
-                      onClick={() => {
-                        if (dragRef.current.moved) return;
-                        pageNavigate(`/portfolio/${project.slug}`, { accent: project.tagColor, bg: '#0b0a16' });
-                      }}
-                      className="pointer-events-auto mt-5 flex h-12 w-20 items-center justify-center rounded-full border-2 border-[#6367FF] bg-[#6367FF] transition-colors duration-300 hover:bg-[#4f52e0]"
-                    >
-                      <ArrowRight className="h-4 w-4 text-white" />
-                    </button>
+                    <div className="flex flex-col items-center text-center">
+                      <span className="inline-block w-fit rounded-full bg-[#EEF0FF] px-3 py-1 text-[0.8rem] font-medium text-[#6367FF]">
+                        {t(project.category)}
+                      </span>
+                      <h3 className="mt-2 font-display text-3xl font-semibold text-[#333D6D] md:text-4xl">
+                        {project.name}
+                        {project.isPrototype && (
+                          <span className="text-sm font-normal opacity-30 md:text-base"> (Prototype)</span>
+                        )}
+                      </h3>
+                      <button
+                        type="button"
+                        data-cursor
+                        aria-label={t(CASE_STUDY_LABEL)}
+                        onClick={() => {
+                          if (dragRef.current.moved) return;
+                          pageNavigate(`/portfolio/${project.slug}`, { accent: project.tagColor, bg: '#0b0a16' });
+                        }}
+                        className="pointer-events-auto mt-5 flex h-12 items-center gap-2 rounded-full bg-[#6367FF] px-6 font-display text-base font-medium text-white transition-colors duration-300 hover:bg-[#4f52e0]"
+                      >
+                        {t(EXPLORE_WORK_LABEL)}
+                        <ArrowRight className="h-4 w-4 text-white" />
+                      </button>
+                    </div>
 
-                    <div
-                      className="mt-6 aspect-[1101/1500] overflow-hidden rounded-t-lg md:aspect-[512/585] md:h-auto md:rounded-t-lg"
-                      style={{
-                        background: project.canvasColor ?? 'linear-gradient(180deg, #D2EBFB 0%, #F3FAFF 100%)',
-                      }}
-                    >
+                    <div className="mx-auto mt-6 aspect-[1101/1200] w-[85%] rounded-t-2xl md:aspect-[512/460] md:h-auto md:w-[75%] md:rounded-t-2xl">
                       {project.image ? (
-                        <div className="flex h-full items-center justify-center px-5 pt-6 md:items-end md:px-8 md:pt-8">
-                          <div className="h-full w-full overflow-hidden rounded-t-lg md:rounded-t-md">
+                        <div className="flex h-full items-center justify-center pt-6 md:items-end md:pt-8">
+                          <div className="h-full w-full overflow-hidden rounded-t-2xl border-x-4 border-t-4 border-white shadow-[0_35px_70px_-10px_rgba(55,65,81,0.9)] md:rounded-t-xl">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                               src={project.image}

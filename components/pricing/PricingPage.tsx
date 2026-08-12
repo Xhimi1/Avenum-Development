@@ -85,7 +85,7 @@ const TIERS: Tier[] = [
     id: 'signature',
     name: 'Signature',
     desc: {
-      en: 'Custom design, motion and a memorable site.',
+      en: 'Custom design, animations and a memorable site.',
       sq: 'Dizajn i personalizuar, animacione dhe një faqe e paharrueshme.',
     },
     price: { en: '€300', sq: '€300' },
@@ -124,8 +124,8 @@ const TIERS: Tier[] = [
       { en: 'AI chatbot that takes reservations for you', sq: 'AI Chatbot që merr rezervimet për ty' },
       { en: 'Monthly payment or per-project, your choice', sq: 'Pagesë mujore ose për projekt, si të duash' },
       { en: 'Priority support, always available', sq: 'Mbështetje prioritare, gjithmonë e disponueshme' },
-      { en: 'We analyze your site & predict what grows it', sq: 'Analizojmë faqen tënde & parashikojmë çfarë e rrit' },
-      { en: 'Strategy first, then design & growth', sq: 'Strategji e para, pastaj dizajn & rritje' },
+      { en: 'We look at your site and tell you what will bring more customers', sq: 'Shohim faqen tënde dhe të themi çfarë do të sjellë më shumë klientë' },
+      { en: 'We plan first, so nothing is wasted', sq: 'Planifikojmë para se të ndërtojmë, pa asgjë të humbur' },
     ],
   },
 ];
@@ -317,8 +317,8 @@ export default function PricingPage() {
             <FadeIn delay={0.4}>
               <p className="subtext mx-auto mt-6 max-w-xl text-sm font-normal md:text-base">
                 {t({
-                  en: 'Premium websites at prices that make sense in Albania — clear packages, honest scope, no hidden costs.',
-                  sq: 'Faqe web premium me çmime që kanë kuptim në Shqipëri — paketa të qarta, fushëveprim i sinqertë, pa kosto të fshehura.',
+                  en: 'Premium websites at prices that make sense in Albania — clear packages and no hidden costs.',
+                  sq: 'Faqe web premium me çmime që kanë kuptim në Shqipëri — paketa të qarta dhe pa kosto të fshehura.',
                 })}
               </p>
             </FadeIn>
@@ -514,7 +514,7 @@ export default function PricingPage() {
                 as="h2"
                 className="font-display text-[clamp(2.2rem,6.5vw,5rem)] font-semibold leading-[0.98]"
               >
-                {t({ en: 'Still deciding?', sq: 'Ende në mëdyshje?' })}
+                {t({ en: 'Get a clear answer before you commit.', sq: 'Merr një përgjigje të qartë para se të vendosësh.' })}
               </SplitText>
               <FadeIn delay={0.15}>
                 <p className="subtext mx-auto mt-5 max-w-md text-sm md:mx-0 md:text-base">

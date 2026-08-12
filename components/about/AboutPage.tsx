@@ -21,8 +21,8 @@ const HEADING: Bi = {
 };
 
 const SUBHEADING: Bi = {
-  en: 'Custom design, fast builds and real support — for businesses ready to grow.',
-  sq: 'Dizajn i personalizuar, ndërtim i shpejtë dhe mbështetje reale — për biznese gati të rriten.',
+  en: 'Custom design, fast websites and real support — for businesses ready to grow.',
+  sq: 'Dizajn i personalizuar, faqe të shpejta dhe mbështetje reale — për biznese gati të rriten.',
 };
 
 const HERO_CTA: Bi = { en: 'See our work', sq: 'Shiko punën' };
@@ -34,8 +34,8 @@ const STATS: Array<[string, Bi]> = [
 ];
 
 const MISSION_TEXT: Bi = {
-  en: 'We are a web agency fully focused on strategy for growing your business — by making your business unique and by killing every competition.',
-  sq: 'Ne jemi një agjenci web e fokusuar tërësisht në strategjinë për rritjen e biznesit tuaj — duke e bërë biznesin tuaj unik dhe duke eliminuar çdo konkurrencë.',
+  en: "We're a web agency focused on one thing: growing your business — by making it stand out from every competitor.",
+  sq: 'Ne jemi një agjenci web e fokusuar në një gjë: rritjen e biznesit tënd — duke e bërë atë të dallohet nga çdo konkurrent.',
 };
 
 const VALUES_HEADING: Bi = {

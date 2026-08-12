@@ -6,7 +6,7 @@ import ArrowRight from '@/components/ui/ArrowRight';
 import { useT } from '@/lib/i18n';
 import { whatsappHref, WA_MESSAGE } from '@/lib/contact';
 
-const HEADING = { en: 'Ready to start your website?', sq: 'Gati të fillojmë faqen tënde?' };
+const HEADING = { en: "Let's build your website.", sq: 'Le ta ndërtojmë faqen tënde.' };
 const CTA_LABEL = { en: 'Start your project', sq: 'Nis projektin tënd' };
 
 export default function Contact() {

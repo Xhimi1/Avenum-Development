@@ -37,8 +37,8 @@ const HOW_HEADING = {
 };
 
 const CHATBOT_TEXT = {
-  en: 'AI is changing how businesses operate. We build chatbots that automate bookings, answers and support — so your business runs on modern technology, not manual work.',
-  sq: 'AI po ndryshon mënyrën si funksionojnë bizneset. Ne ndërtojmë chatbot që automatizojnë rezervimet, përgjigjet dhe mbështetjen — që biznesi yt të funksionojë me teknologji moderne, jo me punë manuale.',
+  en: 'AI is changing how small businesses handle bookings and support. We build chatbots that answer guests and take bookings for you — so you spend less time on the phone and more time running your business.',
+  sq: 'AI po ndryshon mënyrën si bizneset e vogla trajtojnë rezervimet dhe mbështetjen. Ne ndërtojmë chatbot që u përgjigjen mysafirëve dhe marrin rezervime për ty — që të kalosh më pak kohë në telefon dhe më shumë kohë duke drejtuar biznesin tënd.',
 };
 
 const CTA_HEADING = { en: 'Your front desk, automated.', sq: 'Recepsioni yt, i automatizuar.' };
@@ -57,17 +57,17 @@ const HOW_IT_WORKS = [
     },
   },
   {
-    title: { en: 'The AI understands intent', sq: 'AI kupton qëllimin' },
+    title: { en: 'The AI understands what they need', sq: 'AI kupton çfarë duan' },
     desc: {
-      en: 'Trained on your menu, hours, prices, policies and tone of voice.',
-      sq: 'I trajnuar me menunë tënde, orarin, çmimet, rregullat dhe tonin e zërit.',
+      en: 'It learns your menu, hours, prices, and how you talk to customers.',
+      sq: 'Mëson menunë tënde, orarin, çmimet, dhe si u flet klientëve.',
     },
   },
   {
-    title: { en: 'It connects to your tools', sq: 'Lidhet me mjetet e tua' },
+    title: { en: 'It connects to your booking system', sq: 'Lidhet me sistemin tënd të rezervimeve' },
     desc: {
-      en: 'Reservation systems, CRMs and payments — wired in securely.',
-      sq: 'Sisteme rezervimesh, CRM dhe pagesa — të lidhura në mënyrë të sigurt.',
+      en: 'Your reservations, customer list and payments — all connected safely.',
+      sq: 'Rezervimet, lista e klientëve dhe pagesat — të gjitha të lidhura në mënyrë të sigurt.',
     },
   },
   {

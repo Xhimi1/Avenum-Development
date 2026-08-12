@@ -15,13 +15,13 @@ const LEARN_MORE: Bi = { en: 'Learn more', sq: 'Mëso më shumë' };
 const aboutSection = SECTIONS.find((s) => s.id === 'about')!;
 
 const HEADING: Bi = {
-  en: 'We build world-class websites.',
-  sq: 'Ne ndërtojmë faqe të klasit botëror.',
+  en: 'We build websites that bring in customers.',
+  sq: 'Ne ndërtojmë faqe që sjellin klientë.',
 };
 
 const PARAGRAPH: Bi = {
-  en: "Avenum is a web agency based in Tirana. For 3 years we've been building professional, fast, unique websites — during these 3 years we've learned that passion is what can bring success to anyone.",
-  sq: 'Avenum është një agjenci web me bazë në Tiranë. Prej 3 vitesh ndërtojmë faqe web profesionale, të shpejta dhe unike — gjatë këtyre 3 viteve kemi mësuar se pasioni është ajo që mund të sjellë suksesin për këdo.',
+  en: "Avenum is a web agency in Tirana. For the past 3 years we've built fast, professional websites for local businesses — mostly restaurants — that turn visitors into paying customers.",
+  sq: 'Avenum është një agjenci web në Tiranë. Prej 3 vitesh ndërtojmë faqe web të shpejta dhe profesionale për biznese lokale — kryesisht restorante — që i kthejnë vizitorët në klientë.',
 };
 
 export default function WhoWeAre() {

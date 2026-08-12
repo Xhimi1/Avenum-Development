@@ -13,7 +13,7 @@ import { whatsappHref, WA_MESSAGE } from '@/lib/contact';
 const OVERVIEW_HEADING: Bi = { en: 'Project overview', sq: 'Përmbledhje e projektit' };
 const APPROACH_HEADING: Bi = { en: 'Our approach', sq: 'Qasja jonë' };
 const IMAGE_PLACEHOLDER: Bi = { en: 'Image', sq: 'Imazh' };
-const CTA_HEADING: Bi = { en: 'Ready for a project like this?', sq: 'Gati për një projekt të tillë?' };
+const CTA_HEADING: Bi = { en: 'We can build something like this for you.', sq: 'Mund të ndërtojmë diçka të tillë edhe për ty.' };
 const CTA_LABEL: Bi = { en: 'Contact us', sq: 'Na kontaktoni' };
 
 /** "https://kroni-restaurant.com/" -> "kroni-restaurant.com" for display in the live-site button */
