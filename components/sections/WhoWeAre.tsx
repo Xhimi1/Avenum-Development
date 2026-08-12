@@ -75,7 +75,7 @@ export default function WhoWeAre() {
             <div className="max-w-2xl">
               <SplitText
                 as="h2"
-                className="font-display text-[clamp(2.8rem,7.2vw,6.4rem)] font-semibold leading-[0.95] text-[#333D6D]"
+                className="font-display text-[clamp(2.8rem,7.2vw,6.4rem)] font-semibold leading-[0.95] text-[#333D6D] md:text-[clamp(2.8rem,4.5vw,4.4rem)]"
               >
                 {t(HEADING)}
               </SplitText>

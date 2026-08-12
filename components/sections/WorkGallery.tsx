@@ -97,7 +97,7 @@ export default function WorkGallery({
             <div className="max-w-2xl">
               <SplitText
                 as="h2"
-                className="font-display text-[clamp(2.8rem,7.2vw,6.4rem)] font-semibold leading-[0.95] text-white"
+                className="font-display text-[clamp(2.8rem,7.2vw,6.4rem)] font-semibold leading-[0.95] text-white md:text-[clamp(2.8rem,4.5vw,4.4rem)]"
               >
                 {t(HEADING)}
               </SplitText>

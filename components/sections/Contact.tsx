@@ -17,7 +17,7 @@ export default function Contact() {
         <div>
           <SplitText
             as="h2"
-            className="text-shadow-soft font-display text-[clamp(3.2rem,10vw,8.5rem)] font-semibold leading-[0.95]"
+            className="text-shadow-soft font-display text-[clamp(3.2rem,10vw,8.5rem)] font-semibold leading-[0.95] md:text-[clamp(3.2rem,6vw,5.5rem)]"
           >
             {t(HEADING)}
           </SplitText>
