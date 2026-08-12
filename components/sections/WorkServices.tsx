@@ -277,7 +277,7 @@ function BookingCard() {
         </div>
         <div className="pt-3">
           <h3 className="font-body text-sm font-semibold leading-snug text-black">Apartament për tre persona</h3>
-          <span className="mt-2 block w-full rounded-lg bg-[#2FA76A] py-1.5 text-center font-body text-xs font-medium text-white">
+          <span className="mt-2 block w-full rounded-md bg-[#6B93FF] py-1.5 text-center font-body text-xs font-medium text-white">
             Book now
           </span>
         </div>
