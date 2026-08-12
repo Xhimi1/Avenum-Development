@@ -191,18 +191,24 @@ const SCORES = [
   { value: 100, label: 'Accessibility' },
 ];
 
-const CHART_BARS = [35, 55, 45, 70, 60, 90];
-
-/** Blue bar chart for the "Analytics & Client Relationships" card — bars
- *  grow from zero once the card scrolls into view. */
+/** Blue line/area chart in a white stat card for the "Analytics & Client
+ *  Relationships" card — the line draws in and the gradient fill fades in
+ *  once the card scrolls into view. */
 function AnalyticsChart() {
   const rootRef = useRef<HTMLDivElement>(null);
-  const barRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const lineRef = useRef<SVGPathElement>(null);
+  const areaRef = useRef<SVGPathElement>(null);
   const played = useRef(false);
 
   useEffect(() => {
     const el = rootRef.current;
-    if (!el) return;
+    const line = lineRef.current;
+    const area = areaRef.current;
+    if (!el || !line || !area) return;
+
+    const length = line.getTotalLength();
+    gsap.set(line, { strokeDasharray: length, strokeDashoffset: length });
+    gsap.set(area, { opacity: 0 });
 
     const io = new IntersectionObserver(
       ([entry]) => {
@@ -210,25 +216,14 @@ function AnalyticsChart() {
         played.current = true;
         io.disconnect();
 
-        const bars = barRefs.current.filter((b): b is HTMLDivElement => !!b);
-
         if (prefersReducedMotion()) {
-          bars.forEach((b, i) => {
-            b.style.height = `${CHART_BARS[i]}%`;
-          });
+          gsap.set(line, { strokeDashoffset: 0 });
+          gsap.set(area, { opacity: 1 });
           return;
         }
 
-        gsap.fromTo(
-          bars,
-          { height: '0%' },
-          {
-            height: (i: number) => `${CHART_BARS[i]}%`,
-            duration: 0.9,
-            ease: 'power2.out',
-            stagger: 0.08,
-          }
-        );
+        gsap.to(line, { strokeDashoffset: 0, duration: 1.4, ease: 'power2.out' });
+        gsap.to(area, { opacity: 1, duration: 1, delay: 0.5, ease: 'power1.out' });
       },
       { threshold: 0.4 }
     );
@@ -237,19 +232,56 @@ function AnalyticsChart() {
   }, []);
 
   return (
-    <div ref={rootRef} className="relative flex h-full w-full items-end justify-center gap-2.5">
-      <span className="absolute left-0 top-10 z-10 whitespace-nowrap rounded-full bg-[#3B6BFF] px-3 py-2.5 text-[0.65rem] font-medium text-white">
-        12.4K Visitors
-      </span>
-      {CHART_BARS.map((_, i) => (
-        <div key={i} className="flex h-full w-6 items-end overflow-hidden rounded-t-md bg-[#3B6BFF]/10">
-          <div
-            ref={(el) => { barRefs.current[i] = el; }}
-            className="w-full rounded-t-md bg-[#3B6BFF]"
-            style={{ height: '0%' }}
+    <div ref={rootRef} className="-mr-8 flex h-full w-full items-start justify-end">
+      <div className="w-full max-w-[170px] rounded-2xl bg-white p-3.5 shadow-sm">
+        <p className="font-body text-[0.65rem] text-gray-500">Total viewers this month</p>
+        <p className="mt-1 font-body text-base font-semibold text-black">24,800</p>
+        <svg viewBox="0 0 200 70" className="mt-2.5 h-12 w-full" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="analyticsSalesGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#3B6BFF" stopOpacity="0.35" />
+              <stop offset="100%" stopColor="#3B6BFF" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          <path
+            ref={areaRef}
+            d="M0,55 C35,65 55,20 90,25 C125,30 145,8 200,2 L200,70 L0,70 Z"
+            fill="url(#analyticsSalesGradient)"
+          />
+          <path
+            ref={lineRef}
+            d="M0,55 C35,65 55,20 90,25 C125,30 145,8 200,2"
+            fill="none"
+            stroke="#3B6BFF"
+            strokeWidth="3"
+            strokeLinecap="round"
+          />
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+/** Small listing-style card (photo, name, CTA) for the "Booking systems" card. */
+function BookingCard() {
+  return (
+    <div className="flex h-full w-full items-center justify-center">
+      <div className="w-full max-w-[190px] rounded-lg bg-white p-2 shadow-sm">
+        <div className="aspect-[4/3] w-full overflow-hidden rounded-md">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/luxury-room-sea-view.webp"
+            alt=""
+            className="h-full w-full object-cover"
           />
         </div>
-      ))}
+        <div className="pt-3">
+          <h3 className="font-body text-sm font-semibold leading-snug text-black">Apartament për tre persona</h3>
+          <span className="mt-2 block w-full rounded-lg bg-[#2FA76A] py-1.5 text-center font-body text-xs font-medium text-white">
+            Book now
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
@@ -258,55 +290,12 @@ function AnalyticsChart() {
  *  it for the "AI Chatbot" card — pulls from the site's own accent palette
  *  (amber, orange, green, teal, pink, blue) instead of the usual purple/pink
  *  "AI gradient" cliché. */
-const AI_CHIPS = ['24/7 replies', 'Instant answers', 'Multilingual', 'Zero missed chats', 'Human handoff', 'Smart replies'];
-
 function AiOrb() {
-  const circleRef = useRef<HTMLDivElement>(null);
-  const haloRef = useRef<HTMLDivElement>(null);
-  const chipRef = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    const circle = circleRef.current;
-    const halo = haloRef.current;
-    const chip = chipRef.current;
-    if (!circle || !halo || !chip || prefersReducedMotion()) return;
-
-    const scaleEls = [circle, halo];
-    const tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
-
-    AI_CHIPS.forEach((label, i) => {
-      // each pulse pops the next chip in at the circle's centre, in exact
-      // sync with the circle/halo dipping (both tweens pinned to the same
-      // label) — holds 4s, then a matching dip syncs the fade-out too
-      const inLabel = `chip${i}-in`;
-      const outLabel = `chip${i}-out`;
-
-      tl.addLabel(inLabel)
-        .call(() => { chip.textContent = label; }, undefined, inLabel)
-        .to(scaleEls, { scale: 0.94, duration: 0.3, ease: 'power1.out' }, inLabel)
-        .to(chip, { scale: 1, opacity: 1, duration: 0.3, ease: 'power1.out' }, inLabel)
-        .to(scaleEls, { scale: 1, duration: 0.35, ease: 'power1.inOut' })
-        .to({}, { duration: 4 })
-        .addLabel(outLabel)
-        .to(scaleEls, { scale: 0.94, duration: 0.3, ease: 'power1.out' }, outLabel)
-        .to(chip, { scale: 0.6, opacity: 0, duration: 0.3, ease: 'power1.inOut' }, outLabel)
-        .to(scaleEls, { scale: 1, duration: 0.3, ease: 'power1.inOut' });
-    });
-
-    return () => {
-      tl.kill();
-    };
-  }, []);
-
   return (
     <div className="flex h-full w-full items-center justify-center">
-      <div className="relative flex h-40 w-40 items-center justify-center md:h-48 md:w-48">
-        {/* rotation (CSS animation) lives on this wrapper; the gradient
-            layer inside it only handles the gsap scale pulse — keeping the
-            two transforms off the same element so neither overrides the other */}
+      <div className="relative flex h-52 w-52 items-center justify-center md:h-44 md:w-44">
         <div className="absolute inset-[-6%] animate-[spin_8s_linear_infinite] rounded-full motion-reduce:animate-none">
           <div
-            ref={haloRef}
             className="h-full w-full rounded-full opacity-90 blur-md"
             style={{
               background:
@@ -314,12 +303,20 @@ function AiOrb() {
             }}
           />
         </div>
-        <div ref={circleRef} className="relative z-10 h-full w-full rounded-full bg-[#F2F2F3]" />
-        <span
-          ref={chipRef}
-          className="absolute z-20 scale-[0.6] whitespace-nowrap rounded-full px-3 py-1 text-[0.65rem] font-medium text-white opacity-0 shadow-md"
-          style={{ background: 'linear-gradient(135deg, #FFC24D, #FFA366, #F79AC0, #8FACFF, #5FE0B0, #7EDDA0)' }}
-        />
+        <div className="relative z-10 flex h-full w-full flex-col items-center justify-center gap-0 rounded-full bg-[#F2F2F3] px-6 text-center">
+          <span className="font-body text-lg font-medium leading-relaxed text-black">Hi Dea</span>
+          <span
+            className="font-body text-lg font-medium leading-relaxed"
+            style={{
+              background: 'linear-gradient(135deg, #FFC24D, #FFA366, #F79AC0, #8FACFF, #5FE0B0, #7EDDA0)',
+              WebkitBackgroundClip: 'text',
+              backgroundClip: 'text',
+              color: 'transparent',
+            }}
+          >
+            How can I help
+          </span>
+        </div>
       </div>
     </div>
   );
@@ -476,6 +473,15 @@ export default function WorkServices() {
           {SERVICES.map((s, i) => (
             <li key={s.id} className="flex flex-col">
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl bg-[#F2F2F3] p-8">
+                {i === 4 && (
+                  <div
+                    className="absolute bottom-0 left-12 right-0 top-12 rounded-tl-2xl bg-cover bg-top"
+                    style={{
+                      backgroundImage:
+                        "linear-gradient(to bottom right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.55) 100%), url('/images/jim-estate-hero.webp')",
+                    }}
+                  />
+                )}
                 {i === 0 && <MiniPhotoStack />}
                 {i === 1 && <PerformanceBadge />}
                 {i === 2 && (
@@ -487,7 +493,12 @@ export default function WorkServices() {
                   </>
                 )}
                 {i === 3 && <AiOrb />}
-                {i === 4 && <AnalyticsChart />}
+                {i === 4 && (
+                  <div className="relative z-10 h-full w-full">
+                    <AnalyticsChart />
+                  </div>
+                )}
+                {i === 5 && <BookingCard />}
               </div>
               <h3 className="mt-4 font-body text-xl leading-tight">
                 <span className="font-normal text-black">{t(s.title)} </span>
