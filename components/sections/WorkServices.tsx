@@ -306,7 +306,7 @@ export default function WorkServices() {
           </SplitText>
         </div>
 
-        <ul className="mt-10 grid grid-cols-1 gap-8 md:mt-14 md:gap-x-8 md:gap-y-10 md:grid-cols-3">
+        <ul className="mt-10 grid grid-cols-1 gap-12 md:mt-14 md:gap-x-12 md:gap-y-16 md:grid-cols-3">
           {SERVICES.map((s, i) => (
             <li key={s.id} className="flex flex-col">
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl bg-[#F2F2F3] p-8">

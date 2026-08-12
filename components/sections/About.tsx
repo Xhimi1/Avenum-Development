@@ -106,30 +106,32 @@ export default function About() {
     >
       <div className="sticky top-0 h-screen p-3 md:p-6">
         <div className="flex h-full items-center justify-center rounded-[20px] bg-[#6367FF] pt-24 md:pt-20">
-          <div className="mx-auto w-full max-w-5xl px-6 text-center md:px-12">
-            <p
-              aria-label={manifesto}
-              className="text-shadow-soft font-display text-[clamp(1.9rem,3.8vw,3.2rem)] font-medium leading-[1.2]"
-            >
-              {manifesto.split(' ').map((word, i) => (
-                <span key={i} aria-hidden data-about-word className="opacity-20">
-                  {word}{' '}
-                </span>
-              ))}
-            </p>
-
-            <FadeIn delay={0.2} className="mt-8 flex justify-center md:mt-10">
-              <a
-                href={whatsappHref(WA_MESSAGE)}
-                data-cursor
-                className="pointer-events-auto inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 font-display text-base font-medium tracking-normal text-[#6367FF] transition-colors duration-300 hover:bg-gray-100"
+          <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 text-left md:flex-row md:items-center md:justify-between md:gap-16 md:px-12">
+            <div className="md:max-w-xl">
+              <p
+                aria-label={manifesto}
+                className="text-shadow-soft font-display text-[clamp(1.5rem,2.6vw,2.3rem)] font-medium leading-[1.2]"
               >
-                {t(CONTACT_LABEL)}
-                <ArrowRight className="h-4 w-4" />
-              </a>
-            </FadeIn>
+                {manifesto.split(' ').map((word, i) => (
+                  <span key={i} aria-hidden data-about-word className="opacity-20">
+                    {word}{' '}
+                  </span>
+                ))}
+              </p>
 
-            <div className="mx-auto mt-8 grid max-w-3xl grid-cols-3 gap-6 md:mt-12 md:gap-8">
+              <FadeIn delay={0.2} className="mt-8 flex justify-start">
+                <a
+                  href={whatsappHref(WA_MESSAGE)}
+                  data-cursor
+                  className="pointer-events-auto inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 font-display text-base font-medium tracking-normal text-[#6367FF] transition-colors duration-300 hover:bg-gray-100"
+                >
+                  {t(CONTACT_LABEL)}
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+              </FadeIn>
+            </div>
+
+            <div className="grid shrink-0 grid-cols-2 gap-x-8 gap-y-6 md:gap-x-10 md:gap-y-8">
               {STATS.map(([value, label], i) => (
                 <FadeIn key={value} delay={i * 0.08}>
                   <p className="font-display text-4xl font-semibold text-white md:text-5xl">
