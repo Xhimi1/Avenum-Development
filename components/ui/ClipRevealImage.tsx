@@ -13,6 +13,8 @@ interface ClipRevealImageProps {
   swipeColor?: string;
   /** extra decorative layers (tints, gradients) rendered on top of the image */
   children?: ReactNode;
+  /** fires once the swipe/reveal finishes (or immediately under reduced motion) */
+  onRevealed?: () => void;
 }
 
 /** Two-stage clip-path reveal, scroll-triggered once: a color panel wipes in
@@ -25,6 +27,7 @@ export default function ClipRevealImage({
   imgClassName,
   swipeColor = '#6367FF',
   children,
+  onRevealed,
 }: ClipRevealImageProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -39,6 +42,7 @@ export default function ClipRevealImage({
     if (prefersReducedMotion()) {
       gsap.set(img, { clipPath: 'inset(0% 0% 0% 0%)' });
       gsap.set(swipe, { clipPath: 'inset(0% 100% 0% 0%)' });
+      onRevealed?.();
       return;
     }
 
@@ -49,10 +53,11 @@ export default function ClipRevealImage({
       gsap
         .timeline({
           scrollTrigger: { trigger: wrap, start: 'top 85%', once: true },
-          defaults: { duration: 1, ease: 'power2.inOut' },
+          defaults: { duration: 0.75, ease: 'power2.inOut' },
+          onComplete: onRevealed,
         })
         .to(swipe, { clipPath: 'inset(0% 0% 0% 0%)' })
-        .to(swipe, { clipPath: 'inset(0% 0% 0% 100%)' }, '+=0.12')
+        .to(swipe, { clipPath: 'inset(0% 0% 0% 100%)' }, '+=0.09')
         .to(img, { clipPath: 'inset(0% 0% 0% 0%)' }, '<');
     }, wrap);
     return () => ctx.revert();

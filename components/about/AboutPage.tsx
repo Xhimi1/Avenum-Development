@@ -174,10 +174,10 @@ export default function AboutPage() {
                   <a
                     href="/portfolio"
                     data-cursor
-                    className="group inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-medium tracking-normal text-black shadow-lg transition-transform duration-300 hover:-translate-y-0.5"
+                    className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 font-display text-base font-medium tracking-normal text-black transition-colors duration-300 hover:bg-gray-100"
                   >
                     {t(HERO_CTA)}
-                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    <ArrowRight className="h-4 w-4" />
                   </a>
                 </FadeIn>
               </div>
@@ -299,7 +299,7 @@ export default function AboutPage() {
             <a
               href={whatsappHref(WA_MESSAGE)}
               data-cursor
-              className="inline-flex items-center gap-3 rounded-full bg-white px-12 py-6 text-base font-medium tracking-normal text-black"
+              className="inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 font-display text-base font-medium tracking-normal text-black transition-colors duration-300 hover:bg-gray-100"
             >
               {t(CTA_LABEL)}
               <ArrowRight className="h-5 w-5" />

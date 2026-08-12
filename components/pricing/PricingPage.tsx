@@ -353,10 +353,10 @@ export default function PricingPage() {
                             <a
                               href={whatsappHref(WA_MESSAGE)}
                               data-cursor
-                              className="mt-6 flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-t from-[#4f52e0] to-[#6367FF] py-3.5 text-center text-sm font-medium tracking-normal text-white transition-opacity duration-300 hover:opacity-90"
+                              className="mt-6 flex items-center justify-center gap-1.5 rounded-full bg-gradient-to-t from-[#4f52e0] to-[#6367FF] py-4 text-center font-display text-base font-medium tracking-normal text-white transition-opacity duration-300 hover:opacity-90"
                             >
                               {t(tier.cta)}
-                              <ArrowRight className="h-4 w-4 -rotate-45" />
+                              <ArrowRight className="h-4 w-4" />
                             </a>
 
                             <div className="mt-6">
@@ -365,7 +365,7 @@ export default function PricingPage() {
                           </div>
                         ) : (
                           <>
-                            <div className="relative mx-2 mt-2 rounded-2xl bg-gradient-to-t from-[#4f52e0] to-[#6367FF] p-6 md:mx-3 md:mt-3 md:p-7">
+                            <div className="relative mx-2 mt-2 rounded-t-2xl rounded-b-[36px] bg-gradient-to-t from-[#4f52e0] to-[#6367FF] p-6 md:mx-3 md:mt-3 md:p-7">
                               <div className="flex items-start justify-between">
                                 <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-[#6367FF]">
                                   <IconSpark className="h-5 w-5" />
@@ -387,10 +387,10 @@ export default function PricingPage() {
                               <a
                                 href={whatsappHref(WA_MESSAGE)}
                                 data-cursor
-                                className="mt-6 flex items-center justify-center gap-1.5 rounded-xl bg-white py-3.5 text-center text-sm font-medium tracking-normal text-black transition-colors duration-300 hover:bg-white/90"
+                                className="mt-6 flex items-center justify-center gap-1.5 rounded-full bg-white py-4 text-center font-display text-base font-medium tracking-normal text-black transition-colors duration-300 hover:bg-gray-100"
                               >
                                 {t(tier.cta)}
-                                <ArrowRight className="h-4 w-4 -rotate-45" />
+                                <ArrowRight className="h-4 w-4" />
                               </a>
                             </div>
 
@@ -528,7 +528,7 @@ export default function PricingPage() {
                 <a
                   href={whatsappHref(WA_MESSAGE)}
                   data-cursor
-                  className="inline-flex items-center gap-3 rounded-full bg-white px-12 py-6 text-base font-medium tracking-normal text-black"
+                  className="inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 font-display text-base font-medium tracking-normal text-black transition-colors duration-300 hover:bg-gray-100"
                 >
                   {t({ en: 'Get a free quote', sq: 'Merr një ofertë falas' })}
                   <ArrowRight className="h-5 w-5" />

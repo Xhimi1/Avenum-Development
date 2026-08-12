@@ -3,14 +3,18 @@
 import { useLayoutEffect, useRef } from 'react';
 import { gsap } from '@/lib/gsap';
 import FadeIn from '@/components/ui/FadeIn';
+import ArrowRight from '@/components/ui/ArrowRight';
 import { useStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
 import { prefersReducedMotion } from '@/lib/utils';
+import { whatsappHref, WA_MESSAGE } from '@/lib/contact';
 
 const MANIFESTO = {
   en: 'We build beautiful, fast, unique websites — the kind that make your business stand out from the competition and bring in more customers.',
   sq: 'Ne ndërtojmë faqe web të bukura, të shpejta dhe unike — që e dallojnë biznesin tënd nga konkurrenca dhe sjellin më shumë klientë.',
 };
+
+const CONTACT_LABEL = { en: 'Contact us', sq: 'Na kontakto' };
 
 const STATS: Array<[string, { en: string; sq: string }]> = [
   ['3+', { en: 'Years of experience', sq: 'Vite përvojë' }],
@@ -67,8 +71,9 @@ export default function About() {
   const t = useT();
   const manifesto = t(MANIFESTO);
 
-  // Manifesto words light up one by one, scrubbed across the pinned section.
-  // Re-runs on locale change since the word count (and DOM nodes) differs.
+  // Manifesto words light up one by one, scrubbed across the pinned
+  // section's scroll range. Re-runs on locale change since the word count
+  // (and DOM nodes) differs.
   useLayoutEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
@@ -97,35 +102,43 @@ export default function About() {
       ref={sectionRef}
       id="about"
       data-scene-section
-      className="relative h-[250vh]"
+      className="relative h-[250vh] bg-[#6367FF]"
     >
       <div className="sticky top-0 flex h-screen items-center pt-24 md:pt-20">
-        <div className="mx-auto w-full max-w-5xl px-6 md:px-12">
-          {/* barely-there glass keeps the manifesto readable while the orbit stays visible */}
-          <div className="glass-soft -translate-y-10 rounded-3xl p-5 md:translate-y-0 md:p-10">
-            <p
-              aria-label={manifesto}
-              className="text-shadow-soft font-display text-[clamp(1.9rem,3.8vw,3.2rem)] font-medium leading-[1.2]"
-            >
-              {manifesto.split(' ').map((word, i) => (
-                <span key={i} aria-hidden data-about-word className="opacity-20">
-                  {word}{' '}
-                </span>
-              ))}
-            </p>
+        <div className="mx-auto w-full max-w-5xl px-6 text-center md:px-12">
+          <p
+            aria-label={manifesto}
+            className="text-shadow-soft font-display text-[clamp(1.9rem,3.8vw,3.2rem)] font-medium leading-[1.2]"
+          >
+            {manifesto.split(' ').map((word, i) => (
+              <span key={i} aria-hidden data-about-word className="opacity-20">
+                {word}{' '}
+              </span>
+            ))}
+          </p>
 
-            <div className="mt-8 grid grid-cols-3 gap-6 md:mt-12 md:gap-8">
-              {STATS.map(([value, label], i) => (
-                <FadeIn key={value} delay={i * 0.08}>
-                  <p className="font-display text-4xl font-semibold text-white md:text-5xl">
-                    <CountUpValue value={value} />
-                  </p>
-                  <p className="subtext mt-2 text-xs tracking-normal">
-                    {t(label)}
-                  </p>
-                </FadeIn>
-              ))}
-            </div>
+          <FadeIn delay={0.2} className="mt-8 flex justify-center md:mt-10">
+            <a
+              href={whatsappHref(WA_MESSAGE)}
+              data-cursor
+              className="pointer-events-auto inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 font-display text-base font-medium tracking-normal text-[#6367FF] transition-colors duration-300 hover:bg-gray-100"
+            >
+              {t(CONTACT_LABEL)}
+              <ArrowRight className="h-4 w-4" />
+            </a>
+          </FadeIn>
+
+          <div className="mx-auto mt-8 grid max-w-3xl grid-cols-3 gap-6 md:mt-12 md:gap-8">
+            {STATS.map(([value, label], i) => (
+              <FadeIn key={value} delay={i * 0.08}>
+                <p className="font-display text-4xl font-semibold text-white md:text-5xl">
+                  <CountUpValue value={value} />
+                </p>
+                <p className="subtext mt-2 text-xs tracking-normal">
+                  {t(label)}
+                </p>
+              </FadeIn>
+            ))}
           </div>
         </div>
       </div>

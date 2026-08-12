@@ -203,10 +203,10 @@ export default function CaseStudyPage({ project }: { project: Project }) {
               <a
                 href={waLink}
                 data-cursor
-                className="group inline-flex items-center gap-3 rounded-full bg-black px-11 py-5 text-base font-medium tracking-normal text-white shadow-xl transition-transform duration-300 hover:-translate-y-0.5"
+                className="inline-flex items-center gap-3 rounded-full bg-black px-8 py-4 font-display text-base font-medium tracking-normal text-white transition-colors duration-300 hover:bg-black/85"
               >
                 {t(CTA_LABEL)}
-                <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                <ArrowRight className="h-5 w-5" />
               </a>
             </div>
           </div>

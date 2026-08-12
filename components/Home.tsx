@@ -1,11 +1,11 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 import SmoothScroll from '@/components/providers/SmoothScroll';
 import Loader from '@/components/ui/Loader';
 import Nav from '@/components/ui/Nav';
 import ColorWash from '@/components/ui/ColorWash';
+import LaunchPopup from '@/components/ui/LaunchPopup';
 import Hero from '@/components/sections/Hero';
 import WhoWeAre from '@/components/sections/WhoWeAre';
 import Work from '@/components/sections/Work';
@@ -15,8 +15,6 @@ import Footer from '@/components/ui/Footer';
 import { useStore } from '@/lib/store';
 import { SECTIONS } from '@/lib/palette';
 import { scrollState } from '@/lib/scroll';
-
-const Scene = dynamic(() => import('@/components/canvas/Scene'), { ssr: false });
 
 export default function Home() {
   const section = useStore((s) => s.section);
@@ -58,7 +56,6 @@ export default function Home() {
 
   return (
     <SmoothScroll>
-      <Scene />
       <Loader />
       <ColorWash />
       <Nav />
@@ -73,6 +70,7 @@ export default function Home() {
         <Footer theme="dark" />
       </div>
       <div aria-hidden className="grain pointer-events-none fixed inset-0 z-[60] opacity-[0.07] mix-blend-overlay" />
+      <LaunchPopup />
     </SmoothScroll>
   );
 }

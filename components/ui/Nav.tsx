@@ -8,6 +8,7 @@ import { useStore } from '@/lib/store';
 import { SECTIONS } from '@/lib/palette';
 import { NAV_SERVICES } from '@/lib/services-nav';
 import { scrollState } from '@/lib/scroll';
+import { whatsappHref, WA_MESSAGE } from '@/lib/contact';
 import { useT } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 import LangToggle from '@/components/ui/LangToggle';
@@ -15,6 +16,7 @@ import ServiceIcon from '@/components/services/ServiceIcon';
 
 const PRICING_LABEL = { en: 'Pricing', sq: 'Paketat' };
 const BACK_LABEL = { en: 'Back', sq: 'Kthehu' };
+const CONTACT_LABEL = { en: 'Contact', sq: 'Kontakto' };
 const PRICING_WASH = { accent: '#8b5cf6', bg: '#1c0f36' };
 const aboutSection = SECTIONS.find((s) => s.id === 'about')!;
 
@@ -36,6 +38,21 @@ export default function Nav() {
   const burgerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
+  // Desktop "Services" dropdown — a separate small popover anchored under
+  // its own trigger in the inline desktop nav, independent of the mobile
+  // full-screen menu below.
+  const [desktopServicesOpen, setDesktopServicesOpen] = useState(false);
+  const desktopServicesRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!desktopServicesOpen) return;
+    const onClick = (e: MouseEvent) => {
+      if (desktopServicesRef.current?.contains(e.target as Node)) return;
+      setDesktopServicesOpen(false);
+    };
+    document.addEventListener('mousedown', onClick);
+    return () => document.removeEventListener('mousedown', onClick);
+  }, [desktopServicesOpen]);
+
   // Bar behavior driven by scroll position, not CSS `position: sticky`:
   // stays put and visible the whole time (no hide/slide interaction) —
   // transparent at the top, then once scrolled past a threshold it docks
@@ -44,34 +61,23 @@ export default function Nav() {
   // directly (not `scrollState.y`) so it works on every page —
   // `scrollState` is only kept in sync by <SmoothScroll>, which is mounted
   // just on the homepage; Lenis still drives the real window scroll there
-  // too, so this stays accurate on the homepage as well.
+  // too, so this stays accurate on the homepage as well. A passive scroll
+  // listener (not a gsap.ticker/rAF loop) — the latter would poll every
+  // frame for the page's entire lifetime, even while completely idle.
   const [dockedBg, setDockedBg] = useState(false);
   const dockedRef = useRef(dockedBg);
   useEffect(() => {
-    const tick = () => {
+    const onScroll = () => {
       const next = window.scrollY >= window.innerHeight * 0.6;
       if (next !== dockedRef.current) {
         dockedRef.current = next;
         setDockedBg(next);
       }
     };
-    gsap.ticker.add(tick);
-    return () => gsap.ticker.remove(tick);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
-  // Desktop renders the menu as a small anchored card — close it on an
-  // outside click, like any dropdown. (Mobile's full-screen panel covers
-  // the whole viewport, so this effectively never fires there.)
-  useEffect(() => {
-    if (!open) return;
-    const onClick = (e: MouseEvent) => {
-      const target = e.target as Node;
-      if (panelRef.current?.contains(target) || burgerRef.current?.contains(target)) return;
-      setOpen(false);
-    };
-    document.addEventListener('mousedown', onClick);
-    return () => document.removeEventListener('mousedown', onClick);
-  }, [open]);
 
   // "Services" row expands a submenu in place; collapses whenever the
   // full-screen menu itself closes so it doesn't reopen pre-expanded.
@@ -126,19 +132,16 @@ export default function Nav() {
     };
   }, [open]);
 
-  // Close on Escape and when the viewport grows to desktop. Also tracks the
-  // breakpoint itself — on mobile, the docked bar's background hides while
-  // the full-screen menu is open (so it reads as one solid black panel);
-  // on desktop, the small anchored card doesn't cover the bar, so it stays.
-  const [isDesktop, setIsDesktop] = useState(false);
+  // Close both menus on Escape, and close the mobile panel if the viewport
+  // grows to desktop mid-open (it has no desktop trigger anymore).
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
-    const mq = window.matchMedia('(min-width: 768px)');
-    const onMq = () => {
-      setIsDesktop(mq.matches);
-      if (mq.matches) setOpen(false);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      setOpen(false);
+      setDesktopServicesOpen(false);
     };
-    onMq();
+    const mq = window.matchMedia('(min-width: 768px)');
+    const onMq = () => mq.matches && setOpen(false);
     window.addEventListener('keydown', onKey);
     mq.addEventListener('change', onMq);
     return () => {
@@ -146,12 +149,21 @@ export default function Nav() {
       mq.removeEventListener('change', onMq);
     };
   }, []);
-  const bgVisible = dockedBg && (!open || isDesktop);
+  // On mobile, the docked bar's background hides while the full-screen menu
+  // is open, so the bar reads as part of that solid black panel instead of
+  // showing its own light bg through it.
+  const bgVisible = dockedBg && !open;
 
   const go = (i: number) => {
     setOpen(false);
     goToSection(i);
   };
+
+  // Links always sit on a light background now — the docked bar's own
+  // F3F4F4 fill, or the white pill wrapping them when not docked — so the
+  // text color no longer needs to branch on the page's own background.
+  const desktopLinkClass =
+    'font-display text-sm font-medium tracking-normal text-[#061E29] transition-colors duration-300 hover:text-[#6367FF]';
 
   return (
     <>
@@ -163,7 +175,7 @@ export default function Nav() {
       <header
         className={cn(
           'pointer-events-none inset-x-0 z-50',
-          dockedBg ? 'fixed top-0' : 'absolute top-4 md:top-8'
+          dockedBg ? 'fixed top-0' : 'absolute top-4'
         )}
       >
         {/* background lives on its own layer behind the content — keeping
@@ -181,52 +193,161 @@ export default function Nav() {
             bgVisible ? 'opacity-100' : 'opacity-0'
           )}
         />
-        <div className="pointer-events-auto relative mx-auto flex w-full max-w-[90rem] items-center justify-between px-6 py-4 md:px-12 md:py-3">
+        <div className="pointer-events-auto relative mx-auto flex w-full max-w-[90rem] items-center justify-between gap-6 px-6 py-4 md:grid md:grid-cols-[auto_1fr_auto] md:px-12 md:py-3">
           <button
             type="button"
             data-cursor
             onClick={() => go(0)}
             aria-label="Avenum — back to top"
-            className={cn(
-              'font-display font-bold transition-colors duration-300 ease-out',
-              dockedBg ? 'text-4xl md:text-5xl' : 'text-3xl md:text-4xl'
-            )}
+            className="font-display text-3xl font-bold transition-colors duration-300 ease-out md:text-4xl"
             style={{ color: bgVisible ? '#6367FF' : open ? '#ffffff' : onDarkPage ? '#ffffff' : '#061E29' }}
           >
             Avenum
           </button>
 
-          {/* Burger — same circular control on every breakpoint. Opens a
-              small anchored card on desktop, a full-screen panel on mobile. */}
-          <button
-            ref={burgerRef}
-            type="button"
-            data-cursor
-            onClick={() => setOpen((o) => !o)}
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            aria-expanded={open}
-            aria-controls="mobile-menu"
-            className="flex h-11 w-11 flex-col items-center justify-center gap-[3px] rounded-full bg-[#DDDDDD]/70"
+          {/* Desktop-only inline nav — mobile keeps the full-screen burger
+              menu below, since there's no room to lay these out flat there.
+              Not docked: wrapped in its own white pill so it stays readable
+              over any page background. Docked: sits directly on the bar's
+              own light bg, no separate wrapper needed. */}
+          <nav
+            className={cn(
+              'hidden w-fit items-center justify-center justify-self-center gap-8 md:flex',
+              !dockedBg && 'h-11 rounded-full bg-white/70 px-6 shadow-lg shadow-black/5 backdrop-blur-md'
+            )}
           >
-            <span
+            {SECTIONS.filter((s) => s.id !== 'contact').map((s) => {
+              if (s.id === 'services') {
+                return (
+                  <div key={s.id} ref={desktopServicesRef} className="relative">
+                    <button
+                      type="button"
+                      data-cursor
+                      onClick={() => setDesktopServicesOpen((o) => !o)}
+                      aria-expanded={desktopServicesOpen}
+                      className={cn(desktopLinkClass, 'flex items-center gap-1.5')}
+                    >
+                      {t(s.label)}
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden
+                        className={cn('h-3.5 w-3.5 transition-transform duration-200', desktopServicesOpen && 'rotate-180')}
+                      >
+                        <polyline points="6 9 12 15 18 9" />
+                      </svg>
+                    </button>
+
+                    <div
+                      className={cn(
+                        'absolute left-1/2 top-full mt-3 w-80 -translate-x-1/2 rounded-2xl bg-white p-2 shadow-2xl ring-1 ring-black/10 transition-[opacity,transform] duration-200',
+                        desktopServicesOpen
+                          ? 'pointer-events-auto translate-y-0 opacity-100'
+                          : 'pointer-events-none -translate-y-2 opacity-0'
+                      )}
+                    >
+                      {NAV_SERVICES.map((svc) => (
+                        <Link
+                          key={svc.href}
+                          href={svc.href}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setDesktopServicesOpen(false);
+                            goToService(svc.href, svc.accent);
+                          }}
+                          className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-black transition-colors duration-200 hover:bg-black/5"
+                        >
+                          <ServiceIcon id={svc.id} className="h-5 w-5 flex-shrink-0 text-black" />
+                          <span className="text-sm font-medium">{t(svc.title)}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+              return (
+                <button
+                  key={s.id}
+                  type="button"
+                  data-cursor
+                  onClick={() => {
+                    if (s.id === 'work') goToWork();
+                    else if (s.id === 'about') goToAbout();
+                    else goToSection(SECTIONS.indexOf(s));
+                  }}
+                  className={desktopLinkClass}
+                >
+                  {t(s.label)}
+                </button>
+              );
+            })}
+            <Link
+              href="/pricing"
+              data-cursor
+              onClick={(e) => {
+                e.preventDefault();
+                pageNavigate('/pricing', PRICING_WASH);
+              }}
+              className={desktopLinkClass}
+            >
+              {t(PRICING_LABEL)}
+            </Link>
+          </nav>
+
+          <div className="flex items-center gap-3 md:justify-self-end">
+            <a
+              href={whatsappHref(WA_MESSAGE)}
+              data-cursor
+              onClick={() => setOpen(false)}
               className={cn(
-                'block h-[3px] w-5 rounded-full bg-[#6367FF]',
-                open && 'translate-y-[6px] rotate-45'
+                'h-11 flex-shrink-0 items-center rounded-full px-8 font-display text-base font-medium tracking-normal text-white transition-colors duration-300',
+                dockedBg ? 'flex bg-[#6367FF] hover:bg-[#4f52e0]' : 'hidden bg-black hover:bg-black/85 md:flex'
               )}
-            />
-            <span
+            >
+              {t(CONTACT_LABEL)}
+            </a>
+
+            {/* Burger — mobile-only now; desktop shows the inline nav above. */}
+            <button
+              ref={burgerRef}
+              type="button"
+              data-cursor
+              onClick={() => setOpen((o) => !o)}
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-expanded={open}
+              aria-controls="mobile-menu"
               className={cn(
-                'block h-[3px] w-5 rounded-full bg-[#6367FF]',
-                open && 'opacity-0'
+                'flex h-11 w-11 flex-shrink-0 flex-col items-center justify-center gap-[3px] rounded-full transition-colors duration-300 md:hidden',
+                !open && dockedBg ? 'bg-[#DDDDDD]/70' : 'bg-white'
               )}
-            />
-            <span
-              className={cn(
-                'block h-[3px] w-5 rounded-full bg-[#6367FF]',
-                open && '-translate-y-[6px] -rotate-45'
-              )}
-            />
-          </button>
+            >
+              <span
+                className={cn(
+                  'block h-[3px] w-5 rounded-full transition-colors duration-300',
+                  open ? 'bg-black' : 'bg-[#6367FF]',
+                  open && 'translate-y-[6px] rotate-45'
+                )}
+              />
+              <span
+                className={cn(
+                  'block h-[3px] w-5 rounded-full transition-colors duration-300',
+                  open ? 'bg-black' : 'bg-[#6367FF]',
+                  open && 'opacity-0'
+                )}
+              />
+              <span
+                className={cn(
+                  'block h-[3px] w-5 rounded-full transition-colors duration-300',
+                  open ? 'bg-black' : 'bg-[#6367FF]',
+                  open && '-translate-y-[6px] -rotate-45'
+                )}
+              />
+            </button>
+          </div>
         </div>
       </header>
 
@@ -239,9 +360,9 @@ export default function Nav() {
         )}
       />
 
-      {/* Full-screen panel on mobile; a small card anchored under the
-          burger on desktop — same black, snaps open/closed instantly
-          (no clip-path transition). */}
+      {/* Full-screen panel, mobile-only now (the burger that opens it is
+          hidden on desktop) — snaps open/closed instantly, no clip-path
+          transition. */}
       <div
         ref={panelRef}
         id="mobile-menu"
@@ -251,8 +372,7 @@ export default function Nav() {
         aria-hidden={!open}
         style={{ clipPath: open ? 'inset(0 0 0 0)' : 'inset(0 0 100% 0)' }}
         className={cn(
-          'fixed inset-0 z-40 flex flex-col justify-between overflow-hidden bg-black px-6 pb-10 pt-28',
-          'md:inset-auto md:right-[max(3rem,calc((100vw-90rem)/2+3rem))] md:top-28 md:max-h-[calc(100vh-8rem)] md:w-72 md:justify-start md:gap-20 md:overflow-y-auto md:rounded-lg md:bg-white md:px-6 md:pb-8 md:pt-8 md:shadow-2xl md:ring-1 md:ring-black/10',
+          'fixed inset-0 z-40 flex flex-col justify-between overflow-hidden bg-black px-6 pb-10 pt-28 md:hidden',
           open ? 'pointer-events-auto' : 'pointer-events-none'
         )}
       >
@@ -260,7 +380,7 @@ export default function Nav() {
           ref={linksRef}
           aria-label="Sections"
           className={cn(
-            'relative flex flex-col gap-1 transition-transform duration-300 ease-out md:gap-0',
+            'relative flex flex-col gap-1 transition-transform duration-300 ease-out',
             mobileServicesOpen && '-translate-x-8'
           )}
         >
@@ -273,9 +393,9 @@ export default function Nav() {
                   data-nav-link
                   onClick={() => setMobileServicesOpen(true)}
                   aria-expanded={mobileServicesOpen}
-                  className="flex w-full items-center justify-between gap-4 py-2 text-left text-white md:-mx-3 md:rounded-md md:px-3 md:py-0.5 md:text-black md:transition-colors md:hover:bg-black/5"
+                  className="flex w-full items-center justify-between gap-4 py-2 text-left text-white"
                 >
-                  <span className="font-display text-4xl font-semibold uppercase leading-none md:text-2xl md:font-medium">{t(s.label)}</span>
+                  <span className="font-display text-4xl font-semibold uppercase leading-none">{t(s.label)}</span>
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -284,7 +404,7 @@ export default function Nav() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     aria-hidden
-                    className="h-5 w-5 shrink-0 md:h-4 md:w-4"
+                    className="h-5 w-5 shrink-0"
                   >
                     <polyline points="9 6 15 12 9 18" />
                   </svg>
@@ -304,9 +424,9 @@ export default function Nav() {
                   else if (s.id === 'about') goToAbout();
                   else goToSection(i);
                 }}
-                className="flex items-baseline gap-4 py-2 text-left text-white md:-mx-3 md:rounded-md md:px-3 md:py-0.5 md:text-black md:transition-colors md:hover:bg-black/5"
+                className="flex items-baseline gap-4 py-2 text-left text-white"
               >
-                <span className="font-display text-4xl font-semibold uppercase leading-none md:text-2xl md:font-medium">{t(s.label)}</span>
+                <span className="font-display text-4xl font-semibold uppercase leading-none">{t(s.label)}</span>
               </button>
             );
           })}
@@ -318,35 +438,33 @@ export default function Nav() {
               setOpen(false);
               pageNavigate('/pricing', PRICING_WASH);
             }}
-            className="flex items-baseline gap-4 py-2 text-left text-white md:-mx-3 md:rounded-md md:px-3 md:py-0.5 md:text-black md:transition-colors md:hover:bg-black/5"
+            className="flex items-baseline gap-4 py-2 text-left text-white"
           >
-            <span className="font-display text-4xl font-semibold uppercase leading-none md:text-2xl md:font-medium">{t(PRICING_LABEL)}</span>
+            <span className="font-display text-4xl font-semibold uppercase leading-none">{t(PRICING_LABEL)}</span>
           </Link>
         </nav>
 
         <div
           className={cn(
-            'subtext relative flex flex-col gap-3 text-sm md:gap-2 md:text-xs',
+            'subtext relative flex flex-col gap-3 text-sm',
             open ? 'opacity-100' : 'opacity-0',
             mobileServicesOpen && '-translate-x-8'
           )}
         >
-          <LangToggle className="w-fit md:hidden" />
-          <LangToggle light className="hidden w-fit md:inline-flex" />
+          <LangToggle className="w-fit" />
         </div>
 
         {/* Services drill-in — slides over the menu from the right */}
         <div
           className={cn(
             'absolute inset-0 flex flex-col bg-black px-6 pb-10 pt-28 transition-transform duration-300 ease-out',
-            'md:rounded-lg md:bg-white md:px-5 md:pb-5 md:pt-5',
             mobileServicesOpen ? 'translate-x-0' : 'translate-x-full'
           )}
         >
           <button
             type="button"
             onClick={() => setMobileServicesOpen(false)}
-            className="flex items-center gap-2 text-sm text-white/60 transition-colors hover:text-white md:text-black/60 md:hover:text-black"
+            className="flex items-center gap-2 text-sm text-white/60 transition-colors hover:text-white"
           >
             <svg
               viewBox="0 0 24 24"
@@ -363,7 +481,7 @@ export default function Nav() {
             {t(BACK_LABEL)}
           </button>
 
-          <div className="mt-6 flex flex-1 flex-col gap-1 overflow-y-auto md:mt-4">
+          <div className="mt-6 flex flex-1 flex-col gap-1 overflow-y-auto">
             {NAV_SERVICES.map((svc) => (
               <Link
                 key={svc.href}
@@ -373,10 +491,10 @@ export default function Nav() {
                   setOpen(false);
                   goToService(svc.href, svc.accent);
                 }}
-                className="flex items-center gap-4 py-4 text-left text-white md:gap-3 md:py-0.5 md:text-black"
+                className="flex items-center gap-4 py-4 text-left text-white"
               >
-                <ServiceIcon id={svc.id} className="h-6 w-6 shrink-0 text-white md:h-4 md:w-4 md:text-black" />
-                <div className="min-w-0 truncate font-display text-2xl font-semibold uppercase leading-none md:text-sm md:font-medium">{t(svc.title)}</div>
+                <ServiceIcon id={svc.id} className="h-6 w-6 shrink-0 text-white" />
+                <div className="min-w-0 truncate font-display text-2xl font-semibold uppercase leading-none">{t(svc.title)}</div>
               </Link>
             ))}
           </div>

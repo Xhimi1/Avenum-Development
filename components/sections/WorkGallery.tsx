@@ -97,12 +97,12 @@ export default function WorkGallery({
             <div className="max-w-2xl">
               <SplitText
                 as="h2"
-                className="font-display text-[clamp(2.1rem,5.5vw,4.6rem)] font-semibold leading-[0.95] text-[#462C7D]"
+                className="font-display text-[clamp(2.8rem,7.2vw,6.4rem)] font-semibold leading-[0.95] text-white"
               >
                 {t(HEADING)}
               </SplitText>
               <FadeIn delay={0.15}>
-                <p className="mt-4 max-w-xl text-sm font-medium text-[#462C7D] md:text-base">{t(SUBHEADING)}</p>
+                <p className="mt-4 max-w-xl text-base font-medium text-white">{t(SUBHEADING)}</p>
               </FadeIn>
             </div>
 
@@ -145,7 +145,7 @@ export default function WorkGallery({
               ? 'flex flex-col gap-y-10'
               : mobileSlider
               ? 'pointer-events-auto mt-14 flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory cursor-grab active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mt-20 md:gap-8'
-              : 'pointer-events-auto mt-14 flex flex-col gap-y-10 md:mt-20 md:flex-row md:gap-8 md:overflow-x-auto md:pb-4 md:snap-x md:snap-mandatory md:cursor-grab md:active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] md:[&::-webkit-scrollbar]:hidden'
+              : 'pointer-events-auto mt-14 flex flex-col gap-y-8 md:mt-20 md:flex-row md:gap-8 md:overflow-x-auto md:pb-4 md:snap-x md:snap-mandatory md:cursor-grab md:active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] md:[&::-webkit-scrollbar]:hidden'
           }
         >
           {PROJECTS.filter((project) => grid || !project.hideFromHome).map((project) => (
@@ -192,7 +192,7 @@ export default function WorkGallery({
                     <span className="inline-block w-fit rounded-full bg-[#EEF0FF] px-3 py-1 text-[0.8rem] font-medium text-[#6367FF]">
                       {t(project.category)}
                     </span>
-                    <h3 className="mt-2 font-display text-2xl font-semibold text-[#333D6D] md:text-3xl">
+                    <h3 className="mt-2 font-display text-3xl font-semibold text-[#333D6D] md:text-4xl">
                       {project.name}
                       {project.isPrototype && (
                         <span className="text-sm font-normal opacity-30 md:text-base"> (Prototype)</span>
@@ -211,10 +211,10 @@ export default function WorkGallery({
                         if (dragRef.current.moved) return;
                         pageNavigate(`/portfolio/${project.slug}`, { accent: project.tagColor, bg: '#0b0a16' });
                       }}
-                      className="group pointer-events-auto mt-5 flex h-12 w-fit items-center gap-2 rounded-full border-2 border-[#6367FF] bg-[#6367FF] px-6 text-sm font-medium text-white transition-colors duration-300 hover:bg-[#4f52e0]"
+                      className="pointer-events-auto mt-5 flex h-12 w-fit items-center gap-2 rounded-full border-2 border-[#6367FF] bg-[#6367FF] px-6 font-display text-base font-medium text-white transition-colors duration-300 hover:bg-[#4f52e0]"
                     >
                       {t(VIEW_MORE_LABEL)}
-                      <ArrowRight className="h-4 w-4 text-white transition-transform duration-300 group-hover:translate-x-1" />
+                      <ArrowRight className="h-4 w-4 text-white" />
                     </button>
                   </div>
                 </div>
@@ -230,7 +230,7 @@ export default function WorkGallery({
                     <span className="inline-block w-fit rounded-full bg-[#EEF0FF] px-3 py-1 text-[0.8rem] font-medium text-[#6367FF]">
                       {t(project.category)}
                     </span>
-                    <h3 className="mt-2 font-display text-2xl font-semibold text-[#333D6D] md:text-3xl">
+                    <h3 className="mt-2 font-display text-3xl font-semibold text-[#333D6D] md:text-4xl">
                       {project.name}
                       {project.isPrototype && (
                         <span className="text-sm font-normal opacity-30 md:text-base"> (Prototype)</span>
@@ -244,9 +244,9 @@ export default function WorkGallery({
                         if (dragRef.current.moved) return;
                         pageNavigate(`/portfolio/${project.slug}`, { accent: project.tagColor, bg: '#0b0a16' });
                       }}
-                      className="group pointer-events-auto mt-5 flex h-12 w-20 items-center justify-center rounded-full border-2 border-[#6367FF] bg-[#6367FF] transition-colors duration-300 hover:bg-[#4f52e0]"
+                      className="pointer-events-auto mt-5 flex h-12 w-20 items-center justify-center rounded-full border-2 border-[#6367FF] bg-[#6367FF] transition-colors duration-300 hover:bg-[#4f52e0]"
                     >
-                      <ArrowRight className="h-4 w-4 text-white transition-transform duration-300 group-hover:translate-x-1" />
+                      <ArrowRight className="h-4 w-4 text-white" />
                     </button>
 
                     <div

@@ -239,7 +239,7 @@ export default function ChatbotsPage() {
                 <a
                   href={waLink}
                   data-cursor
-                  className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-xs font-medium tracking-normal text-black"
+                  className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 font-display text-base font-medium tracking-normal text-black transition-colors duration-300 hover:bg-gray-100"
                 >
                   {t(CTA_PRIMARY)}
                   <ArrowRight className="h-3.5 w-3.5" />
@@ -351,7 +351,7 @@ export default function ChatbotsPage() {
               <a
                 href={waLink}
                 data-cursor
-                className="inline-flex items-center gap-3 rounded-full bg-white px-12 py-6 text-base font-medium tracking-normal text-black"
+                className="inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 font-display text-base font-medium tracking-normal text-black transition-colors duration-300 hover:bg-gray-100"
               >
                 {t(CTA_FINAL)}
                 <ArrowRight className="h-5 w-5" />

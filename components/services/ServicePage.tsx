@@ -109,10 +109,10 @@ export default function ServicePage({
                 <a
                   href={waLink}
                   data-cursor
-                  className="group inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-sm font-medium tracking-normal text-black shadow-lg transition-transform duration-300 hover:-translate-y-0.5"
+                  className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 font-display text-base font-medium tracking-normal text-black transition-colors duration-300 hover:bg-gray-100"
                 >
                   {t(ctaLabel)}
-                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowRight className="h-4 w-4" />
                 </a>
               </FadeIn>
             </div>
@@ -185,10 +185,10 @@ export default function ServicePage({
               <a
                 href={waLink}
                 data-cursor
-                className="group inline-flex items-center gap-3 rounded-full bg-black px-11 py-5 text-base font-medium tracking-normal text-white shadow-xl transition-transform duration-300 hover:-translate-y-0.5"
+                className="inline-flex items-center gap-3 rounded-full bg-black px-8 py-4 font-display text-base font-medium tracking-normal text-white transition-colors duration-300 hover:bg-black/85"
               >
                 {t(ctaLabel)}
-                <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                <ArrowRight className="h-5 w-5" />
               </a>
             </div>
           </div>
