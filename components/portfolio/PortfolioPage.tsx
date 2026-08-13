@@ -10,12 +10,7 @@ import { useT } from '@/lib/i18n';
 import type { Bi } from '@/lib/i18n';
 import { whatsappHref, WA_MESSAGE } from '@/lib/contact';
 
-const EYEBROW: Bi = { en: 'Portfolio', sq: 'Portofoli' };
 const HEADING: Bi = { en: 'Everything we’ve built.', sq: 'Gjithçka që kemi ndërtuar.' };
-const SUBHEADING: Bi = {
-  en: 'A web design studio with 3+ years of experience and 20+ websites built for businesses across Albania.',
-  sq: 'Një studio dizajni web me 3+ vite përvojë dhe 20+ faqe web të ndërtuara për biznese në Shqipëri.',
-};
 const CTA_LABEL: Bi = { en: 'Start your project', sq: 'Nis projektin tënd' };
 
 export default function PortfolioPage() {
@@ -23,42 +18,29 @@ export default function PortfolioPage() {
   const waLink = whatsappHref(WA_MESSAGE);
 
   return (
-    <div className="min-h-screen bg-white text-black">
+    <div className="min-h-screen bg-[#6367FF] text-black">
       <Nav />
 
       <main className="px-6 pb-24 pt-24 md:px-14 md:pb-32 md:pt-28">
         {/* hero — dark inset card, boxed off from the screen edges, echoing
-            the service pages' hero text/CTA treatment. Wrapper padding
-            (w-full md:px-12) matches WorkGallery's grid wrapper below so
-            the card's outer edges line up with the gallery's; the content
-            inside stays centered at its original max-w-5xl width/position. */}
-        <div className="w-full md:px-12">
+            the service pages' hero text/CTA treatment. */}
+        <div className="mx-[calc(50%-50vw)] w-screen px-2 md:mx-0 md:w-full md:px-4">
           <section
-            className="relative overflow-hidden rounded-lg bg-[#1A1A1D] px-6 py-16 text-white md:px-12 md:py-24"
+            className="relative overflow-hidden rounded-[28px] bg-[#1A1A1D] px-6 pb-6 pt-16 text-white md:px-12 md:py-24"
             style={{
               backgroundImage:
                 'radial-gradient(120% 120% at 15% 12%, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 42%), #1A1A1D',
             }}
           >
             <div className="relative z-10 mx-auto grid w-full max-w-5xl items-center gap-8 md:grid-cols-2 md:gap-8">
-              <div className="max-w-md">
-                <FadeIn delay={0.05} className="-mt-3 md:mt-0">
-                  <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-medium tracking-normal text-white">
-                    {t(EYEBROW)}
-                  </span>
-                </FadeIn>
+              <div className="max-w-md text-center md:text-left">
                 <SplitText
                   as="h1"
                   delay={0.15}
-                  className="mt-3 font-display text-4xl md:text-[clamp(1.5rem,3.4vw,2.4rem)] font-medium leading-[1.05] tracking-normal [text-wrap:balance]"
+                  className="font-display text-[clamp(2.8rem,7.2vw,6.4rem)] font-semibold leading-[0.95] tracking-normal [text-wrap:balance] md:text-[clamp(2.8rem,4.5vw,4.4rem)]"
                 >
                   {t(HEADING)}
                 </SplitText>
-                <FadeIn delay={0.35}>
-                  <p className="mt-3 max-w-md text-sm tracking-normal text-white">
-                    {t(SUBHEADING)}
-                  </p>
-                </FadeIn>
 
                 <div className="mt-6">
                   <a
@@ -78,37 +60,15 @@ export default function PortfolioPage() {
                 <img
                   src="/images/jimsestate-laptop-mockup.webp"
                   alt=""
-                  className="w-full rounded-lg"
+                  className="w-full rounded-xl"
                 />
-
-                {/* chip: projects delivered */}
-                <div
-                  className="absolute -top-4 right-4 z-10 flex items-center gap-1.5 rounded border border-white/30 px-2.5 py-1.5 backdrop-blur-md md:gap-2.5 md:px-4 md:py-3"
-                  style={{ backgroundColor: 'rgba(255,255,255,0.15)', boxShadow: '0 14px 28px -12px rgba(0,0,0,0.45)' }}
-                >
-                  <span className="font-display text-base font-bold text-black md:text-2xl">20+</span>
-                  <span className="text-[0.6rem] font-medium tracking-wide text-black/70 md:text-xs">
-                    {t({ en: 'Projects delivered', sq: 'Projekte të realizuara' })}
-                  </span>
-                </div>
-
-                {/* chip: years of experience */}
-                <div
-                  className="absolute -bottom-4 left-4 z-10 flex items-center gap-1.5 rounded border border-white/30 px-2.5 py-1.5 backdrop-blur-md md:gap-2.5 md:px-4 md:py-3"
-                  style={{ backgroundColor: 'rgba(255,255,255,0.15)', boxShadow: '0 14px 28px -12px rgba(0,0,0,0.45)' }}
-                >
-                  <span className="font-display text-base font-bold text-black md:text-2xl">3+</span>
-                  <span className="text-[0.6rem] font-medium tracking-wide text-black/70 md:text-xs">
-                    {t({ en: 'Years of experience', sq: 'Vite përvojë' })}
-                  </span>
-                </div>
               </div>
             </FadeIn>
             </div>
           </section>
         </div>
 
-        <div className="mt-16 md:mt-20">
+        <div className="mx-[calc(50%-50vw)] mt-16 w-screen px-2 md:mx-0 md:mt-20 md:w-full md:px-4">
           <WorkGallery grid />
         </div>
       </main>

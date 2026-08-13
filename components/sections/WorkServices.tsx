@@ -16,25 +16,30 @@ interface Service {
   desc: Bi;
 }
 
-/** Same 3D-tilted photo stack as the hero's <PhotoCardStack> (rotateY
- *  per card, overlapping, front card largest) — Jim Estate, Kroni and
- *  Riva mockups from the Work section, just scaled down for a card. */
+/** Flat fanned deck of mockups — Kroni and Riva rotated outward from a
+ *  shared bottom pivot and dimmed, Atom upright, full-brightness and on
+ *  top in the center. */
 function MiniPhotoStack() {
   const cards = [
-    { src: '/images/atom-mockup.webp', rotateY: -25, h: 'h-full', ml: '' },
-    { src: '/images/kroni-mockup.webp', rotateY: -52, h: 'h-[82%]', ml: '-ml-4 md:-ml-6' },
-    { src: '/images/riva-restaurant-card.webp', rotateY: -65, h: 'h-[66%]', ml: '-ml-4 md:-ml-6' },
+    { src: '/images/kroni-mockup.webp', rotate: -14, x: '-42%', scale: 0.85, z: 1, dim: true },
+    { src: '/images/atom-mockup.webp', rotate: 0, x: '0%', scale: 1, z: 3, dim: false },
+    { src: '/images/riva-restaurant-card.webp', rotate: 14, x: '42%', scale: 0.85, z: 2, dim: true },
   ];
 
   return (
-    <div className="flex h-full w-full items-center justify-center [perspective:280px] md:[perspective:400px]">
-      {cards.map((c, i) => (
+    <div className="relative flex h-full w-full items-end justify-center">
+      {cards.map((c) => (
         <img
           key={c.src}
           src={c.src}
           alt=""
-          className={`aspect-[2/3] rounded-[6px] object-cover object-top ${c.h} ${c.ml}`}
-          style={{ transform: `rotateY(${c.rotateY}deg)`, zIndex: cards.length - i }}
+          className="absolute bottom-0 aspect-[2/3] h-[88%] rounded-[10px] object-cover object-top shadow-xl"
+          style={{
+            transform: `translateX(${c.x}) rotate(${c.rotate}deg) scale(${c.scale})`,
+            transformOrigin: 'bottom center',
+            zIndex: c.z,
+            filter: c.dim ? 'brightness(0.8) saturate(0.75)' : 'none',
+          }}
         />
       ))}
     </div>

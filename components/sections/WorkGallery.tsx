@@ -158,21 +158,22 @@ export default function WorkGallery({
                   ? 'flex w-full'
                   : mobileSlider
                   ? 'flex w-full shrink-0 snap-center md:w-[40rem] md:snap-start'
-                  : 'md:flex md:w-[40rem] md:flex-shrink-0 md:snap-start'
+                  : 'md:flex md:w-[32rem] md:flex-shrink-0 md:snap-start'
               }
             >
               {grid ? (
-                <div className="flex w-full flex-col gap-6 rounded-2xl border-8 border-[#E2E5FA] bg-white p-5 md:flex-row md:items-center md:gap-10 md:p-7">
-                  {/* image — its own box, same border the row now has too */}
-                  <div
-                    className="aspect-[1101/1500] w-full overflow-hidden rounded-lg bg-white md:aspect-[512/585] md:w-[22rem] md:flex-shrink-0"
-                    style={{
-                      background: project.canvasColor ?? 'linear-gradient(180deg, #D2EBFB 0%, #F3FAFF 100%)',
-                    }}
-                  >
+                <div
+                  className="flex w-full flex-col gap-6 overflow-hidden rounded-[28px] bg-white p-5 md:flex-row md:items-center md:gap-10 md:p-7"
+                  style={{
+                    backgroundImage: 'radial-gradient(rgba(75,85,99,0.25) 0.75px, transparent 1px)',
+                    backgroundSize: '16px 16px',
+                  }}
+                >
+                  {/* image */}
+                  <div className="aspect-[1101/1150] w-full overflow-hidden rounded-t-2xl border-b-2 border-[#E2E5FA] md:aspect-[512/585] md:w-[22rem] md:flex-shrink-0 md:border-b-0">
                     {project.image ? (
-                      <div className="flex h-full items-end justify-center px-5 pt-6 md:px-8 md:pt-8">
-                        <div className="h-full w-full overflow-hidden rounded-t-lg md:rounded-t-md">
+                      <div className="flex h-full items-end justify-center">
+                        <div className="h-full w-full overflow-hidden rounded-t-2xl border-x-4 border-t-4 border-white shadow-[0_25px_50px_-10px_rgba(55,65,81,0.6)] md:rounded-t-xl">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={project.image}
@@ -189,7 +190,7 @@ export default function WorkGallery({
                   </div>
 
                   {/* eyebrow, title, description, button */}
-                  <div className="flex flex-col">
+                  <div className="flex flex-col items-center text-center md:items-start md:text-left">
                     <span className="inline-block w-fit rounded-full bg-[#EEF0FF] px-3 py-1 text-[0.8rem] font-medium text-[#6367FF]">
                       {t(project.category)}
                     </span>
@@ -212,7 +213,7 @@ export default function WorkGallery({
                         if (dragRef.current.moved) return;
                         pageNavigate(`/portfolio/${project.slug}`, { accent: project.tagColor, bg: '#0b0a16' });
                       }}
-                      className="pointer-events-auto mt-5 flex h-12 w-fit items-center gap-2 rounded-full border-2 border-[#6367FF] bg-[#6367FF] px-6 font-display text-base font-medium text-white transition-colors duration-300 hover:bg-[#4f52e0]"
+                      className="pointer-events-auto mt-5 flex h-12 w-fit items-center gap-2 rounded-full bg-[#6367FF] px-6 font-display text-base font-medium text-white transition-colors duration-300 hover:bg-[#4f52e0]"
                     >
                       {t(VIEW_MORE_LABEL)}
                       <ArrowRight className="h-4 w-4 text-white" />
@@ -224,8 +225,8 @@ export default function WorkGallery({
                   <div
                     className={
                       mobileSlider
-                        ? 'flex h-full flex-col overflow-hidden rounded-2xl border-8 border-[#E2E5FA] bg-white px-5 pt-5 ring-4 ring-white md:px-7 md:pt-7'
-                        : 'overflow-hidden rounded-2xl border-8 border-[#E2E5FA] bg-white px-5 pt-5 ring-4 ring-white md:flex md:h-full md:flex-col md:px-7 md:pt-7'
+                        ? 'flex h-full flex-col overflow-hidden rounded-2xl bg-white px-5 pt-5 md:px-7 md:pt-7'
+                        : 'overflow-hidden rounded-2xl bg-white px-5 pt-5 md:flex md:h-full md:flex-col md:px-7 md:pt-7'
                     }
                     style={{
                       backgroundImage: 'radial-gradient(rgba(75,85,99,0.25) 0.75px, transparent 1px)',
@@ -236,10 +237,10 @@ export default function WorkGallery({
                       <span className="inline-block w-fit rounded-full bg-[#EEF0FF] px-3 py-1 text-[0.8rem] font-medium text-[#6367FF]">
                         {t(project.category)}
                       </span>
-                      <h3 className="mt-2 font-display text-3xl font-semibold text-[#333D6D] md:text-4xl">
+                      <h3 className="mt-2 font-display text-3xl font-semibold text-[#333D6D] md:text-2xl">
                         {project.name}
                         {project.isPrototype && (
-                          <span className="text-sm font-normal opacity-30 md:text-base"> (Prototype)</span>
+                          <span className="text-sm font-normal opacity-30 md:text-sm"> (Prototype)</span>
                         )}
                       </h3>
                       <button
@@ -250,14 +251,14 @@ export default function WorkGallery({
                           if (dragRef.current.moved) return;
                           pageNavigate(`/portfolio/${project.slug}`, { accent: project.tagColor, bg: '#0b0a16' });
                         }}
-                        className="pointer-events-auto mt-5 flex h-12 items-center gap-2 rounded-full bg-[#6367FF] px-6 font-display text-base font-medium text-white transition-colors duration-300 hover:bg-[#4f52e0]"
+                        className="pointer-events-auto mt-5 flex h-12 items-center gap-2 rounded-full bg-[#6367FF] px-6 font-display text-base font-medium text-white transition-colors duration-300 hover:bg-[#4f52e0] md:h-10 md:px-5 md:text-sm"
                       >
                         {t(EXPLORE_WORK_LABEL)}
                         <ArrowRight className="h-4 w-4 text-white" />
                       </button>
                     </div>
 
-                    <div className="mx-auto mt-6 aspect-[1101/1200] w-[85%] rounded-t-2xl md:aspect-[512/460] md:h-auto md:w-[75%] md:rounded-t-2xl">
+                    <div className="mx-auto mt-6 aspect-[1101/1200] w-[85%] rounded-t-2xl md:aspect-auto md:h-56 md:w-[55%] md:overflow-hidden md:rounded-t-2xl">
                       {project.image ? (
                         <div className="flex h-full items-center justify-center pt-6 md:items-end md:pt-8">
                           <div className="h-full w-full overflow-hidden rounded-t-2xl border-x-4 border-t-4 border-white shadow-[0_35px_70px_-10px_rgba(55,65,81,0.9)] md:rounded-t-xl">
