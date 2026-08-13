@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { gsap } from '@/lib/gsap';
 import { scrollState } from '@/lib/scroll';
 import { useStore } from '@/lib/store';
-import { SECTIONS } from '@/lib/palette';
+import { HOME_SECTIONS } from '@/lib/palette';
 import { prefersReducedMotion } from '@/lib/utils';
 
 /**
@@ -28,7 +28,7 @@ export default function ColorWash() {
   useEffect(() => {
     useStore.setState({
       navigate: (i: number) => {
-        const target = document.getElementById(SECTIONS[i].id);
+        const target = document.getElementById(HOME_SECTIONS[i].id);
         if (!target) return;
 
         if (prefersReducedMotion() || !scrollState.lenis) {
@@ -42,8 +42,8 @@ export default function ColorWash() {
         gsap.killTweensOf([accent, dark]);
         gsap
           .timeline()
-          .set(accent, { backgroundColor: SECTIONS[i].accent })
-          .set(dark, { backgroundColor: SECTIONS[i].bg })
+          .set(accent, { backgroundColor: HOME_SECTIONS[i].accent })
+          .set(dark, { backgroundColor: HOME_SECTIONS[i].bg })
           .fromTo(accent, { yPercent: 100 }, { yPercent: 0, duration: 0.45, ease: 'power3.in' }, 0)
           .fromTo(dark, { yPercent: 100 }, { yPercent: 0, duration: 0.45, ease: 'power3.in' }, 0.09)
           .add(() => {

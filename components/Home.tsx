@@ -9,18 +9,17 @@ import LaunchPopup from '@/components/ui/LaunchPopup';
 import Hero from '@/components/sections/Hero';
 import WhoWeAre from '@/components/sections/WhoWeAre';
 import Work from '@/components/sections/Work';
-import About from '@/components/sections/About';
 import Contact from '@/components/sections/Contact';
 import Footer from '@/components/ui/Footer';
 import { useStore } from '@/lib/store';
-import { SECTIONS } from '@/lib/palette';
+import { HOME_SECTIONS } from '@/lib/palette';
 import { scrollState } from '@/lib/scroll';
 
 export default function Home() {
   const section = useStore((s) => s.section);
 
   useEffect(() => {
-    document.documentElement.style.setProperty('--accent', SECTIONS[section].accent);
+    document.documentElement.style.setProperty('--accent', HOME_SECTIONS[section].accent);
   }, [section]);
 
   // Landing here with a #section hash (e.g. a nav link clicked from a
@@ -28,7 +27,7 @@ export default function Home() {
   // has released scrolling, instead of always opening on the hero.
   useEffect(() => {
     const hash = window.location.hash.slice(1);
-    const index = SECTIONS.findIndex((s) => s.id === hash);
+    const index = HOME_SECTIONS.findIndex((s) => s.id === hash);
     if (index < 0) return;
 
     const jump = () => {
@@ -63,7 +62,6 @@ export default function Home() {
         <Hero />
         <WhoWeAre />
         <Work />
-        <About />
         <Contact />
       </main>
       <div className="relative z-10 pointer-events-auto">

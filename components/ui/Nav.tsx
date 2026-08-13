@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from '@/lib/gsap';
 import { useStore } from '@/lib/store';
-import { SECTIONS } from '@/lib/palette';
+import { SECTIONS, HOME_SECTIONS } from '@/lib/palette';
 import { NAV_SERVICES } from '@/lib/services-nav';
 import { scrollState } from '@/lib/scroll';
 import { whatsappHref, WA_MESSAGE } from '@/lib/contact';
@@ -96,7 +96,7 @@ export default function Nav() {
     if (onHomePage) {
       navigate(i);
     } else {
-      pageNavigate(`/#${SECTIONS[i].id}`, { accent: SECTIONS[i].accent, bg: SECTIONS[i].bg });
+      pageNavigate(`/#${HOME_SECTIONS[i].id}`, { accent: HOME_SECTIONS[i].accent, bg: HOME_SECTIONS[i].bg });
     }
   };
 
@@ -277,7 +277,7 @@ export default function Nav() {
                   onClick={() => {
                     if (s.id === 'work') goToWork();
                     else if (s.id === 'about') goToAbout();
-                    else goToSection(SECTIONS.indexOf(s));
+                    else goToSection(HOME_SECTIONS.findIndex((hs) => hs.id === s.id));
                   }}
                   className={desktopLinkClass}
                 >
@@ -384,7 +384,7 @@ export default function Nav() {
             mobileServicesOpen && '-translate-x-8'
           )}
         >
-          {SECTIONS.map((s, i) => {
+          {SECTIONS.map((s) => {
             if (s.id === 'services') {
               return (
                 <button
@@ -422,7 +422,7 @@ export default function Nav() {
                   setOpen(false);
                   if (s.id === 'work') goToWork();
                   else if (s.id === 'about') goToAbout();
-                  else goToSection(i);
+                  else goToSection(HOME_SECTIONS.findIndex((hs) => hs.id === s.id));
                 }}
                 className="flex items-baseline gap-4 py-2 text-left text-white"
               >

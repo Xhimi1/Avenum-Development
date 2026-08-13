@@ -15,7 +15,7 @@ const HEADING: Bi = {
 };
 const SUBHEADING: Bi = {
   en: "A few of our projects that we're proud of.",
-  sq: 'Disa nga projektet tona të cilat jemi krenarë për to.',
+  sq: 'Disa nga projektet tona më ambicioze.',
 };
 const CASE_STUDY_LABEL: Bi = { en: 'See the project', sq: 'Shiko projektin' };
 const EXPLORE_WORK_LABEL: Bi = { en: 'Explore work', sq: 'Eksploro projektin' };
@@ -131,7 +131,7 @@ export default function WorkGallery({
         </div>
       )}
 
-      <div className={grid || mobileSlider ? 'w-full md:px-12' : 'w-full px-1.5 md:px-12'}>
+      <div className={grid ? 'w-full' : mobileSlider ? 'w-full md:px-12' : 'w-full px-1.5 md:px-12'}>
         <ul
           ref={scrollerRef}
           data-hscroll
@@ -158,22 +158,22 @@ export default function WorkGallery({
                   ? 'flex w-full'
                   : mobileSlider
                   ? 'flex w-full shrink-0 snap-center md:w-[40rem] md:snap-start'
-                  : 'md:flex md:w-[32rem] md:flex-shrink-0 md:snap-start'
+                  : 'md:flex md:w-[34rem] md:flex-shrink-0 md:snap-start'
               }
             >
               {grid ? (
                 <div
-                  className="flex w-full flex-col gap-6 overflow-hidden rounded-[28px] bg-white p-5 md:flex-row md:items-center md:gap-10 md:p-7"
+                  className="flex w-full flex-col overflow-hidden rounded-2xl bg-white px-5 pt-5 md:flex-row md:items-center md:justify-center md:gap-10 md:rounded-[28px] md:p-7"
                   style={{
                     backgroundImage: 'radial-gradient(rgba(75,85,99,0.25) 0.75px, transparent 1px)',
                     backgroundSize: '16px 16px',
                   }}
                 >
                   {/* image */}
-                  <div className="aspect-[1101/1150] w-full overflow-hidden rounded-t-2xl border-b-2 border-[#E2E5FA] md:aspect-[512/585] md:w-[22rem] md:flex-shrink-0 md:border-b-0">
+                  <div className="order-2 mx-auto mt-6 aspect-[1101/1200] w-[85%] rounded-t-2xl md:order-none md:mx-0 md:mt-0 md:aspect-[512/585] md:w-[22rem] md:flex-shrink-0">
                     {project.image ? (
-                      <div className="flex h-full items-end justify-center">
-                        <div className="h-full w-full overflow-hidden rounded-t-2xl border-x-4 border-t-4 border-white shadow-[0_25px_50px_-10px_rgba(55,65,81,0.6)] md:rounded-t-xl">
+                      <div className="flex h-full items-center justify-center pt-6 md:items-end md:pt-0">
+                        <div className="h-full w-full overflow-hidden rounded-t-2xl border-x-4 border-t-4 border-white shadow-[0_35px_70px_-10px_rgba(55,65,81,0.9)] md:rounded-t-xl md:shadow-[0_25px_50px_-10px_rgba(55,65,81,0.6)]">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={project.image}
@@ -190,7 +190,7 @@ export default function WorkGallery({
                   </div>
 
                   {/* eyebrow, title, description, button */}
-                  <div className="flex flex-col items-center text-center md:items-start md:text-left">
+                  <div className="order-1 flex flex-col items-center text-center md:order-none md:items-start md:text-left">
                     <span className="inline-block w-fit rounded-full bg-[#EEF0FF] px-3 py-1 text-[0.8rem] font-medium text-[#6367FF]">
                       {t(project.category)}
                     </span>
@@ -201,7 +201,7 @@ export default function WorkGallery({
                       )}
                     </h3>
                     {project.description && (
-                      <p className="mt-3 max-w-md text-xs text-[#0A2947] md:text-sm">
+                      <p className="mt-3 hidden max-w-md text-xs text-[#0A2947] md:block md:text-sm">
                         {t(project.description)}
                       </p>
                     )}
@@ -215,7 +215,8 @@ export default function WorkGallery({
                       }}
                       className="pointer-events-auto mt-5 flex h-12 w-fit items-center gap-2 rounded-full bg-[#6367FF] px-6 font-display text-base font-medium text-white transition-colors duration-300 hover:bg-[#4f52e0]"
                     >
-                      {t(VIEW_MORE_LABEL)}
+                      <span className="md:hidden">{t(EXPLORE_WORK_LABEL)}</span>
+                      <span className="hidden md:inline">{t(VIEW_MORE_LABEL)}</span>
                       <ArrowRight className="h-4 w-4 text-white" />
                     </button>
                   </div>
@@ -226,7 +227,7 @@ export default function WorkGallery({
                     className={
                       mobileSlider
                         ? 'flex h-full flex-col overflow-hidden rounded-2xl bg-white px-5 pt-5 md:px-7 md:pt-7'
-                        : 'overflow-hidden rounded-2xl bg-white px-5 pt-5 md:flex md:h-full md:flex-col md:px-7 md:pt-7'
+                        : 'overflow-hidden rounded-2xl bg-white px-5 pt-5 md:flex md:h-full md:flex-col md:px-4 md:pt-7'
                     }
                     style={{
                       backgroundImage: 'radial-gradient(rgba(75,85,99,0.25) 0.75px, transparent 1px)',
@@ -258,10 +259,10 @@ export default function WorkGallery({
                       </button>
                     </div>
 
-                    <div className="mx-auto mt-6 aspect-[1101/1200] w-[85%] rounded-t-2xl md:aspect-auto md:h-56 md:w-[55%] md:overflow-hidden md:rounded-t-2xl">
+                    <div className="mx-auto mt-6 aspect-[1101/1200] w-[85%] rounded-t-2xl md:aspect-auto md:h-80 md:w-[55%] md:overflow-hidden md:rounded-t-2xl md:border-x-4 md:border-t-4 md:border-white md:shadow-[0_35px_70px_-10px_rgba(55,65,81,0.9)]">
                       {project.image ? (
-                        <div className="flex h-full items-center justify-center pt-6 md:items-end md:pt-8">
-                          <div className="h-full w-full overflow-hidden rounded-t-2xl border-x-4 border-t-4 border-white shadow-[0_35px_70px_-10px_rgba(55,65,81,0.9)] md:rounded-t-xl">
+                        <div className="flex h-full items-center justify-center pt-6 md:h-full md:w-full md:items-stretch md:justify-stretch md:p-0">
+                          <div className="h-full w-full overflow-hidden rounded-t-2xl border-x-4 border-t-4 border-white shadow-[0_35px_70px_-10px_rgba(55,65,81,0.9)] md:h-full md:w-full md:rounded-none md:border-0 md:shadow-none">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                               src={project.image}

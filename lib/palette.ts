@@ -22,3 +22,14 @@ export const SECTIONS: SectionDef[] = [
   { id: 'about', label: { en: 'About', sq: 'Rreth Nesh' }, bg: '#150736', accent: '#8b3dff', glow: '#c77dff' },
   { id: 'contact', label: { en: 'Contact', sq: 'Kontakt' }, bg: '#02101e', accent: '#00e5ff', glow: '#4d6bff' },
 ];
+
+/**
+ * The sections that actually render on the homepage scroll flow, in DOM
+ * order — "about" only exists as a standalone page now (see Nav's
+ * goToAbout), not a homepage section, so it's excluded here. Anything doing
+ * positional/index-based reasoning about the homepage's scroll-jump targets
+ * (active-section accent, nav "jump to section") must index into this array,
+ * not the full SECTIONS list — otherwise indices drift out of sync with the
+ * actual [data-scene-section] elements SmoothScroll measures.
+ */
+export const HOME_SECTIONS: SectionDef[] = SECTIONS.filter((s) => s.id !== 'about');

@@ -1,6 +1,6 @@
 export default function ArrowRight({
   className,
-  strokeWidth = 1.75,
+  strokeWidth = 2.5,
 }: {
   className?: string;
   strokeWidth?: number;

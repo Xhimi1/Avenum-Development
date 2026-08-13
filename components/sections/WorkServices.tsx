@@ -8,7 +8,7 @@ import { useT } from '@/lib/i18n';
 import type { Bi } from '@/lib/i18n';
 
 const EYEBROW: Bi = { en: 'What we do', sq: 'Çfarë ofrojmë' };
-const HEADING: Bi = { en: 'Everything your business needs online.', sq: 'Gjithçka që i duhet biznesit tënd online.' };
+const HEADING: Bi = { en: 'Everything your business needs online.', sq: 'Shërbime që i vijnë në ndihmë çdo biznesi dhe çdo klienti.' };
 
 interface Service {
   id: string;

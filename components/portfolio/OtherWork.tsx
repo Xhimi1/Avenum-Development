@@ -39,7 +39,6 @@ export default function OtherWork({ currentSlug }: { currentSlug: string }) {
             </h3>
 
             <ArrowRight
-              strokeWidth={1.5}
               className="h-8 w-8 shrink-0 text-black transition-transform duration-300 group-hover:translate-x-2 md:h-12 md:w-12"
             />
           </button>

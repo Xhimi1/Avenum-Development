@@ -32,7 +32,7 @@ export default function PortfolioPage() {
                 'radial-gradient(120% 120% at 15% 12%, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 42%), #1A1A1D',
             }}
           >
-            <div className="relative z-10 mx-auto grid w-full max-w-5xl items-center gap-8 md:grid-cols-2 md:gap-8">
+            <div className="relative z-10 mx-auto grid w-full max-w-5xl items-center gap-8 md:max-w-4xl md:grid-cols-2 md:gap-8">
               <div className="max-w-md text-center md:text-left">
                 <SplitText
                   as="h1"
@@ -55,7 +55,7 @@ export default function PortfolioPage() {
               </div>
 
               <FadeIn delay={0.3} className="flex justify-center md:justify-end">
-                <div className="relative w-full max-w-sm">
+                <div className="relative w-full max-w-sm md:max-w-lg">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/images/jimsestate-laptop-mockup.webp"
@@ -68,7 +68,7 @@ export default function PortfolioPage() {
           </section>
         </div>
 
-        <div className="mx-[calc(50%-50vw)] mt-16 w-screen px-2 md:mx-0 md:mt-20 md:w-full md:px-4">
+        <div className="mx-[calc(50%-50vw)] mt-8 w-screen px-2 md:mx-0 md:mt-10 md:w-full md:px-4">
           <WorkGallery grid />
         </div>
       </main>
