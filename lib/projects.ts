@@ -130,7 +130,6 @@ export const PROJECTS: Project[] = [
     category: { en: 'Gym', sq: 'Palestër' },
     tagColor: '#4d6bff',
     image: '/images/platinum-mockup.webp',
-    imageScale: 1.3,
     canvasColor: '#FFEA88',
     overviewBg: '#FDC086',
     slug: 'platinum-fitness',
