@@ -46,7 +46,7 @@ export default function PortfolioPage() {
                   <a
                     href={waLink}
                     data-cursor
-                    className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 font-display text-base font-medium tracking-normal text-black transition-colors duration-300 hover:bg-gray-100"
+                    className="inline-flex items-center gap-0.5 rounded-full bg-[#6367FF] px-6 py-2.5 font-display text-base font-medium tracking-normal text-white transition-colors duration-300 hover:bg-[#4f52e0]"
                   >
                     {t(CTA_LABEL)}
                     <ArrowRight className="h-4 w-4" />

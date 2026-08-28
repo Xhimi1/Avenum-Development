@@ -71,12 +71,12 @@ export default function CookieConsent() {
                 </Link>
               </p>
             </div>
-            <div className="flex gap-2 md:shrink-0">
+            <div className="flex flex-col gap-2 md:flex-row md:shrink-0">
               <button
                 type="button"
                 data-cursor
                 onClick={() => choose('rejected')}
-                className="flex-1 rounded-full border border-white/15 px-5 py-3.5 text-sm font-medium text-white/80 transition-colors duration-200 hover:bg-white/5 md:flex-none md:px-5 md:py-2.5 md:text-xs"
+                className="flex-1 rounded-full border border-white bg-transparent px-5 py-3.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-white/10 md:flex-none md:px-5 md:py-2.5 md:text-xs"
               >
                 {t(REJECT)}
               </button>
@@ -84,7 +84,7 @@ export default function CookieConsent() {
                 type="button"
                 data-cursor
                 onClick={() => choose('accepted')}
-                className="flex-1 rounded-full bg-gradient-to-t from-[#4f52e0] to-[#6367FF] px-5 py-3.5 text-sm font-semibold text-white transition-opacity duration-200 hover:opacity-90 md:flex-none md:px-5 md:py-2.5 md:text-xs"
+                className="order-first flex-1 rounded-full bg-white px-5 py-3.5 text-sm font-semibold text-black transition-opacity duration-200 hover:opacity-90 md:order-none md:flex-none md:px-5 md:py-2.5 md:text-xs"
               >
                 {t(ACCEPT)}
               </button>

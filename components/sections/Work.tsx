@@ -29,11 +29,11 @@ export default function Work() {
               pageNavigate('/portfolio', PORTFOLIO_WASH);
             }}
             aria-label={t(VIEW_ALL_LABEL)}
-            className="pointer-events-auto rounded-full bg-white px-8 py-4 font-display text-base font-medium tracking-normal text-black transition-colors duration-300 hover:bg-gray-100"
+            className="pointer-events-auto rounded-full bg-white px-6 py-2.5 font-display text-base font-medium tracking-normal text-black transition-colors duration-300 hover:bg-gray-100"
           >
-            <span className="inline-flex items-center gap-3">
+            <span className="inline-flex items-center gap-0.5">
               {t(VIEW_ALL_LABEL)}
-              <ArrowRight className="h-5 w-5" />
+              <ArrowRight className="h-4 w-4" />
             </span>
           </a>
         </FadeIn>

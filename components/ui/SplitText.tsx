@@ -17,6 +17,9 @@ interface SplitTextProps {
   once?: boolean;
   /** opt into the staggered GSAP reveal below; defaults to a plain, static render */
   animate?: boolean;
+  /** 'lines' (default) slides each unit up out of a clipped mask; 'blur'
+   *  fades each word in from a blur, one word after another */
+  effect?: 'lines' | 'blur';
 }
 
 /**
@@ -34,6 +37,7 @@ export default function SplitText({
   stagger,
   once = false,
   animate = false,
+  effect = 'lines',
 }: SplitTextProps) {
   const ref = useRef<HTMLElement>(null);
   const words = useMemo(() => children.split(' '), [children]);
@@ -49,11 +53,38 @@ export default function SplitText({
     // change (e.g. a language switch) should just swap the text in place —
     // not replay the entrance (which would re-run any intro `delay` too).
     if (playedRef.current) {
-      gsap.set(targets, { yPercent: 0, rotate: 0, opacity: 1 });
+      gsap.set(
+        targets,
+        effect === 'blur' ? { opacity: 1, filter: 'blur(0px)' } : { yPercent: 0, rotate: 0, opacity: 1 }
+      );
       return;
     }
 
     const ctx = gsap.context(() => {
+      if (effect === 'blur') {
+        gsap.fromTo(
+          targets,
+          { opacity: 0, filter: 'blur(14px)' },
+          {
+            opacity: 1,
+            filter: 'blur(0px)',
+            duration: 0.9,
+            ease: 'power2.out',
+            delay,
+            stagger: stagger ?? 0.12,
+            onStart: () => {
+              playedRef.current = true;
+            },
+            scrollTrigger: {
+              trigger: el,
+              start,
+              toggleActions: once ? 'play none none none' : 'play none none reverse',
+            },
+          }
+        );
+        return;
+      }
+
       gsap.fromTo(
         targets,
         { yPercent: 120, rotate: type === 'chars' ? 6 : 3, opacity: type === 'words' ? 0 : 1 },
@@ -77,7 +108,7 @@ export default function SplitText({
       );
     }, el);
     return () => ctx.revert();
-  }, [animate, children, delay, type, start, stagger, once]);
+  }, [animate, children, delay, type, start, stagger, once, effect]);
 
   if (!animate) {
     return createElement(as, { className: cn(className) }, children);
@@ -90,7 +121,10 @@ export default function SplitText({
       <span
         key={wi}
         aria-hidden
-        className="inline-block overflow-hidden whitespace-pre pb-[0.1em] -mb-[0.1em] align-top"
+        className={cn(
+          'inline-block whitespace-pre pb-[0.1em] -mb-[0.1em] align-top',
+          effect === 'blur' ? 'overflow-visible' : 'overflow-hidden'
+        )}
       >
         {type === 'chars' ? (
           Array.from(word).map((ch, ci) => (

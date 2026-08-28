@@ -200,30 +200,6 @@ function AnalyticsChart() {
   );
 }
 
-/** Small listing-style card (photo, name, CTA) for the "Booking systems" card. */
-function BookingCard() {
-  return (
-    <div className="flex h-full w-full items-center justify-center">
-      <div className="w-full max-w-[190px] rounded-lg bg-white p-2 shadow-sm">
-        <div className="aspect-[4/3] w-full overflow-hidden rounded-md">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/luxury-room-sea-view.webp"
-            alt=""
-            className="h-full w-full object-cover"
-          />
-        </div>
-        <div className="pt-3">
-          <h3 className="font-body text-sm font-semibold leading-snug text-black">Apartament për tre persona</h3>
-          <span className="mt-2 block w-full rounded-md bg-[#6B93FF] py-1.5 text-center font-body text-xs font-medium text-white">
-            Book now
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /** A plain circle with a constantly-rotating, multi-hued blurred halo behind
  *  it for the "AI Chatbot" card — pulls from the site's own accent palette
  *  (amber, orange, green, teal, pink, blue) instead of the usual purple/pink
@@ -286,11 +262,6 @@ const SERVICES: Service[] = [
     title: { en: 'Analytics & Client Relationships', sq: 'Analitika & Marrëdhënie me Klientët' },
     desc: { en: "See what's working and stay close to every customer.", sq: 'Shiko çfarë funksionon dhe qëndro afër çdo klienti.' },
   },
-  {
-    id: 'booking',
-    title: { en: 'Booking systems', sq: 'Sisteme Rezervimi' },
-    desc: { en: 'Let customers book straight from your site.', sq: 'Klientët rezervojnë drejtpërdrejt nga faqja jote.' },
-  },
 ];
 
 export default function WorkServices() {
@@ -324,7 +295,6 @@ export default function WorkServices() {
                     <AnalyticsChart />
                   </div>
                 )}
-                {i === 5 && <BookingCard />}
               </div>
               <h3 className="mt-4 font-body text-xl leading-tight">
                 <span className="font-normal text-black">{t(s.title)} </span>

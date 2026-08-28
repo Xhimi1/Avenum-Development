@@ -6,6 +6,7 @@ import { useStore } from '@/lib/store';
 import { useT, type Bi } from '@/lib/i18n';
 import { PROJECTS } from '@/lib/projects';
 import { prefersReducedMotion } from '@/lib/utils';
+import ArrowRight from '@/components/ui/ArrowRight';
 
 const REVEAL_AFTER_MS = 5000;
 
@@ -102,9 +103,10 @@ export default function LaunchPopup() {
             type="button"
             data-cursor
             onClick={viewProject}
-            className="pointer-events-auto mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-[#6367FF] px-8 py-4 font-display text-base font-medium tracking-normal text-white transition-colors duration-300 hover:bg-[#4f52e0]"
+            className="pointer-events-auto mt-6 flex w-full items-center justify-center gap-0.5 rounded-full bg-[#6367FF] px-6 py-2.5 font-display text-base font-medium tracking-normal text-white transition-colors duration-300 hover:bg-[#4f52e0]"
           >
             {t(VIEW_PROJECT_LABEL)}
+            <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       </div>

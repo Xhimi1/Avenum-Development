@@ -19,14 +19,31 @@ export default function Contact() {
     <section id="contact" data-scene-section className="relative min-h-[65vh] bg-white md:min-h-[80vh]">
       <div className="flex min-h-[65vh] p-3 md:min-h-[80vh] md:p-6">
         <div className="relative mx-auto flex w-full max-w-[90rem] flex-1 flex-col items-center justify-center overflow-hidden rounded-[20px] bg-[#6367FF] px-6 py-16 text-center md:max-w-6xl md:px-12">
+          {/* Darker wedge below a diagonal, matching the services grid's
+              stat card. */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{
+              backgroundImage: 'linear-gradient(115deg, transparent 62%, #4B4FE0 62%, #4B4FE0 100%)',
+            }}
+          />
+
+          {/* Dot pattern, kept off the dark wedge: two mask layers
+              intersected — the original bottom-to-top fade, and a diagonal
+              that clips the dots at the same 62% line as the wedge above. */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0"
             style={{
               backgroundImage: 'radial-gradient(rgba(255,255,255,0.35) 1px, transparent 1.5px)',
               backgroundSize: '16px 16px',
-              maskImage: 'linear-gradient(to top, black, rgba(0,0,0,0.15))',
-              WebkitMaskImage: 'linear-gradient(to top, black, rgba(0,0,0,0.15))',
+              maskImage:
+                'linear-gradient(to top, black, rgba(0,0,0,0.15)), linear-gradient(115deg, black 62%, transparent 62%)',
+              WebkitMaskImage:
+                'linear-gradient(to top, black, rgba(0,0,0,0.15)), linear-gradient(115deg, black 62%, transparent 62%)',
+              maskComposite: 'intersect',
+              WebkitMaskComposite: 'source-in',
             }}
           />
 
@@ -46,7 +63,7 @@ export default function Contact() {
               <a
                 href={whatsappHref(WA_MESSAGE)}
                 data-cursor
-                className="pointer-events-auto inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 font-display text-base font-medium tracking-normal text-[#6367FF] transition-colors duration-300 hover:bg-gray-100"
+                className="pointer-events-auto inline-flex items-center gap-0.5 rounded-full bg-white px-6 py-2.5 font-display text-base font-medium tracking-normal text-[#6367FF] transition-colors duration-300 hover:bg-gray-100"
               >
                 {t(CTA_LABEL)}
                 <ArrowRight className="h-4 w-4" />

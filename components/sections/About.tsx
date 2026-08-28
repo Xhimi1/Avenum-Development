@@ -123,7 +123,7 @@ export default function About() {
                 <a
                   href={whatsappHref(WA_MESSAGE)}
                   data-cursor
-                  className="pointer-events-auto inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 font-display text-base font-medium tracking-normal text-[#6367FF] transition-colors duration-300 hover:bg-gray-100"
+                  className="pointer-events-auto inline-flex items-center gap-0.5 rounded-full bg-white px-6 py-2.5 font-display text-base font-medium tracking-normal text-[#6367FF] transition-colors duration-300 hover:bg-gray-100"
                 >
                   {t(CONTACT_LABEL)}
                   <ArrowRight className="h-4 w-4" />

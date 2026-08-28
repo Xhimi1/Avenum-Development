@@ -15,7 +15,7 @@ const REVEAL_AT = 300;
 /** Sticky bottom-right CTA — fades in once the visitor has scrolled a bit,
  *  rather than nudging them the instant a page loads. Hidden entirely on
  *  private one-off pages like /pay/* which shouldn't push the general
- *  contact flow. */
+ *  contact flow, and on /hospitality, which has its own WhatsApp CTAs. */
 export default function BookCallPill() {
   const t = useT();
   const pathname = usePathname();
@@ -28,7 +28,7 @@ export default function BookCallPill() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  if (pathname?.startsWith('/pay/')) return null;
+  if (pathname?.startsWith('/pay/') || pathname?.startsWith('/hospitality')) return null;
 
   return (
     <a

@@ -1,93 +1,82 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from '@/lib/gsap';
 import { useStore } from '@/lib/store';
 import { SECTIONS, HOME_SECTIONS } from '@/lib/palette';
-import { NAV_SERVICES } from '@/lib/services-nav';
 import { scrollState } from '@/lib/scroll';
 import { whatsappHref, WA_MESSAGE } from '@/lib/contact';
 import { useT } from '@/lib/i18n';
-import { cn } from '@/lib/utils';
+import { cn, prefersReducedMotion } from '@/lib/utils';
 import LangToggle from '@/components/ui/LangToggle';
-import ServiceIcon from '@/components/services/ServiceIcon';
+import { BrandMark } from '@/components/ui/Logo';
 
 const PRICING_LABEL = { en: 'Pricing', sq: 'Paketat' };
-const BACK_LABEL = { en: 'Back', sq: 'Kthehu' };
 const CONTACT_LABEL = { en: 'Contact', sq: 'Kontakto' };
+const CALL_US_LABEL = { en: 'Call Us', sq: 'Call Us' };
 const PRICING_WASH = { accent: '#8b5cf6', bg: '#1c0f36' };
 const aboutSection = SECTIONS.find((s) => s.id === 'about')!;
-
-// Standalone pages with a dark (#0F0824) background end-to-end — the brand
-// name needs to switch to white on these, unlike the homepage hero (bright
-// purple) or the other white-background pages, which read fine with the
-// default dark navy.
-const DARK_PAGES = ['/about', '/pricing', '/ai-chatbots'];
 
 export default function Nav() {
   const navigate = useStore((s) => s.navigate);
   const pageNavigate = useStore((s) => s.pageNavigate);
   const t = useT();
   const pathname = usePathname();
+  const router = useRouter();
   const onHomePage = pathname === '/';
-  const onDarkPage = DARK_PAGES.some((p) => pathname === p);
   const [open, setOpen] = useState(false);
   const linksRef = useRef<HTMLElement>(null);
   const burgerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
-  // Desktop "Services" dropdown — a separate small popover anchored under
-  // its own trigger in the inline desktop nav, independent of the mobile
-  // full-screen menu below.
-  const [desktopServicesOpen, setDesktopServicesOpen] = useState(false);
-  const desktopServicesRef = useRef<HTMLDivElement>(null);
+  // Contact button expands to reveal a "Call Us" label, growing rightward
+  // from the icon, once the visitor has scrolled past the hero's own CTAs —
+  // the point where those buttons are gone and the nav becomes the only way
+  // to reach us. Collapses again on the way back up. Pages without a hero
+  // CTA row fall back to a plain viewport-height threshold. Reads
+  // `window.scrollY` rather than `scrollState.y`, which only <SmoothScroll>
+  // (homepage-only) keeps in sync — Lenis drives the real window scroll
+  // there too, so this stays accurate on both.
+  const [callUsOpen, setCallUsOpen] = useState(false);
   useEffect(() => {
-    if (!desktopServicesOpen) return;
-    const onClick = (e: MouseEvent) => {
-      if (desktopServicesRef.current?.contains(e.target as Node)) return;
-      setDesktopServicesOpen(false);
+    if (prefersReducedMotion()) return;
+    const measure = () => {
+      const cta = document.querySelector<HTMLElement>('[data-hero-cta]');
+      if (!cta) return window.innerHeight * 0.6;
+      return cta.getBoundingClientRect().bottom + window.scrollY;
     };
-    document.addEventListener('mousedown', onClick);
-    return () => document.removeEventListener('mousedown', onClick);
-  }, [desktopServicesOpen]);
-
-  // Bar behavior driven by scroll position, not CSS `position: sticky`:
-  // stays put and visible the whole time (no hide/slide interaction) —
-  // transparent at the top, then once scrolled past a threshold it docks
-  // flush to the top with a background and the purple brand name, and
-  // stays that way for the rest of the page. Reads `window.scrollY`
-  // directly (not `scrollState.y`) so it works on every page —
-  // `scrollState` is only kept in sync by <SmoothScroll>, which is mounted
-  // just on the homepage; Lenis still drives the real window scroll there
-  // too, so this stays accurate on the homepage as well. A passive scroll
-  // listener (not a gsap.ticker/rAF loop) — the latter would poll every
-  // frame for the page's entire lifetime, even while completely idle.
-  const [dockedBg, setDockedBg] = useState(false);
-  const dockedRef = useRef(dockedBg);
-  useEffect(() => {
-    const onScroll = () => {
-      const next = window.scrollY >= window.innerHeight * 0.6;
-      if (next !== dockedRef.current) {
-        dockedRef.current = next;
-        setDockedBg(next);
-      }
+    let threshold = measure();
+    const onScroll = () => setCallUsOpen(window.scrollY > threshold);
+    const onResize = () => {
+      threshold = measure();
+      onScroll();
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+    window.addEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
+    };
+  }, [pathname]);
 
-  // "Services" row expands a submenu in place; collapses whenever the
-  // full-screen menu itself closes so it doesn't reopen pre-expanded.
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
-  useEffect(() => {
-    if (!open) setMobileServicesOpen(false);
-  }, [open]);
-
-  const goToService = (href: string, accent: string) => {
-    pageNavigate(href, { accent, bg: '#0b0a16' });
+  // "Services" is a plain link to the homepage section: no colour wash and
+  // no smooth-scroll easing — it lands there immediately. Off the homepage
+  // it routes to /#services, where Home's hash effect makes the same
+  // instant jump once the intro loader releases scrolling.
+  const goToServicesSection = () => {
+    setOpen(false);
+    if (!onHomePage) {
+      router.push('/#services');
+      return;
+    }
+    const target = document.getElementById('services');
+    if (!target) return;
+    useStore.setState({ section: HOME_SECTIONS.findIndex((hs) => hs.id === 'services') });
+    if (scrollState.lenis) scrollState.lenis.scrollTo(target, { immediate: true });
+    else target.scrollIntoView();
   };
 
   // Section links scroll in-page on the homepage; from any other route they
@@ -132,13 +121,12 @@ export default function Nav() {
     };
   }, [open]);
 
-  // Close both menus on Escape, and close the mobile panel if the viewport
+  // Close the menu on Escape, and close the mobile panel if the viewport
   // grows to desktop mid-open (it has no desktop trigger anymore).
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
       setOpen(false);
-      setDesktopServicesOpen(false);
     };
     const mq = window.matchMedia('(min-width: 768px)');
     const onMq = () => mq.matches && setOpen(false);
@@ -149,126 +137,43 @@ export default function Nav() {
       mq.removeEventListener('change', onMq);
     };
   }, []);
-  // On mobile, the docked bar's background hides while the full-screen menu
-  // is open, so the bar reads as part of that solid black panel instead of
-  // showing its own light bg through it.
-  const bgVisible = dockedBg && !open;
 
   const go = (i: number) => {
     setOpen(false);
     goToSection(i);
   };
 
-  // Links always sit on a light background now — the docked bar's own
-  // F3F4F4 fill, or the white pill wrapping them when not docked — so the
-  // text color no longer needs to branch on the page's own background.
+  // Bar is always a plain white navbar now, so link color no longer needs
+  // to branch on scroll position or the page's own background.
   const desktopLinkClass =
     'font-display text-sm font-medium tracking-normal text-[#061E29] transition-colors duration-300 hover:text-[#6367FF]';
 
   return (
     <>
-      {/* Not docked: `absolute` (not `fixed`) — it sits at the top of the
-          page and scrolls away with the rest of the content, like any
-          normal block, no JS-driven hide animation. Once scrolled past the
-          threshold it switches to `fixed` and docks flush to the top with
-          a background and the purple brand name, staying stuck from there. */}
       <header
         className={cn(
-          'pointer-events-none inset-x-0 z-50',
-          dockedBg ? 'fixed top-0' : 'absolute top-4'
+          'fixed inset-x-0 top-0 z-50 bg-white',
+          // the open menu is a solid white sheet below the bar; a drop
+          // shadow over it would read as a seam across the panel
+          !open && 'shadow-md shadow-black/[0.04]'
         )}
       >
-        {/* background lives on its own layer behind the content — keeping
-            it off the transform-animated `fixed` element avoids an
-            iOS/mobile Safari bug where a blurred layer can render over
-            (and hide) its own children. On mobile it hides while the
-            full-screen menu is open, so the bar reads as part of that
-            solid black panel instead of showing its own light bg through it.
-            Always mounted (not conditionally rendered) so the opacity
-            change can actually transition instead of popping in. */}
-        <div
-          aria-hidden
-          className={cn(
-            'absolute inset-0 rounded-b-[32px] bg-[#F3F4F4] shadow-xl shadow-black/[0.07] transition-opacity duration-300 ease-out',
-            bgVisible ? 'opacity-100' : 'opacity-0'
-          )}
-        />
-        <div className="pointer-events-auto relative mx-auto flex w-full max-w-[90rem] items-center justify-between gap-6 px-6 py-4 md:grid md:grid-cols-[auto_1fr_auto] md:px-12 md:py-3">
+        <div className="relative mx-auto flex w-full max-w-[90rem] items-center justify-between gap-6 px-6 py-4 md:grid md:grid-cols-[auto_1fr_auto] md:px-12 md:py-2">
           <button
             type="button"
             data-cursor
             onClick={() => go(0)}
             aria-label="Avenum — back to top"
-            className="font-display text-3xl font-bold transition-colors duration-300 ease-out md:text-4xl"
-            style={{ color: bgVisible ? '#6367FF' : open ? '#ffffff' : onDarkPage ? '#ffffff' : '#061E29' }}
+            className="flex items-center gap-2 font-display text-2xl font-bold text-[#061E29] transition-colors duration-300 ease-out md:text-2xl"
           >
+            <BrandMark className="h-[0.75em] w-auto" />
             Avenum
           </button>
 
           {/* Desktop-only inline nav — mobile keeps the full-screen burger
-              menu below, since there's no room to lay these out flat there.
-              Not docked: wrapped in its own white pill so it stays readable
-              over any page background. Docked: sits directly on the bar's
-              own light bg, no separate wrapper needed. */}
-          <nav
-            className={cn(
-              'hidden w-fit items-center justify-center justify-self-center gap-8 md:flex',
-              !dockedBg && 'h-11 rounded-full bg-white/70 px-6 shadow-lg shadow-black/5 backdrop-blur-md'
-            )}
-          >
+              menu below, since there's no room to lay these out flat there. */}
+          <nav className="hidden w-fit items-center justify-center justify-self-center gap-8 md:flex">
             {SECTIONS.filter((s) => s.id !== 'contact').map((s) => {
-              if (s.id === 'services') {
-                return (
-                  <div key={s.id} ref={desktopServicesRef} className="relative">
-                    <button
-                      type="button"
-                      data-cursor
-                      onClick={() => setDesktopServicesOpen((o) => !o)}
-                      aria-expanded={desktopServicesOpen}
-                      className={cn(desktopLinkClass, 'flex items-center gap-1.5')}
-                    >
-                      {t(s.label)}
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        aria-hidden
-                        className={cn('h-3.5 w-3.5 transition-transform duration-200', desktopServicesOpen && 'rotate-180')}
-                      >
-                        <polyline points="6 9 12 15 18 9" />
-                      </svg>
-                    </button>
-
-                    <div
-                      className={cn(
-                        'absolute left-1/2 top-full mt-3 w-80 -translate-x-1/2 rounded-2xl bg-white p-2 shadow-2xl ring-1 ring-black/10 transition-[opacity,transform] duration-200',
-                        desktopServicesOpen
-                          ? 'pointer-events-auto translate-y-0 opacity-100'
-                          : 'pointer-events-none -translate-y-2 opacity-0'
-                      )}
-                    >
-                      {NAV_SERVICES.map((svc) => (
-                        <Link
-                          key={svc.href}
-                          href={svc.href}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setDesktopServicesOpen(false);
-                            goToService(svc.href, svc.accent);
-                          }}
-                          className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-black transition-colors duration-200 hover:bg-black/5"
-                        >
-                          <ServiceIcon id={svc.id} className="h-5 w-5 flex-shrink-0 text-black" />
-                          <span className="text-sm font-medium">{t(svc.title)}</span>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                );
-              }
               return (
                 <button
                   key={s.id}
@@ -277,6 +182,7 @@ export default function Nav() {
                   onClick={() => {
                     if (s.id === 'work') goToWork();
                     else if (s.id === 'about') goToAbout();
+                    else if (s.id === 'services') goToServicesSection();
                     else goToSection(HOME_SECTIONS.findIndex((hs) => hs.id === s.id));
                   }}
                   className={desktopLinkClass}
@@ -299,16 +205,44 @@ export default function Nav() {
           </nav>
 
           <div className="flex items-center gap-3 md:justify-self-end">
+            {/* Desktop: plain text CTA — the icon + animated "Call Us"
+                reveal below reads as a phone-call prompt, misleading on a
+                button that actually opens WhatsApp, so desktop keeps the
+                original text pill instead. */}
+            <a
+              href={whatsappHref(WA_MESSAGE)}
+              data-cursor
+              className="hidden h-9 flex-shrink-0 items-center rounded-full bg-[#6367FF] px-6 font-display text-base font-medium tracking-normal text-white transition-colors duration-300 hover:bg-[#4f52e0] md:flex"
+            >
+              {t(CONTACT_LABEL)}
+            </a>
+
             <a
               href={whatsappHref(WA_MESSAGE)}
               data-cursor
               onClick={() => setOpen(false)}
-              className={cn(
-                'h-11 flex-shrink-0 items-center rounded-full px-8 font-display text-base font-medium tracking-normal text-white transition-colors duration-300',
-                dockedBg ? 'flex bg-[#6367FF] hover:bg-[#4f52e0]' : 'hidden bg-black hover:bg-black/85 md:flex'
-              )}
+              aria-label={t(CONTACT_LABEL)}
+              className="flex h-11 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#6367FF] px-[13px] text-white transition-colors duration-300 hover:bg-[#4f52e0] md:hidden"
             >
-              {t(CONTACT_LABEL)}
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+                className="h-[18px] w-[18px] flex-shrink-0"
+              >
+                <path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 2 6a2 2 0 0 1 2-2Z" />
+              </svg>
+              <span
+                aria-hidden
+                className="overflow-hidden whitespace-nowrap font-display text-sm font-medium tracking-normal transition-[max-width,margin] duration-500 ease-out"
+                style={{ maxWidth: callUsOpen ? '72px' : '0px', marginLeft: callUsOpen ? '8px' : '0px' }}
+              >
+                {t(CALL_US_LABEL)}
+              </span>
             </a>
 
             {/* Burger — mobile-only now; desktop shows the inline nav above. */}
@@ -320,29 +254,26 @@ export default function Nav() {
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
               aria-controls="mobile-menu"
-              className={cn(
-                'flex h-11 w-11 flex-shrink-0 flex-col items-center justify-center gap-[3px] rounded-full transition-colors duration-300 md:hidden',
-                !open && dockedBg ? 'bg-[#DDDDDD]/70' : 'bg-white'
-              )}
+              className="flex h-11 w-11 flex-shrink-0 flex-col items-center justify-center gap-[3px] rounded-full bg-[#F3F4F4] transition-colors duration-300 md:hidden"
             >
               <span
                 className={cn(
                   'block h-[3px] w-5 rounded-full transition-colors duration-300',
-                  open ? 'bg-black' : 'bg-[#6367FF]',
+                  'bg-black',
                   open && 'translate-y-[6px] rotate-45'
                 )}
               />
               <span
                 className={cn(
                   'block h-[3px] w-5 rounded-full transition-colors duration-300',
-                  open ? 'bg-black' : 'bg-[#6367FF]',
+                  'bg-black',
                   open && 'opacity-0'
                 )}
               />
               <span
                 className={cn(
                   'block h-[3px] w-5 rounded-full transition-colors duration-300',
-                  open ? 'bg-black' : 'bg-[#6367FF]',
+                  'bg-black',
                   open && '-translate-y-[6px] -rotate-45'
                 )}
               />
@@ -355,8 +286,10 @@ export default function Nav() {
       <div
         aria-hidden
         className={cn(
-          'fixed inset-0 z-30 bg-black/60 backdrop-blur-sm transition-[opacity,backdrop-filter] duration-300',
-          open ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
+          'fixed inset-0 z-30 bg-black/60 backdrop-blur-sm',
+          open
+            ? 'pointer-events-auto opacity-100 transition-[opacity,backdrop-filter] duration-300'
+            : 'pointer-events-none opacity-0 transition-none'
         )}
       />
 
@@ -372,45 +305,16 @@ export default function Nav() {
         aria-hidden={!open}
         style={{ clipPath: open ? 'inset(0 0 0 0)' : 'inset(0 0 100% 0)' }}
         className={cn(
-          'fixed inset-0 z-40 flex flex-col justify-between overflow-hidden bg-black px-6 pb-10 pt-28 md:hidden',
+          'fixed inset-0 z-40 flex flex-col justify-between overflow-hidden bg-white px-6 pb-10 pt-28 md:hidden',
           open ? 'pointer-events-auto' : 'pointer-events-none'
         )}
       >
         <nav
           ref={linksRef}
           aria-label="Sections"
-          className={cn(
-            'relative flex flex-col gap-1 transition-transform duration-300 ease-out',
-            mobileServicesOpen && '-translate-x-8'
-          )}
+          className="relative flex flex-col gap-1"
         >
           {SECTIONS.map((s) => {
-            if (s.id === 'services') {
-              return (
-                <button
-                  key={s.id}
-                  type="button"
-                  data-nav-link
-                  onClick={() => setMobileServicesOpen(true)}
-                  aria-expanded={mobileServicesOpen}
-                  className="flex w-full items-center justify-between gap-4 py-2 text-left text-white"
-                >
-                  <span className="font-display text-4xl font-semibold uppercase leading-none">{t(s.label)}</span>
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden
-                    className="h-5 w-5 shrink-0"
-                  >
-                    <polyline points="9 6 15 12 9 18" />
-                  </svg>
-                </button>
-              );
-            }
             // "About" and "Work" open their own pages instead of scrolling
             // to a homepage section.
             return (
@@ -422,11 +326,12 @@ export default function Nav() {
                   setOpen(false);
                   if (s.id === 'work') goToWork();
                   else if (s.id === 'about') goToAbout();
+                  else if (s.id === 'services') goToServicesSection();
                   else goToSection(HOME_SECTIONS.findIndex((hs) => hs.id === s.id));
                 }}
-                className="flex items-baseline gap-4 py-2 text-left text-white"
+                className="flex items-baseline gap-4 py-2 text-left text-[#061E29]"
               >
-                <span className="font-display text-4xl font-semibold uppercase leading-none">{t(s.label)}</span>
+                <span className="font-display text-2xl font-semibold leading-none">{t(s.label)}</span>
               </button>
             );
           })}
@@ -438,67 +343,21 @@ export default function Nav() {
               setOpen(false);
               pageNavigate('/pricing', PRICING_WASH);
             }}
-            className="flex items-baseline gap-4 py-2 text-left text-white"
+            className="flex items-baseline gap-4 py-2 text-left text-[#061E29]"
           >
-            <span className="font-display text-4xl font-semibold uppercase leading-none">{t(PRICING_LABEL)}</span>
+            <span className="font-display text-2xl font-semibold leading-none">{t(PRICING_LABEL)}</span>
           </Link>
         </nav>
 
         <div
           className={cn(
-            'subtext relative flex flex-col gap-3 text-sm',
-            open ? 'opacity-100' : 'opacity-0',
-            mobileServicesOpen && '-translate-x-8'
+            'relative flex flex-col gap-3 text-sm text-[#061E29]',
+            open ? 'opacity-100' : 'opacity-0'
           )}
         >
-          <LangToggle className="w-fit" />
+          <LangToggle light className="w-fit" />
         </div>
 
-        {/* Services drill-in — slides over the menu from the right */}
-        <div
-          className={cn(
-            'absolute inset-0 flex flex-col bg-black px-6 pb-10 pt-28 transition-transform duration-300 ease-out',
-            mobileServicesOpen ? 'translate-x-0' : 'translate-x-full'
-          )}
-        >
-          <button
-            type="button"
-            onClick={() => setMobileServicesOpen(false)}
-            className="flex items-center gap-2 text-sm text-white/60 transition-colors hover:text-white"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden
-              className="h-4 w-4"
-            >
-              <polyline points="15 6 9 12 15 18" />
-            </svg>
-            {t(BACK_LABEL)}
-          </button>
-
-          <div className="mt-6 flex flex-1 flex-col gap-1 overflow-y-auto">
-            {NAV_SERVICES.map((svc) => (
-              <Link
-                key={svc.href}
-                href={svc.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setOpen(false);
-                  goToService(svc.href, svc.accent);
-                }}
-                className="flex items-center gap-4 py-4 text-left text-white"
-              >
-                <ServiceIcon id={svc.id} className="h-6 w-6 shrink-0 text-white" />
-                <div className="min-w-0 truncate font-display text-2xl font-semibold uppercase leading-none">{t(svc.title)}</div>
-              </Link>
-            ))}
-          </div>
-        </div>
       </div>
     </>
   );

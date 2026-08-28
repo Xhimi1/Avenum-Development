@@ -99,7 +99,7 @@ export default function WhoWeAre() {
                 type="button"
                 data-cursor
                 onClick={() => pageNavigate('/about', { accent: aboutSection.accent, bg: aboutSection.bg })}
-                className="pointer-events-auto mt-6 inline-flex items-center gap-2 rounded-full bg-[#6367FF] px-8 py-4 font-display text-base font-medium tracking-normal text-white transition-colors duration-300 hover:bg-[#4f52e0]"
+                className="pointer-events-auto mt-6 inline-flex items-center gap-0.5 rounded-full bg-[#6367FF] px-6 py-2.5 font-display text-base font-medium tracking-normal text-white transition-colors duration-300 hover:bg-[#4f52e0]"
               >
                 {t(LEARN_MORE)}
                 <ArrowRight className="h-3.5 w-3.5" />

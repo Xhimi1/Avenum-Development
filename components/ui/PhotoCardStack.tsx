@@ -21,9 +21,9 @@ function placeholder(color: string, label: string) {
 }
 
 const CARDS: Card[] = [
-  { color: '#7fa8c9', label: 'Photo 1', size: 'w-[56%] sm:w-64 md:w-96', rotateY: -25, overlap: '', src: '/images/atom-mockup.webp' },
-  { color: '#4b7a3f', label: 'Photo 2', size: 'w-[42%] sm:w-48 md:w-72', rotateY: -52, overlap: '-ml-[16%] sm:-ml-20 md:-ml-28', src: '/images/kroni-mockup.webp' },
-  { color: '#c98f7b', label: 'Photo 3', size: 'w-[35%] sm:w-40 md:w-60', rotateY: -65, overlap: '-ml-[16%] sm:-ml-20 md:-ml-28', src: '/images/riva-restaurant-card.webp' },
+  { color: '#7fa8c9', label: 'Photo 1', size: 'w-[58%] sm:w-52 md:w-96 lg:w-[28rem]', rotateY: -25, overlap: '', src: '/images/atom-mockup.webp' },
+  { color: '#4b7a3f', label: 'Photo 2', size: 'w-[45%] sm:w-40 md:w-72 lg:w-80', rotateY: -52, overlap: '-ml-[14%] sm:-ml-16 md:-ml-24', src: '/images/kroni-mockup.webp' },
+  { color: '#c98f7b', label: 'Photo 3', size: 'w-[37%] sm:w-32 md:w-56 lg:w-64', rotateY: -65, overlap: '-ml-[14%] sm:-ml-16 md:-ml-24', src: '/images/riva-restaurant-card.webp' },
 ];
 
 /** Row of photo cards, à la Bumble's hero — each card is tilted in 3D
@@ -62,14 +62,14 @@ export default function PhotoCardStack({ className }: { className?: string }) {
   }, [ready]);
 
   return (
-    <div className={`flex items-center [perspective:450px] sm:[perspective:600px] md:[perspective:900px] ${className ?? ''}`}>
+    <div className={`flex items-end justify-center [perspective:450px] sm:[perspective:600px] md:[perspective:900px] ${className ?? ''}`}>
       {CARDS.map((card, i) => (
         <img
           key={card.label}
           ref={(el) => { cardRefs.current[i] = el; }}
           src={card.src ?? placeholder(card.color, card.label)}
           alt=""
-          className={`aspect-[2/3] rounded-[8px] object-cover object-top opacity-0 sm:rounded-[16px] ${card.size} ${card.overlap}`}
+          className={`aspect-[2/3] rounded-[8px] object-cover object-top opacity-0 sm:rounded-[16px] ${card.size} ${card.overlap} ${i > 0 ? 'md:self-center' : ''}`}
           style={{ zIndex: CARDS.length - i }}
         />
       ))}

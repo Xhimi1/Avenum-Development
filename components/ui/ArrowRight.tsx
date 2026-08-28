@@ -16,8 +16,7 @@ export default function ArrowRight({
       aria-hidden
       className={className}
     >
-      <line x1="4" y1="12" x2="20" y2="12" />
-      <polyline points="13 5 20 12 13 19" />
+      <polyline points="9 6 15 12 9 18" />
     </svg>
   );
 }

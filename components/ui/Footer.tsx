@@ -17,6 +17,7 @@ const EXPLORE_LABEL: Bi = { en: 'Explore', sq: 'Eksploro' };
 const LEGAL_LABEL: Bi = { en: 'Legal', sq: 'Ligjore' };
 const HOME_LABEL: Bi = { en: 'Home', sq: 'Kreu' };
 const PRICING_LABEL: Bi = { en: 'Pricing', sq: 'Paketat' };
+const HOSPITALITY_LABEL: Bi = { en: 'Hospitality', sq: 'Hospitality' };
 const PRIVACY_LABEL: Bi = { en: 'Privacy Policy', sq: 'Privatësia' };
 const TERMS_LABEL: Bi = { en: 'Terms of Service', sq: 'Kushtet' };
 const COOKIES_LABEL: Bi = { en: 'Cookie Policy', sq: 'Cookies' };
@@ -145,6 +146,11 @@ export default function Footer({
               >
                 {t(PRICING_LABEL)}
               </Link>
+            </li>
+            <li>
+              <a href="/hospitality" target="_blank" rel="noopener noreferrer" data-cursor className={linkClass}>
+                {t(HOSPITALITY_LABEL)}
+              </a>
             </li>
           </ul>
         </div>
