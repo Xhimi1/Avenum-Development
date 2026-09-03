@@ -1,7 +1,6 @@
 'use client';
 
-import { useLayoutEffect, useRef, useState } from 'react';
-import { gsap } from '@/lib/gsap';
+import { useState } from 'react';
 import SplitText from '@/components/ui/SplitText';
 import ArrowRight from '@/components/ui/ArrowRight';
 import ClipRevealImage from '@/components/ui/ClipRevealImage';
@@ -9,7 +8,7 @@ import { useT } from '@/lib/i18n';
 import type { Bi } from '@/lib/i18n';
 import { useStore } from '@/lib/store';
 import { SECTIONS } from '@/lib/palette';
-import { cn, prefersReducedMotion } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 const LEARN_MORE: Bi = { en: 'Learn more', sq: 'Mëso më shumë' };
 const aboutSection = SECTIONS.find((s) => s.id === 'about')!;
@@ -25,50 +24,13 @@ const PARAGRAPH: Bi = {
 };
 
 export default function WhoWeAre() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const locale = useStore((s) => s.locale);
   const pageNavigate = useStore((s) => s.pageNavigate);
   const t = useT();
   const paragraph = t(PARAGRAPH);
   const [imageRevealed, setImageRevealed] = useState(false);
 
-  // The paragraph's words rise and fade in together, once, as it scrolls
-  // into view.
-  useLayoutEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-    const ctx = gsap.context(() => {
-      if (prefersReducedMotion()) {
-        gsap.set('[data-whoweare-word]', { opacity: 1, y: 0 });
-        return;
-      }
-      gsap.fromTo(
-        '[data-whoweare-word]',
-        { y: 14, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.025,
-          duration: 0.6,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 80%',
-            toggleActions: 'play none none reverse',
-          },
-        }
-      );
-    }, section);
-    return () => ctx.revert();
-  }, [locale]);
-
   return (
-    <section
-      ref={sectionRef}
-      id="services"
-      data-scene-section
-      className="relative bg-white py-24 md:py-32"
-    >
+    <section id="services" data-scene-section className="relative bg-white py-24 md:py-32">
       <div className="mx-auto w-full max-w-[90rem] px-6 md:px-12">
         <div className="md:grid md:grid-cols-2 md:items-center md:gap-12">
           <div className="flex flex-col gap-10">
@@ -82,18 +44,7 @@ export default function WhoWeAre() {
             </div>
 
             <div className="max-w-md">
-              <p aria-label={paragraph} className="text-base leading-relaxed text-[#333D6D]">
-                {paragraph.split(' ').map((word, i) => (
-                  <span
-                    key={i}
-                    aria-hidden
-                    data-whoweare-word
-                    className="mr-[0.28em] inline-block opacity-0 last:mr-0"
-                  >
-                    {word}
-                  </span>
-                ))}
-              </p>
+              <p className="text-base leading-relaxed text-[#333D6D]">{paragraph}</p>
 
               <button
                 type="button"

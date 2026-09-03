@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef } from 'react';
 import { gsap } from '@/lib/gsap';
-import { prefersReducedMotion } from '@/lib/utils';
+import { cn, prefersReducedMotion } from '@/lib/utils';
 import { useT, type Bi } from '@/lib/i18n';
 import FadeIn from '@/components/ui/FadeIn';
 import SplitText from '@/components/ui/SplitText';
@@ -76,6 +76,48 @@ const VALUES: Value[] = [
       en: 'Clear prices. No hidden costs.',
       sq: 'Çmime të qarta. Pa kosto të fshehura.',
     },
+  },
+];
+
+const PARTNERS_HEADING: Bi = { en: 'Our partners', sq: 'Partnerët tanë' };
+const VIEW_SITE_LABEL: Bi = { en: 'View site', sq: 'Shiko faqen' };
+
+interface Partner {
+  name: string;
+  logo: string;
+  /** Kroni's mark is solid black in its source file, so it needs a hard
+   *  brightness+invert to read as white on this card's black panel.
+   *  Platinum's source already has two-tone (black/white) detail, so it
+   *  gets a plain invert to swap those tones and keep the contrast.
+   *  Riva just goes grayscale and keeps its own tonal detail. */
+  logoFilter: string;
+  category: Bi;
+  liveUrl: string;
+}
+
+/** Real, live client sites — social proof. Paths are percent-encoded
+ *  because the logo files' own names carry spaces and parentheses. */
+const PARTNERS: Partner[] = [
+  {
+    name: 'Kroni',
+    logo: '/images/Group%201%20(9).svg',
+    logoFilter: '[filter:brightness(0)_invert(1)]',
+    category: { en: 'Restaurant in Velipoje', sq: 'Restorant në Velipojë' },
+    liveUrl: 'https://kroni-restaurant.com',
+  },
+  {
+    name: 'Riva',
+    logo: '/images/Gemini_Generated_Image_75g7bv75g7bv75g7.webp',
+    logoFilter: 'grayscale',
+    category: { en: 'Restaurant in Durres', sq: 'Restorant në Durrës' },
+    liveUrl: 'https://riva-restaurant.al',
+  },
+  {
+    name: 'Platinum',
+    logo: '/images/Mask%20group%20(5).png',
+    logoFilter: 'invert',
+    category: { en: 'Gym in Tirana', sq: 'Palestër në Tiranë' },
+    liveUrl: 'https://www.platinumfitness.site',
   },
 ];
 
@@ -171,7 +213,7 @@ export default function AboutPage() {
                 <ClipRevealImage
                   src="/images/AVENUM-MOCKUP%20(1).webp"
                   alt="Avenum website mockup"
-                  className="max-md:aspect-[4/5] max-md:[clip-path:polygon(0_28%,100%_0,100%_72%,0_100%)] md:rounded-none md:[clip-path:polygon(0_0,100%_8%,100%_100%,0_92%)]"
+                  className="max-md:aspect-[4/5] max-md:[clip-path:polygon(0_28%,100%_0,100%_100%,0_100%)] md:rounded-none md:[clip-path:polygon(0_0,100%_8%,100%_100%,0_100%)]"
                   imgClassName="max-md:h-full md:h-auto"
                 />
 
@@ -260,6 +302,54 @@ export default function AboutPage() {
                 </FadeIn>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* our partners — real, live client sites */}
+        <section className="relative bg-[#DEDFE1] px-6 py-16 md:px-12 md:py-24">
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="mb-10 text-center md:mb-14">
+              <SplitText
+                as="h2"
+                className="font-display text-[clamp(1.9rem,4.5vw,3.4rem)] font-semibold leading-[0.98]"
+              >
+                {t(PARTNERS_HEADING)}
+              </SplitText>
+            </div>
+
+            <ul className="grid items-stretch gap-6 md:grid-cols-3">
+              {PARTNERS.map((partner) => (
+                <li key={partner.name} className="min-w-0">
+                  <div className="flex h-full flex-col overflow-hidden rounded-3xl bg-white">
+                    <div className="p-4">
+                      <div className="flex items-center justify-center gap-4 rounded-2xl bg-black px-6 py-12">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={partner.logo}
+                          alt=""
+                          className={cn('h-14 w-auto object-contain', partner.logoFilter)}
+                        />
+                        <p className="font-display text-4xl font-semibold text-white">{partner.name}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-1 flex-col items-center justify-center gap-4 p-6 text-center">
+                      <p className="font-display text-lg font-medium text-black/70">{t(partner.category)}</p>
+                      <a
+                        href={partner.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        data-cursor
+                        className="inline-flex items-center gap-1.5 font-display text-base font-medium tracking-normal text-black underline underline-offset-4 transition-colors duration-300 hover:text-black/70"
+                      >
+                        {t(VIEW_SITE_LABEL)}
+                        <ArrowRight className="h-3.5 w-3.5 -rotate-45" />
+                      </a>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
 
