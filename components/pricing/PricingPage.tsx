@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { useT, type Bi } from '@/lib/i18n';
 import FadeIn from '@/components/ui/FadeIn';
@@ -31,15 +33,6 @@ function IconLayers({ className }: { className?: string }) {
   );
 }
 
-/** 4-point spark inside each plan's icon circle. */
-function IconSpark({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
-      <path d="M12 2c.6 5.4 4.6 9.4 10 10-5.4.6-9.4 4.6-10 10-.6-5.4-4.6-9.4-10-10 5.4-.6 9.4-4.6 10-10Z" />
-    </svg>
-  );
-}
-
 /* ---- data ---- */
 
 interface Tier {
@@ -54,19 +47,22 @@ interface Tier {
   featured?: boolean;
   meta: Array<{ icon: (p: { className?: string }) => JSX.Element; label: Bi }>;
   features: Bi[];
+  /** Simple (add-on) cards only: an inline "Learn more" link after the
+   *  description, pointing to that service's own standalone page. */
+  learnMoreHref?: string;
 }
 
 const TIERS: Tier[] = [
   {
     id: 'starter',
-    name: 'Starter',
+    name: 'Avenum Basic',
     desc: {
       en: 'A custom website, live in two weeks.',
       sq: 'Një website i personalizuar, online brenda dy javësh.',
     },
-    price: { en: '€120', sq: '€120' },
-    originalPrice: { en: '€490', sq: '€490' },
-    discountLabel: { en: '76% OFF', sq: '76% ZBRITJE' },
+    price: { en: '€200', sq: '€200' },
+    originalPrice: { en: '€500', sq: '€500' },
+    discountLabel: { en: '60% OFF', sq: '60% ZBRITJE' },
     per: { en: '/ project', sq: '/ projekt' },
     cta: { en: 'Choose this plan', sq: 'Zgjidh këtë plan' },
     meta: [
@@ -83,14 +79,14 @@ const TIERS: Tier[] = [
   },
   {
     id: 'signature',
-    name: 'Signature',
+    name: 'Avenum Pro',
     desc: {
       en: 'Custom design, animations and a memorable site.',
       sq: 'Dizajn i personalizuar, animacione dhe një faqe e paharrueshme.',
     },
-    price: { en: '€300', sq: '€300' },
-    originalPrice: { en: '€1,490', sq: '€1,490' },
-    discountLabel: { en: '80% OFF', sq: '80% ZBRITJE' },
+    price: { en: '€400', sq: '€400' },
+    originalPrice: { en: '€1,000', sq: '€1,000' },
+    discountLabel: { en: '60% OFF', sq: '60% ZBRITJE' },
     per: { en: '/ project', sq: '/ projekt' },
     cta: { en: 'Choose this plan', sq: 'Zgjidh këtë plan' },
     featured: true,
@@ -108,12 +104,14 @@ const TIERS: Tier[] = [
   },
   {
     id: 'partner',
-    name: 'Partner',
+    name: 'Avenum Ultra',
     desc: {
       en: 'Web apps, e-commerce and AI chatbots.',
       sq: 'Aplikacione web, e-commerce dhe AI chatbots.',
     },
-    price: { en: 'Custom', sq: 'Sipas kërkesës' },
+    price: { en: '€800', sq: '€800' },
+    originalPrice: { en: '€2,000', sq: '€2,000' },
+    discountLabel: { en: '60% OFF', sq: '60% ZBRITJE' },
     cta: { en: 'Contact us', sq: 'Na kontakto' },
     meta: [
       { icon: IconClock, label: { en: 'Dedicated team', sq: 'Ekip i dedikuar' } },
@@ -166,58 +164,110 @@ const AGENCY_COMPARISON: AgencyComparisonCard[] = [
   },
 ];
 
-const STARS: Array<{ top: string; left: string; size: number; delay: string; bright?: boolean }> = [
-  { top: '12%', left: '8%', size: 2, delay: '0s' },
-  { top: '22%', left: '85%', size: 3, delay: '0.6s', bright: true },
-  { top: '35%', left: '72%', size: 2, delay: '1.2s' },
-  { top: '48%', left: '12%', size: 2, delay: '0.9s' },
-  { top: '62%', left: '92%', size: 2, delay: '0.3s' },
-  { top: '75%', left: '20%', size: 3, delay: '1.5s', bright: true },
-  { top: '85%', left: '65%', size: 2, delay: '0.7s' },
-  { top: '8%', left: '45%', size: 2, delay: '1.1s' },
-  { top: '5%', left: '65%', size: 2, delay: '0.4s' },
-  { top: '15%', left: '28%', size: 3, delay: '1.7s' },
-  { top: '28%', left: '5%', size: 2, delay: '0.2s' },
-  { top: '30%', left: '95%', size: 2, delay: '1.4s' },
-  { top: '40%', left: '38%', size: 2, delay: '0.8s' },
-  { top: '42%', left: '58%', size: 3, delay: '1.9s' },
-  { top: '55%', left: '25%', size: 2, delay: '0.5s' },
-  { top: '58%', left: '78%', size: 2, delay: '1.0s' },
-  { top: '68%', left: '48%', size: 3, delay: '0.1s', bright: true },
-  { top: '72%', left: '5%', size: 2, delay: '1.6s' },
-  { top: '80%', left: '88%', size: 2, delay: '0.9s' },
-  { top: '90%', left: '35%', size: 2, delay: '1.3s' },
-  { top: '92%', left: '55%', size: 3, delay: '0.6s' },
-  { top: '18%', left: '55%', size: 2, delay: '1.1s' },
-  { top: '10%', left: '95%', size: 2, delay: '0.3s' },
-  { top: '3%', left: '18%', size: 2, delay: '1.8s' },
-  { top: '20%', left: '15%', size: 2, delay: '0.5s' },
-  { top: '25%', left: '38%', size: 4, delay: '0.9s', bright: true },
-  { top: '32%', left: '20%', size: 2, delay: '1.3s' },
-  { top: '38%', left: '88%', size: 2, delay: '0.2s' },
-  { top: '45%', left: '48%', size: 2, delay: '1.6s' },
-  { top: '45%', left: '65%', size: 4, delay: '0.4s', bright: true },
-  { top: '50%', left: '5%', size: 2, delay: '1.0s' },
-  { top: '52%', left: '82%', size: 2, delay: '0.7s' },
-  { top: '60%', left: '35%', size: 2, delay: '1.4s' },
-  { top: '60%', left: '58%', size: 2, delay: '0.6s' },
-  { top: '65%', left: '15%', size: 4, delay: '1.9s', bright: true },
-  { top: '70%', left: '95%', size: 2, delay: '0.8s' },
-  { top: '78%', left: '42%', size: 2, delay: '0.3s' },
-  { top: '82%', left: '75%', size: 2, delay: '1.5s' },
-  { top: '88%', left: '12%', size: 2, delay: '1.1s' },
-  { top: '95%', left: '68%', size: 2, delay: '0.5s' },
-  { top: '95%', left: '25%', size: 2, delay: '1.2s' },
+const SERVICES_HEADING: Bi = {
+  en: 'Want to make your business even stronger?',
+  sq: 'Dëshiron ta bësh biznesin edhe më të fuqishëm?',
+};
+
+/** Standalone add-ons, sold on top of any plan above — same `Tier` shape
+ *  (and the same card design) as the three main plans, just without the
+ *  "most popular" raised treatment. */
+const OTHER_SERVICES: Tier[] = [
+  {
+    id: 'chatbot',
+    name: 'AI Chatbot',
+    desc: {
+      en: 'Answers guests and books tables 24/7, in any language.',
+      sq: 'U përgjigjet mysafirëve dhe rezervon tavolina 24/7, në çdo gjuhë.',
+    },
+    learnMoreHref: '/ai-chatbots',
+    price: { en: '€150', sq: '€150' },
+    originalPrice: { en: '€375', sq: '€375' },
+    discountLabel: { en: '60% OFF', sq: '60% ZBRITJE' },
+    per: { en: '/ project', sq: '/ projekt' },
+    cta: { en: 'Add to my site', sq: 'Shtoje në faqe' },
+    meta: [{ icon: IconClock, label: { en: 'Live in a few days', sq: 'Gati brenda pak ditësh' } }],
+    features: [
+      { en: 'Trained on your menu, prices and hours', sq: 'I trajnuar me menunë, çmimet dhe orarin tënd' },
+      { en: 'Books tables and takes orders on its own', sq: 'Rezervon tavolina dhe merr porosi vetë' },
+      { en: 'Speaks Albanian, English and Italian', sq: 'Flet shqip, anglisht dhe italisht' },
+      { en: 'Works on WhatsApp and your website', sq: 'Punon në WhatsApp dhe në faqen tënde' },
+    ],
+  },
+  {
+    id: 'seo',
+    name: 'SEO Boost',
+    desc: {
+      en: 'Get found on Google and turn visits into customers.',
+      sq: 'Gjendu në Google dhe kthe vizitorët në klientë.',
+    },
+    price: { en: '€120', sq: '€120' },
+    originalPrice: { en: '€300', sq: '€300' },
+    discountLabel: { en: '60% OFF', sq: '60% ZBRITJE' },
+    per: { en: '/ project', sq: '/ projekt' },
+    cta: { en: 'Add to my site', sq: 'Shtoje në faqe' },
+    meta: [{ icon: IconLayers, label: { en: 'Full-site optimization', sq: 'Optimizim i gjithë faqes' } }],
+    features: [
+      { en: 'Keyword research for your city and niche', sq: 'Kërkim fjalësh kyçe për qytetin dhe fushën tënde' },
+      { en: 'Google Business profile set up properly', sq: 'Profili Google Business i konfiguruar si duhet' },
+      { en: 'Faster load times, better rankings', sq: 'Ngarkim më i shpejtë, renditje më e mirë' },
+      { en: 'Monthly report on where you rank', sq: 'Raport mujor mbi renditjen tënde' },
+    ],
+  },
+  {
+    id: 'booking',
+    name: 'Booking System',
+    desc: {
+      en: 'Let customers book straight from your site.',
+      sq: 'Klientët rezervojnë drejtpërdrejt nga faqja jote.',
+    },
+    price: { en: '€100', sq: '€100' },
+    originalPrice: { en: '€250', sq: '€250' },
+    discountLabel: { en: '60% OFF', sq: '60% ZBRITJE' },
+    per: { en: '/ project', sq: '/ projekt' },
+    cta: { en: 'Add to my site', sq: 'Shtoje në faqe' },
+    meta: [{ icon: IconClock, label: { en: 'Real-time availability', sq: 'Disponueshmëri në kohë reale' } }],
+    features: [
+      { en: 'Customers pick a date and time themselves', sq: 'Klientët zgjedhin vetë datën dhe orën' },
+      { en: 'Automatic confirmation by SMS or WhatsApp', sq: 'Konfirmim automatik me SMS ose WhatsApp' },
+      { en: 'No more double-bookings', sq: 'Pa më dy rezervime njëkohësisht' },
+      { en: 'Synced to your own calendar', sq: 'Sinkronizuar me kalendarin tënd' },
+    ],
+  },
+  {
+    id: 'analytics',
+    name: 'Analytics & CRM',
+    desc: {
+      en: "See what's working and stay close to every customer.",
+      sq: 'Shiko çfarë funksionon dhe qëndro afër çdo klienti.',
+    },
+    price: { en: '€90', sq: '€90' },
+    originalPrice: { en: '€225', sq: '€225' },
+    discountLabel: { en: '60% OFF', sq: '60% ZBRITJE' },
+    per: { en: '/ project', sq: '/ projekt' },
+    cta: { en: 'Add to my site', sq: 'Shtoje në faqe' },
+    meta: [{ icon: IconLayers, label: { en: 'One dashboard for everything', sq: 'Një panel për gjithçka' } }],
+    features: [
+      { en: 'See exactly where visitors come from', sq: 'Shiko saktësisht nga vijnë vizitorët' },
+      { en: 'Every customer saved in one place', sq: 'Çdo klient i ruajtur në një vend' },
+      { en: 'Follow-up reminders so no lead is lost', sq: 'Kujtesa ndjekjeje që asnjë klient të mos humbasë' },
+      { en: 'Simple reports, no spreadsheets needed', sq: 'Raporte të thjeshta, pa nevojë për excel' },
+    ],
+  },
 ];
 
-/** Meta list + divider + feature checklist — shared by every tier card, always black-on-white. */
+/** Meta list + divider + feature checklist — shared by every tier card, always black-on-white.
+ *  The Starter tier's checkmarks are dark gray instead of the brand purple used elsewhere. */
 function TierMetaFeatures({ tier, t }: { tier: Tier; t: (bi: Bi) => string }) {
+  const isPlanTier = tier.id === 'starter' || tier.id === 'signature' || tier.id === 'partner';
+  const checkColor = tier.id === 'starter' ? '#4B5563' : isPlanTier ? '#6439FF' : '#000000';
+  const checkColorClass = tier.id === 'starter' ? 'text-[#4B5563]' : isPlanTier ? 'text-[#6439FF]' : 'text-black';
   return (
     <>
       <ul className="space-y-3">
         {tier.meta.map((m, mi) => (
           <li key={mi} className="flex items-center gap-3 text-sm text-[#0A2947]">
-            <m.icon className="h-[18px] w-[18px] text-[#6439FF]" />
+            <m.icon className={cn('h-[18px] w-[18px]', checkColorClass)} />
             {t(m.label)}
           </li>
         ))}
@@ -228,12 +278,12 @@ function TierMetaFeatures({ tier, t }: { tier: Tier; t: (bi: Bi) => string }) {
           <li key={fi} className="flex items-start gap-3 text-sm text-[#0A2947]">
             <span
               className="mt-0.5 flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full"
-              style={{ background: 'color-mix(in srgb, #6439FF 25%, white)' }}
+              style={{ background: `color-mix(in srgb, ${checkColor} 25%, white)` }}
             >
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="#6439FF"
+                stroke={checkColor}
                 strokeWidth={2.5}
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -251,163 +301,173 @@ function TierMetaFeatures({ tier, t }: { tier: Tier; t: (bi: Bi) => string }) {
   );
 }
 
+interface CardAccent {
+  border: string;
+  shadow: string;
+  button: string;
+}
+
+const ACCENT_BLACK: CardAccent = {
+  border: 'border-black',
+  shadow: 'shadow-[6px_6px_0_0_#000]',
+  button: 'bg-black hover:bg-black/85',
+};
+const ACCENT_PURPLE: CardAccent = {
+  border: 'border-[#6367FF]',
+  shadow: 'shadow-[6px_6px_0_0_#6367FF]',
+  button: 'bg-[#6367FF] hover:bg-[#4f52e0]',
+};
+/** Same black CTA as ACCENT_BLACK, but flat — border only, no hard shadow.
+ *  Used for the "other services" add-ons, which sit a step below the main
+ *  plans and shouldn't compete with their 3D-pill treatment. */
+const ACCENT_BLACK_FLAT: CardAccent = {
+  border: 'border-black',
+  shadow: '',
+  button: 'bg-black hover:bg-black/85',
+};
+
+/** One pricing/service card — title pill, price (with an optional
+ *  struck-through original), a slide-to-confirm CTA on mobile and a plain
+ *  button on desktop, then the meta/feature checklist. Shared by the three
+ *  main plans and the "other services" add-ons below them, so both grids
+ *  render identically and only the color accent and data differ. */
+function TierCard({
+  tier,
+  t,
+  accent,
+  raised,
+  simple,
+  bgClassName = 'bg-[#F3F4F4]',
+  badge,
+}: {
+  tier: Tier;
+  t: (bi: Bi) => string;
+  accent: CardAccent;
+  raised?: boolean;
+  /** Add-on cards: a plain description instead of the feature checklist,
+   *  and a normal button — no slide-to-confirm, no arrow — at every size. */
+  simple?: boolean;
+  bgClassName?: string;
+  /** Pill straddling the card's top-left border — half in, half out. */
+  badge?: Bi;
+}) {
+  // No card slides anymore: mobile and desktop both get the same plain
+  // click button, with no arrow either way.
+  return (
+    <li className={cn('min-w-0', raised && 'md:-my-5')}>
+      <div className="h-full">
+        <div className="relative h-full">
+          {badge && (
+            <span className="absolute left-6 top-0 z-10 -translate-y-1/2 rounded-full bg-[#6367FF] px-5 py-2.5 font-display text-sm font-semibold tracking-normal text-white md:px-4 md:py-2 md:text-xs">
+              {t(badge)}
+            </span>
+          )}
+          <div className={cn('relative flex h-full flex-col overflow-hidden rounded-3xl border-2', bgClassName, accent.border, accent.shadow)}>
+            <div className={cn('flex flex-1 flex-col p-6 md:p-7', simple && 'min-h-[380px] md:min-h-[440px]')}>
+              <div className="flex w-full items-center justify-center">
+                <h2 className="inline-flex w-fit items-center rounded-full px-4 py-1.5 text-center font-display text-2xl font-semibold text-black md:text-3xl">
+                  {tier.name}
+                </h2>
+              </div>
+
+              <div className="mt-3 flex items-baseline justify-center gap-2">
+                <p className="font-display text-5xl font-bold text-black md:text-6xl">{t(tier.price)}</p>
+                {tier.originalPrice && (
+                  <p className="relative inline-block font-display text-2xl text-[#6B7280] before:absolute before:left-0 before:top-1/2 before:h-[2px] before:w-full before:-translate-y-1/2 before:-rotate-[14deg] before:bg-[#6B7280] before:content-[''] md:text-3xl">
+                    {t(tier.originalPrice)}
+                  </p>
+                )}
+              </div>
+
+              {simple && (
+                <p className="mt-auto text-center text-base leading-relaxed text-black md:text-lg">
+                  {t(tier.desc)}
+                  {tier.learnMoreHref && (
+                    <>
+                      {' '}
+                      <Link
+                        href={tier.learnMoreHref}
+                        data-cursor
+                        className="font-medium text-[#6367FF] underline-offset-2 hover:underline"
+                      >
+                        {t({ en: 'Learn more', sq: 'Mëso më shumë' })}
+                      </Link>
+                    </>
+                  )}
+                </p>
+              )}
+
+              <a
+                href={whatsappHref(WA_MESSAGE)}
+                data-cursor
+                className={cn(
+                  'flex items-center justify-center gap-0.5 rounded-full py-2.5 text-center font-display text-base font-medium tracking-normal text-white transition-colors duration-300',
+                  simple ? 'mt-4' : 'mt-6',
+                  accent.button
+                )}
+              >
+                {t(tier.cta)}
+              </a>
+
+              {!simple && (
+                <div className="mt-6">
+                  <TierMetaFeatures tier={tier} t={t} />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+  );
+}
+
 export default function PricingPage() {
   const t = useT();
 
   return (
-    <div className="isolate min-h-screen overflow-x-clip bg-[#0F0824] text-[#f2f4ff]">
+    <div className="isolate min-h-screen overflow-x-clip bg-white text-[#061E29]">
       <Nav />
 
       <main>
-        {/* deep-purple base, diagonal light stripes and a soft center glow —
-            scoped to the hero + plan cards only, same as the Chatbots page;
-            a black fade at the bottom blends into the plain black body below. */}
-        <div className="relative">
-          <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-            {/* base purple gradient */}
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  'linear-gradient(160deg, #2a1660 0%, #1b0f3d 45%, #0F0824 100%)',
-              }}
-            />
-            {/* diagonal white light stripes */}
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  'repeating-linear-gradient(125deg, transparent 0px, transparent 130px, rgba(255,255,255,0.04) 175px, rgba(255,255,255,0.10) 210px, rgba(255,255,255,0.04) 245px, transparent 300px, transparent 430px)',
-              }}
-            />
-            {/* soft radial glow toward the top */}
-            <div
-              className="absolute -top-40 left-1/2 h-[42rem] w-[42rem] -translate-x-1/2 rounded-full blur-3xl"
-              style={{ background: 'radial-gradient(circle, rgba(140,110,255,0.28), transparent 70%)' }}
-            />
-            {STARS.map((s, i) => (
-              <span
-                key={i}
-                className={cn('svc-pulse absolute rounded-full', s.bright ? 'bg-white' : 'bg-white/60')}
-                style={{
-                  top: s.top,
-                  left: s.left,
-                  width: s.size,
-                  height: s.size,
-                  animationDelay: s.delay,
-                  boxShadow: s.bright ? '0 0 8px 2px rgba(255,255,255,0.8)' : undefined,
-                }}
-              />
-            ))}
-            {/* fade into the black body below */}
-            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-[#0F0824]" />
-          </div>
-
         {/* hero */}
-        <section className="relative px-6 pt-24 text-center md:px-12 md:pt-28">
-          <div className="mx-auto max-w-3xl">
-            <SplitText
-              as="h1"
-              delay={0.15}
-              animate
-              className="font-display text-[clamp(2.4rem,6.5vw,4.8rem)] font-semibold leading-[0.98]"
-            >
-              {t({ en: 'Plans built for Albanian businesses.', sq: 'Plane të ndërtuara për bizneset shqiptare.' })}
-            </SplitText>
-            <FadeIn delay={0.4}>
-              <p className="subtext mx-auto mt-6 max-w-xl text-sm font-normal md:text-base">
+        <section className="relative px-6 pt-40 text-left md:px-12 md:pt-28">
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="max-w-3xl">
+              <SplitText
+                as="h1"
+                delay={0.15}
+                animate
+                className="font-display text-[clamp(3.2rem,9vw,4.8rem)] font-semibold leading-[0.98] [text-wrap:balance]"
+              >
                 {t({
-                  en: 'Premium websites at prices that make sense in Albania — clear packages and no hidden costs.',
-                  sq: 'Faqe web premium me çmime që kanë kuptim në Shqipëri — paketa të qarta dhe pa kosto të fshehura.',
+                  en: 'Try it free for 7 days, then tell us what you think.',
+                  sq: 'Shijo falas për 7 ditë, pastaj na thuaj.',
                 })}
-              </p>
-            </FadeIn>
+              </SplitText>
+            </div>
           </div>
         </section>
 
         {/* plan cards */}
         <section className="relative px-6 py-16 md:px-12 md:py-24">
           <div className="mx-auto w-full max-w-6xl">
-            <ul className="grid gap-6 md:grid-cols-3 md:items-stretch">
+            <ul className="grid gap-10 md:grid-cols-3 md:items-stretch md:gap-6">
               {TIERS.map((tier) => (
-                <li
+                <TierCard
                   key={tier.id}
-                  className={cn('min-w-0', tier.featured && 'md:-my-5')}
-                >
-                  <div className="h-full">
-                    <div className="h-full">
-                      <div className="relative flex h-full flex-col overflow-hidden rounded-3xl bg-white shadow-[0_25px_60px_-20px_rgba(0,0,0,0.55)]">
-                        {tier.id === 'starter' ? (
-                          <div className="flex flex-1 flex-col p-6 md:p-7">
-                            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#6367FF] text-white shadow-lg">
-                              <IconSpark className="h-5 w-5" />
-                            </span>
-
-                            <h2 className="mt-5 font-display text-xl font-semibold text-[#333D6D] md:text-2xl">
-                              {tier.name}
-                            </h2>
-                            <p className="mt-2 text-sm leading-relaxed text-[#0A2947]">
-                              {t(tier.desc)}
-                            </p>
-
-                            <a
-                              href={whatsappHref(WA_MESSAGE)}
-                              data-cursor
-                              className="mt-6 flex items-center justify-center gap-1.5 rounded-full bg-gradient-to-t from-[#4f52e0] to-[#6367FF] py-4 text-center font-display text-base font-medium tracking-normal text-white transition-opacity duration-300 hover:opacity-90"
-                            >
-                              {t(tier.cta)}
-                              <ArrowRight className="h-4 w-4" />
-                            </a>
-
-                            <div className="mt-6">
-                              <TierMetaFeatures tier={tier} t={t} />
-                            </div>
-                          </div>
-                        ) : (
-                          <>
-                            <div className="relative mx-2 mt-2 rounded-t-2xl rounded-b-[36px] bg-gradient-to-t from-[#4f52e0] to-[#6367FF] p-6 md:mx-3 md:mt-3 md:p-7">
-                              <div className="flex items-start justify-between">
-                                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-[#6367FF]">
-                                  <IconSpark className="h-5 w-5" />
-                                </span>
-                                {tier.featured && (
-                                  <span className="rounded-full bg-white/20 px-3 py-1 text-[10px] tracking-normal text-white">
-                                    {t({ en: 'Most popular', sq: 'Më i popullarizuar' })}
-                                  </span>
-                                )}
-                              </div>
-
-                              <h2 className="mt-5 font-display text-xl font-semibold text-white md:text-2xl">
-                                {tier.name}
-                              </h2>
-                              <p className="mt-2 text-sm leading-relaxed text-white/90">
-                                {t(tier.desc)}
-                              </p>
-
-                              <a
-                                href={whatsappHref(WA_MESSAGE)}
-                                data-cursor
-                                className="mt-6 flex items-center justify-center gap-1.5 rounded-full bg-white py-4 text-center font-display text-base font-medium tracking-normal text-black transition-colors duration-300 hover:bg-gray-100"
-                              >
-                                {t(tier.cta)}
-                                <ArrowRight className="h-4 w-4" />
-                              </a>
-                            </div>
-
-                            <div className="flex flex-1 flex-col p-6 md:p-7">
-                              <TierMetaFeatures tier={tier} t={t} />
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </li>
+                  tier={tier}
+                  t={t}
+                  raised={tier.featured}
+                  accent={tier.id === 'signature' || tier.id === 'partner' ? ACCENT_PURPLE : ACCENT_BLACK}
+                  bgClassName={tier.id === 'signature' ? 'bg-[#EEF0FF]' : undefined}
+                  badge={tier.id === 'signature' ? { en: 'WOW choice!!', sq: 'Zgjedhja WOW!!' } : undefined}
+                />
               ))}
             </ul>
 
             <FadeIn delay={0.2}>
-              <p className="mt-10 text-center text-xs text-white/40">
+              <p className="mt-10 text-center text-xs text-black/40">
                 {t({
                   en: 'Prices in EUR for the Albanian market · pay in euro or lekë · installments available · VAT not included',
                   sq: 'Çmimet në EUR për tregun shqiptar · paguaj në euro ose lekë · me këste · TVSH-ja nuk përfshihet',
@@ -416,7 +476,27 @@ export default function PricingPage() {
             </FadeIn>
           </div>
         </section>
-        </div>
+
+        {/* other services — same card design as the plans above, sold as
+            standalone add-ons rather than a full website package. */}
+        <section className="relative px-6 pb-16 md:px-12 md:pb-24">
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="mb-10 text-center md:mb-14">
+              <SplitText
+                as="h2"
+                className="font-display text-[clamp(1.9rem,4.5vw,3.4rem)] font-semibold leading-[0.98]"
+              >
+                {t(SERVICES_HEADING)}
+              </SplitText>
+            </div>
+
+            <ul className="grid items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {OTHER_SERVICES.map((service) => (
+                <TierCard key={service.id} tier={service} t={t} accent={ACCENT_BLACK_FLAT} simple />
+              ))}
+            </ul>
+          </div>
+        </section>
 
         {/* why this investment — us vs. typical agencies in Albania */}
         <section className="relative px-6 py-16 md:px-12 md:py-24">
@@ -428,73 +508,60 @@ export default function PricingPage() {
               >
                 {t({ en: 'Why this investment is the best choice.', sq: 'Pse ky investim është zgjedhja më e mirë.' })}
               </SplitText>
-              <FadeIn delay={0.15}>
-                <p className="subtext mx-auto mt-4 max-w-md text-sm">
-                  {t({
-                    en: "Here's how we stack up against typical web agencies in Albania.",
-                    sq: 'Ja si krahasohemi me agjencitë tipike web në Shqipëri.',
-                  })}
-                </p>
-              </FadeIn>
             </div>
 
             <FadeIn delay={0.2}>
               <div className="relative">
-                <span aria-hidden className="absolute left-0 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 bg-[#a78bfa]" />
-                <span aria-hidden className="absolute right-0 top-0 h-2 w-2 translate-x-1/2 -translate-y-1/2 bg-[#a78bfa]" />
-                <span aria-hidden className="absolute bottom-0 left-0 h-2 w-2 -translate-x-1/2 translate-y-1/2 bg-[#a78bfa]" />
-                <span aria-hidden className="absolute bottom-0 right-0 h-2 w-2 translate-x-1/2 translate-y-1/2 bg-[#a78bfa]" />
-
-                <div className="overflow-hidden border border-white/10">
+                <div className="overflow-hidden border border-black/10">
                   <div className="grid grid-cols-1 md:grid-cols-3">
                     {/* card 1 */}
-                    <div className="border-b border-white/10 p-8 md:border-r md:p-10">
-                      <h3 className="font-display text-2xl font-semibold leading-tight text-white md:text-3xl">
+                    <div className="border-b border-black/10 bg-[#F3F4F4] p-8 md:border-r md:p-10">
+                      <h3 className="font-display text-2xl font-semibold leading-tight text-[#061E29] md:text-3xl">
                         {t(AGENCY_COMPARISON[0].title)}
                       </h3>
-                      <p className="mt-4 text-base leading-relaxed text-white/60 md:text-lg">
+                      <p className="mt-4 text-base leading-relaxed text-black/60 md:text-lg">
                         {t(AGENCY_COMPARISON[0].body)}
                       </p>
                     </div>
 
                     {/* image */}
-                    <div className="min-h-[220px] overflow-hidden border-b border-white/10 md:border-r">
+                    <div className="min-h-[220px] overflow-hidden border-b border-black/10 md:border-r">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src="/images/pricing-image.webp" alt="" className="h-full w-full object-cover" />
                     </div>
 
                     {/* card 2 */}
-                    <div className="border-b border-white/10 p-8 md:p-10">
-                      <h3 className="font-display text-2xl font-semibold leading-tight text-white md:text-3xl">
+                    <div className="border-b border-black/10 bg-[#F3F4F4] p-8 md:p-10">
+                      <h3 className="font-display text-2xl font-semibold leading-tight text-[#061E29] md:text-3xl">
                         {t(AGENCY_COMPARISON[1].title)}
                       </h3>
-                      <p className="mt-4 text-base leading-relaxed text-white/60 md:text-lg">
+                      <p className="mt-4 text-base leading-relaxed text-black/60 md:text-lg">
                         {t(AGENCY_COMPARISON[1].body)}
                       </p>
                     </div>
 
                     {/* card 3 — wide */}
-                    <div className="border-b border-white/10 p-8 md:col-span-2 md:border-b-0 md:border-r md:p-10">
-                      <h3 className="font-display text-2xl font-semibold leading-tight text-white md:text-3xl">
+                    <div className="border-b border-black/10 bg-[#F3F4F4] p-8 md:col-span-2 md:border-b-0 md:border-r md:p-10">
+                      <h3 className="font-display text-2xl font-semibold leading-tight text-[#061E29] md:text-3xl">
                         {t(AGENCY_COMPARISON[2].title)}
                       </h3>
-                      <p className="mt-4 max-w-lg text-base leading-relaxed text-white/60 md:text-lg">
+                      <p className="mt-4 max-w-lg text-base leading-relaxed text-black/60 md:text-lg">
                         {t(AGENCY_COMPARISON[2].body)}
                       </p>
                     </div>
 
                     {/* card 4 — highlighted */}
                     <div
-                      className="p-8 md:p-10"
+                      className="bg-[#F3F4F4] p-8 md:p-10"
                       style={{
                         backgroundImage:
-                          'radial-gradient(130% 130% at 100% 100%, rgba(99,103,255,0.4), transparent 60%)',
+                          'radial-gradient(130% 130% at 100% 100%, rgba(99,103,255,0.18), transparent 60%)',
                       }}
                     >
-                      <h3 className="font-display text-2xl font-semibold leading-tight text-white md:text-3xl">
+                      <h3 className="font-display text-2xl font-semibold leading-tight text-[#061E29] md:text-3xl">
                         {t(AGENCY_COMPARISON[3].title)}
                       </h3>
-                      <p className="mt-4 text-base leading-relaxed text-white/70 md:text-lg">
+                      <p className="mt-4 text-base leading-relaxed text-black/70 md:text-lg">
                         {t(AGENCY_COMPARISON[3].body)}
                       </p>
                     </div>
@@ -517,7 +584,7 @@ export default function PricingPage() {
                 {t({ en: 'Get a clear answer before you commit.', sq: 'Merr një përgjigje të qartë para se të vendosësh.' })}
               </SplitText>
               <FadeIn delay={0.15}>
-                <p className="subtext mx-auto mt-5 max-w-md text-sm md:mx-0 md:text-base">
+                <p className="mx-auto mt-5 max-w-md text-sm text-black/70 md:mx-0 md:text-base">
                   {t({
                     en: "Tell us what you're building — we'll tell you exactly what it costs and how long it takes, for free.",
                     sq: 'Na trego çfarë po ndërton — do të të themi saktësisht sa kushton dhe sa kohë merr, falas.',
@@ -548,7 +615,7 @@ export default function PricingPage() {
         </section>
       </main>
 
-      <Footer theme="dark" bgClassName="bg-[#0F0824]" />
+      <Footer />
 
       <div
         aria-hidden

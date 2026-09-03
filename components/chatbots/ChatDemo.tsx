@@ -2,8 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from '@/lib/gsap';
-import { cn, prefersReducedMotion } from '@/lib/utils';
-import { useStore } from '@/lib/store';
+import { prefersReducedMotion } from '@/lib/utils';
 import { useT, type Bi } from '@/lib/i18n';
 import BotAvatar from './BotAvatar';
 
@@ -21,95 +20,49 @@ interface Chip {
 }
 
 interface Scenario {
-  id: 'restaurant' | 'gym';
   business: string;
-  tag: Bi;
   intro: Bi;
   chips: Chip[];
 }
 
-const SCENARIOS: Scenario[] = [
-  {
-    id: 'restaurant',
-    business: 'Bella Tavola',
-    tag: { en: 'Restaurant', sq: 'Restorant' },
-    intro: {
-      en: "Ciao! I'm Nova, Bella Tavola's assistant 🍝 I can book you a table, walk you through the menu or answer anything.",
-      sq: "Ciao! Jam Nova, asistentja e Bella Tavola 🍝 Mund të rezervoj një tavolinë për ty, të të tregoj menunë ose t'i përgjigjem çdo pyetjeje.",
-    },
-    chips: [
-      {
-        id: 'table-tonight',
-        label: { en: 'Book a table for 2 tonight', sq: 'Rezervo një tavolinë për 2 sonte' },
-        reply: {
-          en: 'Con piacere! Tonight we have 19:30 or 21:00 free for two — I went ahead and held 21:00 for you.',
-          sq: 'Con piacere! Sonte kemi të lira orën 19:30 ose 21:00 për dy veta — ta kam mbajtur orën 21:00.',
-        },
-        card: {
-          title: { en: 'Table reserved', sq: 'Tavolina u rezervua' },
-          line: { en: '2 guests · Tonight · 21:00', sq: '2 mysafirë · Sonte · 21:00' },
-          status: { en: 'Confirmed', sq: 'Konfirmuar' },
-        },
-      },
-      {
-        id: 'vegan-options',
-        label: { en: 'Do you have vegan options?', sq: 'A keni opsione vegane?' },
-        reply: {
-          en: "Absolutely — the chef's vegan tasting menu has five courses, and most of the pasta list can be made vegan. Want me to send it over?",
-          sq: 'Sigurisht — menuja vegane e shefit ka pesë pjata, dhe shumica e listës së pastave mund të bëhet vegane. Të dua ta dërgoj?',
-        },
-      },
-      {
-        id: 'closing-time',
-        label: { en: 'What time do you close?', sq: "Në ç'orë mbyllni?" },
-        reply: {
-          en: "We're open until 23:00 tonight — the kitchen takes last orders at 22:15. On Sundays we close at 22:00.",
-          sq: 'Sonte jemi hapur deri në 23:00 — kuzhina merr porositë e fundit në 22:15. Të dielave mbyllim në 22:00.',
-        },
-      },
-    ],
+const SCENARIO: Scenario = {
+  business: 'Bella Tavola',
+  intro: {
+    en: "Ciao! I'm Nova, Bella Tavola's assistant 🍝 I can book you a table, walk you through the menu or answer anything.",
+    sq: "Ciao! Jam Nova, asistentja e Bella Tavola 🍝 Mund të rezervoj një tavolinë për ty, të të tregoj menunë ose t'i përgjigjem çdo pyetjeje.",
   },
-  {
-    id: 'gym',
-    business: 'IronWorks',
-    tag: { en: 'Gym', sq: 'Palestër' },
-    intro: {
-      en: "Hey! I'm Nova, IronWorks' assistant 💪 Memberships, classes, opening hours — ask away.",
-      sq: 'Hej! Jam Nova, asistentja e IronWorks 💪 Anëtarësime, klasa, orare hapjeje — pyet çfarë të duash.',
+  chips: [
+    {
+      id: 'table-tonight',
+      label: { en: 'Book a table for 2 tonight', sq: 'Rezervo një tavolinë për 2 sonte' },
+      reply: {
+        en: 'Con piacere! Tonight we have 19:30 or 21:00 free for two — I went ahead and held 21:00 for you.',
+        sq: 'Con piacere! Sonte kemi të lira orën 19:30 ose 21:00 për dy veta — ta kam mbajtur orën 21:00.',
+      },
+      card: {
+        title: { en: 'Table reserved', sq: 'Tavolina u rezervua' },
+        line: { en: '2 guests · Tonight · 21:00', sq: '2 mysafirë · Sonte · 21:00' },
+        status: { en: 'Confirmed', sq: 'Konfirmuar' },
+      },
     },
-    chips: [
-      {
-        id: 'trial-session',
-        label: { en: 'Book a free trial session', sq: 'Rezervo një seancë provë falas' },
-        reply: {
-          en: 'Done in ten seconds — tomorrow I have 10:00 or 18:30 free. I booked you 18:30 with coach Ana.',
-          sq: 'U bë për dhjetë sekonda — nesër kam të lira orën 10:00 ose 18:30. Të rezervova orën 18:30 me trajneren Ana.',
-        },
-        card: {
-          title: { en: 'Trial session booked', sq: 'Seanca provë u rezervua' },
-          line: { en: 'Tomorrow · 18:30 · Coach Ana', sq: 'Nesër · 18:30 · Trajnerja Ana' },
-          status: { en: 'Confirmed', sq: 'Konfirmuar' },
-        },
+    {
+      id: 'vegan-options',
+      label: { en: 'Do you have vegan options?', sq: 'A keni opsione vegane?' },
+      reply: {
+        en: "Absolutely — the chef's vegan tasting menu has five courses, and most of the pasta list can be made vegan. Want me to send it over?",
+        sq: 'Sigurisht — menuja vegane e shefit ka pesë pjata, dhe shumica e listës së pastave mund të bëhet vegane. Të dua ta dërgoj?',
       },
-      {
-        id: 'membership-price',
-        label: { en: 'How much is a membership?', sq: 'Sa kushton anëtarësimi?' },
-        reply: {
-          en: 'Monthly is €39, or €29/month on the annual plan. Students get 20% off — want me to sign you up?',
-          sq: 'Mujor është €39, ose €29/muaj me planin vjetor. Studentët përfitojnë 20% zbritje — të dua të të regjistroj?',
-        },
+    },
+    {
+      id: 'closing-time',
+      label: { en: 'What time do you close?', sq: "Në ç'orë mbyllni?" },
+      reply: {
+        en: "We're open until 23:00 tonight — the kitchen takes last orders at 22:15. On Sundays we close at 22:00.",
+        sq: 'Sonte jemi hapur deri në 23:00 — kuzhina merr porositë e fundit në 22:15. Të dielave mbyllim në 22:00.',
       },
-      {
-        id: 'gym-busy',
-        label: { en: 'Is the gym busy right now?', sq: 'A është plot palestra tani?' },
-        reply: {
-          en: "Right now it's quiet — 12 people checked in. Today's peak was 18:00–20:00, mornings are your best bet.",
-          sq: 'Tani për tani është qetë — 12 persona kanë hyrë. Piku i sotëm ishte 18:00–20:00, mëngjeset janë zgjedhja më e mirë.',
-        },
-      },
-    ],
-  },
-];
+    },
+  ],
+};
 
 interface ResolvedCard {
   title: string;
@@ -124,37 +77,46 @@ interface Msg {
   card?: ResolvedCard;
 }
 
+/** The bot reply currently being revealed character-by-character — kept
+ *  separate from `messages` so the growing text doesn't need its own array
+ *  entry mutated every tick. */
+interface TypingMsg {
+  full: string;
+  visible: string;
+}
+
 const ONLINE_STATUS = { en: 'online · replies in seconds', sq: 'online · përgjigjet për sekonda' };
-const DEMO_DONE = {
-  en: "That's the demo — yours would keep going.",
-  sq: 'Kjo është demo — e jotja do të vazhdonte.',
-};
 const FOOTER_NOTE = {
   en: 'Live demo with scripted answers — the real product connects to your bookings.',
   sq: 'Demo live me përgjigje të skriptuara — produkti real lidhet me rezervimet e tua.',
 };
 
+// Pacing for the self-playing conversation — tuned to read like a screen
+// recording, not a slideshow.
+const USER_BUBBLE_DELAY = 600; // pause before the "guest" question appears
+const THINK_DELAY = 900; // typing-dots duration before Nova starts typing
+const CHAR_DELAY = 22; // ms per character while a reply types itself out
+const NEXT_STEP_DELAY = 1600; // pause after a reply finishes, before the next question
+const LOOP_PAUSE = 3800; // pause after the last exchange before the demo resets and replays
+
 /**
- * Scripted, tappable chat mock: pick a business, tap a message, watch the
- * bot "type" and answer — including booking-confirmation cards. Timers are
- * tracked so scenario switches and unmounts never leave replies dangling.
+ * Self-playing chat mock: once it scrolls into view, a scripted guest
+ * conversation plays out on its own — questions appear, Nova "thinks", then
+ * types her reply out letter by letter, including booking-confirmation
+ * cards — then loops back to the start, like a looping screen recording.
+ * Timers are tracked so unmounts never leave a reply typing into the void.
  */
 export default function ChatDemo() {
-  const locale = useStore((s) => s.locale);
   const t = useT();
-  const [scenario, setScenario] = useState<Scenario>(SCENARIOS[0]);
-  const [messages, setMessages] = useState<Msg[]>([
-    { id: 0, from: 'bot', text: t(SCENARIOS[0].intro) },
-  ]);
-  const [usedChips, setUsedChips] = useState<string[]>([]);
-  const [typing, setTyping] = useState(false);
+  const [messages, setMessages] = useState<Msg[]>([{ id: 0, from: 'bot', text: t(SCENARIO.intro) }]);
+  const [thinking, setThinking] = useState(false);
+  const [typingMsg, setTypingMsg] = useState<TypingMsg | null>(null);
 
   const idRef = useRef(1);
   const timers = useRef<number[]>([]);
   const listRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const playedRef = useRef(false);
-  const autoSendRef = useRef<() => void>(() => {});
 
   const clearTimers = () => {
     timers.current.forEach((id) => window.clearTimeout(id));
@@ -163,73 +125,80 @@ export default function ChatDemo() {
 
   useEffect(() => clearTimers, []);
 
-  // If the user switches language before the demo has been touched, refresh
-  // the still-untouched intro bubble to match — once real messages exist,
-  // history stays in whatever language it was actually sent in.
-  useEffect(() => {
-    if (messages.length === 1 && usedChips.length === 0) {
-      setMessages([{ id: 0, from: 'bot', text: t(scenario.intro) }]);
+  const after = (ms: number, fn: () => void) => {
+    const id = window.setTimeout(fn, ms);
+    timers.current.push(id);
+  };
+
+  // Types one reply into `typingMsg` a character at a time, finalizes it
+  // into `messages` (with its confirmation card, if any) once complete, then
+  // hands off to `onDone`.
+  const typeReply = (chip: Chip, onDone: () => void) => {
+    const full = t(chip.reply);
+    setTypingMsg({ full, visible: '' });
+    let i = 0;
+    const tick = () => {
+      i += 1;
+      setTypingMsg({ full, visible: full.slice(0, i) });
+      if (i < full.length) {
+        after(CHAR_DELAY, tick);
+        return;
+      }
+      const card = chip.card
+        ? { title: t(chip.card.title), line: t(chip.card.line), status: t(chip.card.status) }
+        : undefined;
+      setMessages((m) => [...m, { id: idRef.current++, from: 'bot', text: full, card }]);
+      setTypingMsg(null);
+      onDone();
+    };
+    after(CHAR_DELAY, tick);
+  };
+
+  const playStep = (index: number) => {
+    if (index >= SCENARIO.chips.length) {
+      after(LOOP_PAUSE, () => {
+        idRef.current = 1;
+        setMessages([{ id: 0, from: 'bot', text: t(SCENARIO.intro) }]);
+        playStep(0);
+      });
+      return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [locale]);
-
-  const send = (chip: Chip) => {
-    if (typing || usedChips.includes(chip.id)) return;
-    playedRef.current = true;
-    setUsedChips((u) => [...u, chip.id]);
-    setMessages((m) => [...m, { id: idRef.current++, from: 'user', text: t(chip.label) }]);
-    setTyping(true);
-    const timeout = window.setTimeout(() => {
-      setTyping(false);
-      setMessages((m) => [
-        ...m,
-        {
-          id: idRef.current++,
-          from: 'bot',
-          text: t(chip.reply),
-          card: chip.card
-            ? { title: t(chip.card.title), line: t(chip.card.line), status: t(chip.card.status) }
-            : undefined,
-        },
-      ]);
-    }, 1200);
-    timers.current.push(timeout);
-  };
-  autoSendRef.current = () => send(scenario.chips[0]);
-
-  const switchScenario = (s: Scenario) => {
-    if (s.id === scenario.id) return;
-    clearTimers();
-    setScenario(s);
-    setTyping(false);
-    setUsedChips([]);
-    setMessages([{ id: idRef.current++, from: 'bot', text: t(s.intro) }]);
+    const chip = SCENARIO.chips[index];
+    after(USER_BUBBLE_DELAY, () => {
+      setMessages((m) => [...m, { id: idRef.current++, from: 'user', text: t(chip.label) }]);
+      after(THINK_DELAY, () => {
+        setThinking(true);
+        after(THINK_DELAY, () => {
+          setThinking(false);
+          typeReply(chip, () => after(NEXT_STEP_DELAY, () => playStep(index + 1)));
+        });
+      });
+    });
   };
 
-  // Auto-play the first exchange once the demo scrolls into view.
+  // Start the loop once the demo scrolls into view.
   useEffect(() => {
     const el = rootRef.current;
     if (!el) return;
     const io = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting || playedRef.current) return;
+        playedRef.current = true;
         io.disconnect();
-        const timeout = window.setTimeout(() => {
-          if (!playedRef.current) autoSendRef.current();
-        }, 700);
-        timers.current.push(timeout);
+        after(900, () => playStep(0));
       },
       { threshold: 0.5 }
     );
     io.observe(el);
     return () => io.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Keep the newest message in view.
+  // Keep the newest content in view as replies type themselves out.
   useEffect(() => {
     const el = listRef.current;
     if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
-  }, [messages, typing]);
+  }, [messages, thinking, typingMsg]);
 
   // Pop each new bubble in.
   useLayoutEffect(() => {
@@ -246,40 +215,20 @@ export default function ChatDemo() {
   }, [messages.length]);
 
   return (
-    <div ref={rootRef} className="mx-auto w-full max-w-xl md:max-w-[70vw]">
-      {/* business toggle */}
-      <div className="mb-5 flex justify-center gap-2">
-        {SCENARIOS.map((s) => (
-          <button
-            key={s.id}
-            type="button"
-            data-cursor
-            onClick={() => switchScenario(s)}
-            className={cn(
-              'rounded-full border px-4 py-2 text-xs tracking-normal transition-colors duration-300',
-              scenario.id === s.id
-                ? 'border-white bg-white text-black'
-                : 'border-white/20 text-white/70 hover:border-white/50 hover:text-white'
-            )}
-          >
-            {s.business} · {t(s.tag)}
-          </button>
-        ))}
-      </div>
-
+    <div ref={rootRef} className="mx-auto w-full max-w-xl md:max-w-3xl">
       {/* the chat screen sits inside a framed backdrop image */}
       <div
         className="rounded-2xl bg-cover bg-center p-3 shadow-2xl md:p-4"
         style={{ backgroundImage: "url('/images/chatbotBg.webp')" }}
       >
-        <div className="mx-auto max-w-xs rounded-2xl border border-black/10 bg-white p-4 text-black shadow-2xl md:max-w-sm">
+        <div className="w-full rounded-2xl border border-black/10 bg-white p-4 text-black shadow-2xl md:mx-auto md:max-w-xl">
           <div className="flex items-center gap-3 border-b border-black/10 pb-3">
             <span className="relative flex h-9 w-9 items-center justify-center rounded-full">
               <BotAvatar className="h-9 w-9" />
               <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-white bg-emerald-500" />
             </span>
             <div>
-              <p className="text-sm font-medium text-black">Nova — {scenario.business}</p>
+              <p className="text-sm font-medium text-black">Nova — {SCENARIO.business}</p>
               <p className="text-[10px] text-black/50">{t(ONLINE_STATUS)}</p>
             </div>
           </div>
@@ -319,7 +268,7 @@ export default function ChatDemo() {
               )
             )}
 
-            {typing && (
+            {thinking && (
               <div className="flex items-end gap-2 self-start">
                 <BotAvatar className="h-6 w-6 flex-shrink-0" />
                 <div className="flex gap-1.5 rounded-2xl rounded-bl-md bg-black/5 px-4 py-3.5">
@@ -333,34 +282,21 @@ export default function ChatDemo() {
                 </div>
               </div>
             )}
-          </div>
 
-          {/* tappable "user input" chips */}
-          <div className="flex flex-wrap gap-2 border-t border-black/10 pt-3">
-            {scenario.chips
-              .filter((c) => !usedChips.includes(c.id))
-              .map((c) => (
-                <button
-                  key={c.id}
-                  type="button"
-                  data-cursor
-                  onClick={() => send(c)}
-                  disabled={typing}
-                  className="rounded-full border border-black/15 px-3 py-1.5 text-xs text-black/70 transition-colors duration-300 hover:border-[#ff3d6e] hover:text-[#ff3d6e] disabled:opacity-40"
-                >
-                  {t(c.label)}
-                </button>
-              ))}
-            {scenario.chips.every((c) => usedChips.includes(c.id)) && !typing && (
-              <p className="px-1 py-1.5 text-xs text-black/40">
-                {t(DEMO_DONE)}
-              </p>
+            {typingMsg && (
+              <div className="flex max-w-[85%] items-end gap-2 self-start">
+                <BotAvatar className="h-6 w-6 flex-shrink-0" />
+                <div className="rounded-2xl rounded-bl-md bg-black/5 px-4 py-2.5 text-sm leading-relaxed text-black">
+                  {typingMsg.visible}
+                  <span className="ml-0.5 inline-block h-[1em] w-[2px] -mb-[2px] animate-pulse bg-black/50" />
+                </div>
+              </div>
             )}
           </div>
         </div>
       </div>
 
-      <p className="mt-4 text-center text-xs text-white/40">
+      <p className="mt-4 text-center text-xs text-black/40">
         {t(FOOTER_NOTE)}
       </p>
     </div>

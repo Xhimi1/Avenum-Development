@@ -131,28 +131,13 @@ function CountUpValue({ value }: { value: string }) {
 
 export default function AboutPage() {
   const t = useT();
-  const bgRef = useRef<HTMLDivElement>(null);
-
-  useLayoutEffect(() => {
-    const bg = bgRef.current;
-    if (!bg || prefersReducedMotion()) return;
-    const ctx = gsap.context(() => {
-      gsap.fromTo(bg, { opacity: 0 }, { opacity: 1, duration: 2.6, ease: 'power2.out', delay: 0.7 });
-    });
-    return () => ctx.revert();
-  }, []);
 
   return (
-    <div className="isolate min-h-screen overflow-x-clip bg-[#0F0824] text-[#f2f4ff]">
+    <div className="isolate min-h-screen overflow-x-clip bg-white text-[#061E29]">
       <Nav />
 
       <main>
-        {/* deep-teal hero + stats backdrop, same treatment as Pricing's hero */}
         <div className="relative">
-          <div ref={bgRef} aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-            <div className="absolute inset-0" style={{ background: '#0F0824' }} />
-          </div>
-
           {/* hero — content left, site mockup right on desktop, stacked on mobile */}
           <section className="relative px-6 pt-36 md:px-12 md:pt-40">
             <div className="mx-auto grid w-full max-w-6xl items-center gap-10 text-center md:grid-cols-2 md:gap-16 md:text-left">
@@ -166,7 +151,7 @@ export default function AboutPage() {
                   {t(HEADING)}
                 </SplitText>
                 <FadeIn delay={0.4}>
-                  <p className="subtext mx-auto mt-6 max-w-xl text-sm font-normal md:mx-0 md:text-base">
+                  <p className="mx-auto mt-6 max-w-xl text-sm font-normal text-black/70 md:mx-0 md:text-base">
                     {t(SUBHEADING)}
                   </p>
                 </FadeIn>
@@ -214,14 +199,14 @@ export default function AboutPage() {
           {/* stats — count-up counters, desktop only (moved onto the image on mobile) */}
           <section className="relative hidden px-6 py-16 md:block md:px-12 md:py-24">
             <div className="mx-auto w-full max-w-4xl">
-              <div className="glass-soft rounded-3xl p-6 md:p-10">
+              <div className="rounded-3xl border-2 border-black bg-[#F3F4F4] p-6 shadow-[6px_6px_0_0_#000] md:p-10">
                 <div className="grid grid-cols-3 gap-8">
                   {STATS.map(([value, label], i) => (
                     <FadeIn key={value} delay={i * 0.08}>
-                      <p className="font-display text-4xl font-semibold text-white md:text-5xl">
+                      <p className="font-display text-4xl font-semibold text-black md:text-5xl">
                         <CountUpValue value={value} />
                       </p>
-                      <p className="subtext mt-2 text-xs tracking-normal">{t(label)}</p>
+                      <p className="mt-2 text-xs tracking-normal text-black/60">{t(label)}</p>
                     </FadeIn>
                   ))}
                 </div>
@@ -236,7 +221,7 @@ export default function AboutPage() {
           <div className="mx-auto grid w-full max-w-6xl items-center gap-10 md:grid-cols-2 md:gap-16">
             <ScrollRevealText
               as="p"
-              className="font-display text-3xl font-medium leading-tight text-white md:text-4xl md:leading-tight"
+              className="font-display text-3xl font-medium leading-tight text-black md:text-4xl md:leading-tight"
             >
               {t(MISSION_TEXT)}
             </ScrollRevealText>
@@ -265,12 +250,12 @@ export default function AboutPage() {
             <div className="grid gap-5 md:grid-cols-2 md:gap-6">
               {VALUES.map((v, i) => (
                 <FadeIn key={i} delay={i * 0.08}>
-                  <div className="h-full p-6">
-                    <span className="subtext font-display text-lg font-semibold tracking-normal">
+                  <div className="h-full rounded-3xl border-2 border-black bg-[#F3F4F4] p-6">
+                    <span className="font-display text-lg font-semibold tracking-normal text-[#6367FF]">
                       ({String(i + 1).padStart(2, '0')})
                     </span>
-                    <h3 className="font-display mt-2 text-lg font-semibold text-white">{t(v.title)}</h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-white/80">{t(v.body)}</p>
+                    <h3 className="font-display mt-2 text-lg font-semibold text-black">{t(v.title)}</h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-black/70">{t(v.body)}</p>
                   </div>
                 </FadeIn>
               ))}
@@ -278,37 +263,50 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* CTA — same purple radial wash as Pricing's closing banner */}
-        <section
-          className="relative px-6 py-24 text-center md:px-12 md:py-36"
-          style={{
-            backgroundImage:
-              'radial-gradient(140% 90% at 50% 100%, color-mix(in srgb, #6367FF 78%, transparent) 0%, transparent 75%)',
-          }}
-        >
-          <SplitText
-            as="h2"
-            className="font-display text-[clamp(2.2rem,6.5vw,5rem)] font-semibold leading-[0.98]"
-          >
-            {t(CTA_HEADING)}
-          </SplitText>
-          <FadeIn delay={0.15}>
-            <p className="subtext mx-auto mt-5 max-w-md text-sm md:text-base">{t(CTA_BODY)}</p>
-          </FadeIn>
-          <FadeIn delay={0.3} className="mt-10">
-            <a
-              href={whatsappHref(WA_MESSAGE)}
-              data-cursor
-              className="inline-flex items-center gap-0.5 rounded-full bg-[#6367FF] px-6 py-2.5 font-display text-base font-medium tracking-normal text-white transition-colors duration-300 hover:bg-[#4f52e0]"
-            >
-              {t(CTA_LABEL)}
-              <ArrowRight className="h-4 w-4" />
-            </a>
-          </FadeIn>
+        {/* CTA — identical to the homepage's Contact banner */}
+        <section className="relative min-h-[65vh] md:min-h-[80vh]">
+          <div className="flex min-h-[65vh] p-3 md:min-h-[80vh] md:p-6">
+            <div className="relative mx-auto flex w-full max-w-[90rem] flex-1 flex-col items-center justify-center overflow-hidden rounded-[20px] bg-[#6367FF] px-6 py-16 text-center md:max-w-6xl md:px-12">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  backgroundImage: 'radial-gradient(rgba(255,255,255,0.35) 1px, transparent 1.5px)',
+                  backgroundSize: '16px 16px',
+                  maskImage: 'linear-gradient(to top, black, rgba(0,0,0,0.15))',
+                  WebkitMaskImage: 'linear-gradient(to top, black, rgba(0,0,0,0.15))',
+                }}
+              />
+
+              <div className="relative">
+                <SplitText
+                  as="h2"
+                  className="font-display text-[clamp(2.4rem,7vw,5.5rem)] font-semibold leading-[0.95] text-white md:text-[clamp(2.4rem,4vw,3.8rem)]"
+                >
+                  {t(CTA_HEADING)}
+                </SplitText>
+
+                <FadeIn delay={0.15}>
+                  <p className="subtext mx-auto mt-5 max-w-xl text-base leading-relaxed">{t(CTA_BODY)}</p>
+                </FadeIn>
+
+                <FadeIn delay={0.3} className="mt-12 flex justify-center">
+                  <a
+                    href={whatsappHref(WA_MESSAGE)}
+                    data-cursor
+                    className="pointer-events-auto inline-flex items-center gap-0.5 rounded-full bg-white px-6 py-2.5 font-display text-base font-medium tracking-normal text-[#6367FF] transition-colors duration-300 hover:bg-gray-100"
+                  >
+                    {t(CTA_LABEL)}
+                    <ArrowRight className="h-4 w-4" />
+                  </a>
+                </FadeIn>
+              </div>
+            </div>
+          </div>
         </section>
       </main>
 
-      <Footer theme="dark" bgClassName="bg-[#0F0824]" />
+      <Footer />
 
       <div aria-hidden className="grain pointer-events-none fixed inset-0 z-[60] opacity-[0.07] mix-blend-overlay" />
     </div>

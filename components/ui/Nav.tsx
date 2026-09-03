@@ -12,10 +12,16 @@ import { useT } from '@/lib/i18n';
 import { cn, prefersReducedMotion } from '@/lib/utils';
 import LangToggle from '@/components/ui/LangToggle';
 import { BrandMark } from '@/components/ui/Logo';
+import ArrowRight from '@/components/ui/ArrowRight';
 
 const PRICING_LABEL = { en: 'Pricing', sq: 'Paketat' };
 const CONTACT_LABEL = { en: 'Contact', sq: 'Kontakto' };
 const CALL_US_LABEL = { en: 'Call Us', sq: 'Call Us' };
+const ANNOUNCE_LABEL = {
+  en: 'Enjoy more than 90% of our prices',
+  sq: 'Shijo më shumë se 90% të çmimeve tona',
+};
+const ANNOUNCE_STORAGE_KEY = 'avenum-announce-dismissed';
 const PRICING_WASH = { accent: '#8b5cf6', bg: '#1c0f36' };
 const aboutSection = SECTIONS.find((s) => s.id === 'about')!;
 
@@ -30,6 +36,18 @@ export default function Nav() {
   const linksRef = useRef<HTMLElement>(null);
   const burgerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+
+  // Announcement bar above the nav. Its dismissal is remembered in
+  // localStorage, and it stays unmounted until that's been read so the
+  // server-rendered markup can't disagree with the client's first paint.
+  const [announceOpen, setAnnounceOpen] = useState(false);
+  useEffect(() => {
+    if (window.localStorage.getItem(ANNOUNCE_STORAGE_KEY) !== '1') setAnnounceOpen(true);
+  }, []);
+  const dismissAnnounce = () => {
+    window.localStorage.setItem(ANNOUNCE_STORAGE_KEY, '1');
+    setAnnounceOpen(false);
+  };
 
   // Contact button expands to reveal a "Call Us" label, growing rightward
   // from the icon, once the visitor has scrolled past the hero's own CTAs —
@@ -143,6 +161,11 @@ export default function Nav() {
     goToSection(i);
   };
 
+  const goToPricing = () => {
+    setOpen(false);
+    pageNavigate('/pricing', PRICING_WASH);
+  };
+
   // Bar is always a plain white navbar now, so link color no longer needs
   // to branch on scroll position or the page's own background.
   const desktopLinkClass =
@@ -158,6 +181,45 @@ export default function Nav() {
           !open && 'shadow-md shadow-black/[0.04]'
         )}
       >
+        {/* Announcement strip. Lives inside the header rather than above it
+            so the fixed bar stays one block — dismissing it just makes the
+            header shorter, with no offset to keep in sync. The dismiss X is
+            a sibling of the link, not nested inside it. */}
+        {announceOpen && !open && (
+          <div className="relative bg-[#76C457] text-white">
+            <button
+              type="button"
+              data-cursor
+              onClick={goToPricing}
+              className="flex w-full items-center justify-center gap-1 px-12 py-2 text-center font-display text-xs font-medium tracking-normal transition-opacity duration-300 hover:opacity-90 md:text-sm"
+            >
+              {t(ANNOUNCE_LABEL)}
+              <ArrowRight className="h-3.5 w-3.5" />
+            </button>
+
+            <button
+              type="button"
+              data-cursor
+              onClick={dismissAnnounce}
+              aria-label="Dismiss announcement"
+              className="absolute right-3 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full transition-colors duration-300 hover:bg-white/15 md:right-6"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2.5}
+                strokeLinecap="round"
+                aria-hidden
+                className="h-3.5 w-3.5"
+              >
+                <line x1="6" y1="6" x2="18" y2="18" />
+                <line x1="18" y1="6" x2="6" y2="18" />
+              </svg>
+            </button>
+          </div>
+        )}
+
         <div className="relative mx-auto flex w-full max-w-[90rem] items-center justify-between gap-6 px-6 py-4 md:grid md:grid-cols-[auto_1fr_auto] md:px-12 md:py-2">
           <button
             type="button"

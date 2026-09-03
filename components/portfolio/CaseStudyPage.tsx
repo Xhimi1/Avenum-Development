@@ -3,6 +3,7 @@
 import Nav from '@/components/ui/Nav';
 import Footer from '@/components/ui/Footer';
 import FadeIn from '@/components/ui/FadeIn';
+import SplitText from '@/components/ui/SplitText';
 import ArrowRight from '@/components/ui/ArrowRight';
 import OtherWork from './OtherWork';
 import { useT } from '@/lib/i18n';
@@ -14,6 +15,10 @@ const OVERVIEW_HEADING: Bi = { en: 'Project overview', sq: 'Përmbledhje e proje
 const APPROACH_HEADING: Bi = { en: 'Our approach', sq: 'Qasja jonë' };
 const IMAGE_PLACEHOLDER: Bi = { en: 'Image', sq: 'Imazh' };
 const CTA_HEADING: Bi = { en: 'We can build something like this for you.', sq: 'Mund të ndërtojmë diçka të tillë edhe për ty.' };
+const CTA_BODY: Bi = {
+  en: "Tell us about your business — we'll get back to you fast.",
+  sq: 'Na trego për biznesin tënd — do të të përgjigjemi shpejt.',
+};
 const CTA_LABEL: Bi = { en: 'Contact us', sq: 'Na kontaktoni' };
 
 /** "https://kroni-restaurant.com/" -> "kroni-restaurant.com" for display in the live-site button */
@@ -187,27 +192,44 @@ export default function CaseStudyPage({ project }: { project: Project }) {
 
         <OtherWork currentSlug={project.slug} />
 
-        {/* closing CTA — same banner as the service pages' bottom CTA, in this page's purple */}
-        <section
-          className="relative -mx-4 py-28 md:-mx-8 md:py-40"
-          style={{
-            backgroundImage:
-              'radial-gradient(140% 90% at 50% 100%, color-mix(in srgb, #6367FF 78%, transparent) 0%, transparent 75%)',
-          }}
-        >
-          <div className="mx-auto w-full max-w-[90rem] px-6 text-center md:px-12">
-            <h2 className="mx-auto max-w-3xl font-display text-[clamp(2.2rem,6vw,4.6rem)] font-semibold leading-[1] tracking-normal">
-              {t(CTA_HEADING)}
-            </h2>
-            <div className="mt-10">
-              <a
-                href={waLink}
-                data-cursor
-                className="inline-flex items-center gap-0.5 rounded-full bg-[#6367FF] px-6 py-2.5 font-display text-base font-medium tracking-normal text-white transition-colors duration-300 hover:bg-[#4f52e0]"
-              >
-                {t(CTA_LABEL)}
-                <ArrowRight className="h-4 w-4" />
-              </a>
+        {/* closing CTA — identical to the homepage's Contact banner */}
+        <section className="relative -mx-4 min-h-[65vh] md:-mx-8 md:min-h-[80vh]">
+          <div className="flex min-h-[65vh] p-3 md:min-h-[80vh] md:p-6">
+            <div className="relative mx-auto flex w-full max-w-[90rem] flex-1 flex-col items-center justify-center overflow-hidden rounded-[20px] bg-[#6367FF] px-6 py-16 text-center md:max-w-6xl md:px-12">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  backgroundImage: 'radial-gradient(rgba(255,255,255,0.35) 1px, transparent 1.5px)',
+                  backgroundSize: '16px 16px',
+                  maskImage: 'linear-gradient(to top, black, rgba(0,0,0,0.15))',
+                  WebkitMaskImage: 'linear-gradient(to top, black, rgba(0,0,0,0.15))',
+                }}
+              />
+
+              <div className="relative">
+                <SplitText
+                  as="h2"
+                  className="font-display text-[clamp(2.4rem,7vw,5.5rem)] font-semibold leading-[0.95] text-white md:text-[clamp(2.4rem,4vw,3.8rem)]"
+                >
+                  {t(CTA_HEADING)}
+                </SplitText>
+
+                <FadeIn delay={0.15}>
+                  <p className="subtext mx-auto mt-5 max-w-xl text-base leading-relaxed">{t(CTA_BODY)}</p>
+                </FadeIn>
+
+                <FadeIn delay={0.3} className="mt-12 flex justify-center">
+                  <a
+                    href={waLink}
+                    data-cursor
+                    className="pointer-events-auto inline-flex items-center gap-0.5 rounded-full bg-white px-6 py-2.5 font-display text-base font-medium tracking-normal text-[#6367FF] transition-colors duration-300 hover:bg-gray-100"
+                  >
+                    {t(CTA_LABEL)}
+                    <ArrowRight className="h-4 w-4" />
+                  </a>
+                </FadeIn>
+              </div>
             </div>
           </div>
         </section>

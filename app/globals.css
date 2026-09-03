@@ -203,6 +203,26 @@ html.lenis body {
 }
 .svc-sheen { animation: svc-sheen 5.5s ease-in-out infinite; }
 
+/* A band of highlight travels left-to-right across text, like a glint of
+   light passing over it — the text dims either side of the band and
+   brightens as the band crosses it, then holds until the next pass. Needs
+   `background-clip: text` + transparent fill, so it only works on solid,
+   single-line text content (no child elements). */
+@keyframes text-shine-sweep {
+  0%, 42% { background-position: 160% 0; }
+  100% { background-position: -160% 0; }
+}
+.text-shine {
+  background-image: linear-gradient(100deg, rgba(255, 255, 255, 0.55) 35%, #fff 50%, rgba(255, 255, 255, 0.55) 65%);
+  background-size: 260% 100%;
+  background-position: 160% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: text-shine-sweep 5s ease-in-out infinite;
+}
+
 /* Blinking cursor / live dot. */
 @keyframes svc-blink {
   0%, 100% { opacity: 1; }
