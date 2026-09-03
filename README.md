@@ -34,8 +34,10 @@ npm run build  # production build
   index-based logic like the active-section accent and nav "jump to
   section" must use this one, not `SECTIONS`, or indices drift out of sync
   with the real `[data-scene-section]` elements).
-- `ColorWash` / `PageWash` — full-screen two-layer color sweep on nav jumps
-  and route changes, using each section's/page's accent + bg colors.
+- `PageWash` / `IntroReveal` — route changes and the home intro share one
+  shape (`lib/reveal.ts` + `.reveal-window`): a transparent window whose
+  box-shadow paints a black field, closing to a zero-width slit at the
+  center and opening back out. Nav jumps within the homepage just scroll.
 
 ### Homepage sections
 
@@ -47,7 +49,6 @@ homepage scroll flow.
 
 - `SplitText` — masked char/word staggered reveals on scroll
 - `FadeIn` — simple scroll-triggered fade/rise reveals
-- `ColorWash` — full-screen two-layer color sweep on nav jumps
 - Pinned sections use CSS `position: sticky` (Lenis-compatible), with
   GSAP-scrubbed timelines inside (e.g. the About manifesto reveal)
 
@@ -67,8 +68,8 @@ components/
   sections/     Hero, WhoWeAre, Work, Contact (homepage sections)
   about/, pricing/, chatbots/, portfolio/, pay/, legal/
                 standalone page components
-  ui/           SplitText, FadeIn, MagneticButton, Cursor, Nav, Loader,
-                ColorWash, Footer, CookieConsent, LaunchPopup
+  ui/           SplitText, FadeIn, MagneticButton, Cursor, Nav, IntroReveal,
+                PageWash, Footer, CookieConsent, LaunchPopup
 lib/            palette (section colors), scroll (anchors + scrollState),
                 store, projects, i18n, gsap, utils
 ```

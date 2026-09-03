@@ -5,6 +5,7 @@ import Lenis from 'lenis';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { scrollState } from '@/lib/scroll';
 import { useStore } from '@/lib/store';
+import { HOME_SECTIONS } from '@/lib/palette';
 import { clamp, computeQuality, prefersReducedMotion } from '@/lib/utils';
 
 /**
@@ -83,7 +84,7 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
       gsap.ticker.add(raf);
       gsap.ticker.lagSmoothing(0);
 
-      // hold scroll until the intro loader finishes
+      // hold scroll until the intro reveal has finished opening
       if (!useStore.getState().ready) lenis.stop();
       const unsub = useStore.subscribe((state, prev) => {
         if (state.ready && !prev.ready) lenis.start();
@@ -97,6 +98,20 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
         scrollState.velocity = 0;
       });
     }
+
+    // Section jumps (nav links, the logo, the hero's "work" button) just
+    // scroll — they used to be covered by a full-screen colour sweep, which
+    // the route transition has replaced.
+    useStore.setState({
+      navigate: (i: number) => {
+        const target = document.getElementById(HOME_SECTIONS[i].id);
+        if (!target) return;
+        useStore.setState({ section: i });
+        if (scrollState.lenis) scrollState.lenis.scrollTo(target);
+        else target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
+      },
+    });
+    cleanups.push(() => useStore.setState({ navigate: () => {} }));
 
     const onFonts = () => {
       measure();

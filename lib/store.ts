@@ -3,7 +3,7 @@ import { create } from 'zustand';
 export type Locale = 'en' | 'sq';
 
 interface AppState {
-  /** intro loader finished — scrolling unlocks */
+  /** intro reveal finished — scrolling unlocks */
   ready: boolean;
   quality: 'high' | 'low';
   reducedMotion: boolean;
@@ -11,9 +11,11 @@ interface AppState {
   section: number;
   /** site language — persisted to localStorage by <LangToggle> */
   locale: Locale;
-  /** color-wash navigation, installed by <ColorWash> */
+  /** homepage section jump, installed by <SmoothScroll> */
   navigate: (sectionIndex: number) => void;
-  /** color-wash route navigation, installed by <PageWash> */
+  /** route navigation, installed by <PageWash>. Callers may still pass an
+   *  accent/bg color pair (a holdover from the old color-wash transition);
+   *  it's accepted but ignored. */
   pageNavigate: (href: string, colors?: { accent: string; bg: string }) => void;
   setLocale: (locale: Locale) => void;
 }

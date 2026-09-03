@@ -36,6 +36,28 @@ body {
   font-weight: 500;
 }
 
+/* The home intro reveal (<IntroReveal>) and the route transition
+   (<PageWash>) share one shape: a transparent window whose enormous
+   box-shadow paints the dark field around it. Written as plain CSS rather
+   than Tailwind utilities so the two components can share it from lib/
+   without depending on the class scanner's content globs. */
+.reveal-window {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 9999px #000;
+}
+
+/* Closed state — a zero-width slit. The intro carries this on first paint
+   so the server-rendered page is already covered, with no flash before
+   hydration takes over. */
+.reveal-window--closed {
+  width: 0;
+  height: 50vh;
+  border-radius: 14px;
+}
+
 /* Lenis smooth-scroll plumbing */
 html.lenis,
 html.lenis body {

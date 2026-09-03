@@ -2,9 +2,8 @@
 
 import { useEffect } from 'react';
 import SmoothScroll from '@/components/providers/SmoothScroll';
-import Loader from '@/components/ui/Loader';
+import IntroReveal from '@/components/ui/IntroReveal';
 import Nav from '@/components/ui/Nav';
-import ColorWash from '@/components/ui/ColorWash';
 import LaunchPopup from '@/components/ui/LaunchPopup';
 import Hero from '@/components/sections/Hero';
 import WhoWeAre from '@/components/sections/WhoWeAre';
@@ -23,8 +22,8 @@ export default function Home() {
   }, [section]);
 
   // Landing here with a #section hash (e.g. a nav link clicked from a
-  // standalone page) jumps straight to that section once the intro loader
-  // has released scrolling, instead of always opening on the hero.
+  // standalone page) jumps straight to that section once smooth-scroll is
+  // initialized, instead of always opening on the hero.
   useEffect(() => {
     const hash = window.location.hash.slice(1);
     const index = HOME_SECTIONS.findIndex((s) => s.id === hash);
@@ -55,8 +54,7 @@ export default function Home() {
 
   return (
     <SmoothScroll>
-      <Loader />
-      <ColorWash />
+      <IntroReveal />
       <Nav />
       <main className="pointer-events-none relative z-10">
         <Hero />
