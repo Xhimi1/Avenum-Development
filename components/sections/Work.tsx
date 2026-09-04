@@ -16,8 +16,8 @@ export default function Work() {
   const pageNavigate = useStore((s) => s.pageNavigate);
 
   return (
-    <section id="work" data-scene-section className="relative bg-white pb-24 text-black md:pb-32">
-      <div className="rounded-b-[20px] bg-[#6367FF] px-2 pb-24 pt-24 md:px-6 md:pb-32 md:pt-32">
+    <section id="work" data-scene-section className="relative bg-black pb-24 text-white md:pb-32">
+      <div className="rounded-b-[20px] bg-black px-2 pb-24 pt-24 md:px-6 md:pb-32 md:pt-32">
         <WorkGallery />
 
         <FadeIn className="mx-auto mt-14 flex w-full max-w-6xl justify-center px-4 md:mt-20 md:px-12">
@@ -29,11 +29,11 @@ export default function Work() {
               pageNavigate('/portfolio', PORTFOLIO_WASH);
             }}
             aria-label={t(VIEW_ALL_LABEL)}
-            className="pointer-events-auto rounded-full bg-white px-6 py-2.5 font-display text-base font-medium tracking-normal text-black transition-colors duration-300 hover:bg-gray-100"
+            className="pointer-events-auto btn-primary"
           >
             <span className="inline-flex items-center gap-0.5">
               {t(VIEW_ALL_LABEL)}
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-3.5 w-3.5" />
             </span>
           </a>
         </FadeIn>

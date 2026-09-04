@@ -28,14 +28,14 @@ export default function KroniPaymentPage() {
   };
 
   return (
-    <div className="isolate min-h-screen overflow-x-clip bg-[#0F0824] text-[#f2f4ff]">
+    <div className="isolate min-h-screen overflow-x-clip bg-black text-white">
       <main className="flex min-h-screen flex-col items-center justify-center px-6 py-16 md:px-12">
         <Logo className="mb-10 text-2xl text-white" />
 
         <div className="w-full max-w-lg">
           {paid ? (
             <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-center md:p-10">
-              <h1 className="font-display text-5xl font-semibold leading-tight text-white">
+              <h1 className="font-display text-5xl font-extralight leading-tight text-white">
                 Faleminderit për mbështetjen tuaj!
               </h1>
               <p className="subtext mt-4 text-sm leading-relaxed">
@@ -81,7 +81,7 @@ export default function KroniPaymentPage() {
           ) : (
             <>
               <div className="text-center">
-                <h1 className="font-display text-5xl font-semibold leading-tight text-white">Welcome Mr. {name}</h1>
+                <h1 className="font-display text-5xl font-extralight leading-tight text-white">Welcome Mr. {name}</h1>
                 <p className="subtext mt-4 text-base opacity-70 md:text-lg">
                   Çmimet më poshtë janë të siguruara nga PayPal.
                 </p>

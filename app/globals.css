@@ -2,19 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ---- design system -------------------------------------------------
+   Pure black ground, one ink colour at three strengths, one hairline, one
+   accent. Everything on the site draws from these six values — if a colour
+   isn't here, it doesn't belong in the design. */
 :root {
-  --accent: #4d6bff;
-  --subtext: #ffffff;
+  --bg: #000000;
+  --fg: #ffffff;
+  /* body copy — the default reading colour on black */
+  --muted: rgba(255, 255, 255, 0.62);
+  /* captions, meta, eyebrow labels */
+  --faint: rgba(255, 255, 255, 0.38);
+  /* rules and dividers */
+  --line: rgba(255, 255, 255, 0.14);
+  --accent: #6367ff;
+  --subtext: var(--muted);
 }
 
-/* Hero titles get more deliberate, evenly-distributed line breaks instead
-   of a lonely short last line. */
-h1 {
-  text-wrap: balance;
-}
-
+/* Display type is set thin and large, so it needs tighter tracking than
+   Plus Jakarta Sans' default to hold together as a shape. Weight is left to
+   the utilities: headings carry `font-extralight`, small display-font UI
+   keeps `font-medium` so it stays legible. */
 .font-display {
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
 }
 
 html {
@@ -26,14 +36,12 @@ html::-webkit-scrollbar {
 
 html,
 body {
-  background: #050a30;
+  background: var(--bg);
   overflow-x: clip;
 }
 
-/* Default body-text weight — any element with its own font-weight utility
-   (font-semibold, font-normal, etc.) still overrides this via specificity. */
 body {
-  font-weight: 500;
+  font-weight: 400;
 }
 
 /* The home intro reveal (<IntroReveal>) and the route transition
@@ -46,7 +54,7 @@ body {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 0 9999px #000;
+  box-shadow: 0 0 0 9999px #fff;
 }
 
 /* Closed state — a zero-width slit. The intro carries this on first paint
@@ -72,8 +80,8 @@ html.lenis body {
 
 
 ::selection {
-  background: var(--accent);
-  color: #050a30;
+  background: var(--fg);
+  color: var(--bg);
 }
 
 :focus-visible {
@@ -102,10 +110,55 @@ html.lenis body {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
   }
 
-  /* Full-opacity secondary/body copy. One variable to retune every subtext
-     color on the site instead of hunting down scattered text-white/NN. */
+  /* Secondary/body copy — same size, line-height and color as the homepage
+     hero's own subheading, so every subheading/subtext on the site reads
+     as one voice. Instances that deliberately need a different size (tiny
+     captions, meta labels) still override it locally. */
   .subtext {
-    color: var(--subtext);
+    @apply text-sm leading-relaxed text-white;
+  }
+
+  /* The only label style: tiny, uppercase, wide-tracked, faint. Section
+     markers, meta rows, image captions and list indices all use this — it's
+     what keeps the small text on the site reading as one voice. */
+  .eyebrow {
+    font-size: 0.6875rem;
+    line-height: 1;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+
+  /* Hairline divider, the one structural rule in the design. */
+  .rule {
+    border-top: 1px solid var(--line);
+  }
+
+  /* The site's heading scale — one weight (font-medium) and one color
+     (white) at every level, taken from the homepage hero. Page <h1> and
+     section <h2> share the exact hero size (.heading-lg mirrors
+     .heading-hero); only <h3>-level component/card titles step down so
+     document hierarchy still reads correctly. */
+  .heading-hero {
+    @apply font-display text-[clamp(2.1rem,8.5vw,3.4rem)] font-medium leading-[1.05] text-white md:text-[clamp(2.6rem,4.4vw,4rem)];
+  }
+  .heading-lg {
+    @apply font-display text-[clamp(2.1rem,8.5vw,3.4rem)] font-medium leading-[1.05] text-white md:text-[clamp(2.6rem,4.4vw,4rem)];
+  }
+  .heading-sm {
+    @apply font-display text-[clamp(1.15rem,3.2vw,1.375rem)] font-medium leading-[1.15] text-white md:text-[clamp(1.25rem,1.6vw,1.5rem)];
+  }
+  .subheading-hero {
+    @apply text-sm leading-relaxed text-white;
+  }
+
+  /* The site's two CTA pill buttons — solid white (primary action) and
+     translucent white (secondary, next to a primary). */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-0.5 rounded-full bg-white px-4 py-2 font-display text-sm font-medium tracking-normal text-black transition-colors duration-300 hover:bg-white/85;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-0.5 rounded-full bg-white/10 px-4 py-2 font-display text-sm font-medium tracking-normal text-white transition-colors duration-300 hover:bg-white/20;
   }
 }
 

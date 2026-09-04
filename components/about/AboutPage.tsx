@@ -175,80 +175,67 @@ export default function AboutPage() {
   const t = useT();
 
   return (
-    <div className="isolate min-h-screen overflow-x-clip bg-white text-[#061E29]">
+    <div className="isolate min-h-screen overflow-x-clip bg-black text-white">
       <Nav />
 
       <main>
         <div className="relative">
-          {/* hero — content left, site mockup right on desktop, stacked on mobile */}
-          <section className="relative px-6 pt-36 md:px-12 md:pt-40">
-            <div className="mx-auto grid w-full max-w-6xl items-center gap-10 text-center md:grid-cols-2 md:gap-16 md:text-left">
-              <div>
-                <SplitText
-                  as="h1"
-                  delay={0.15}
-                  animate
-                  className="font-display text-[clamp(2.4rem,6.5vw,4.8rem)] font-semibold leading-[0.98]"
-                >
-                  {t(HEADING)}
-                </SplitText>
-                <FadeIn delay={0.4}>
-                  <p className="mx-auto mt-6 max-w-xl text-sm font-normal text-black/70 md:mx-0 md:text-base">
-                    {t(SUBHEADING)}
-                  </p>
-                </FadeIn>
-                <FadeIn delay={0.55} className="mt-8 flex justify-center md:justify-start">
-                  <a
-                    href="/portfolio"
-                    data-cursor
-                    className="inline-flex items-center gap-0.5 rounded-full bg-[#6367FF] px-6 py-2.5 font-display text-base font-medium tracking-normal text-white transition-colors duration-300 hover:bg-[#4f52e0]"
-                  >
-                    {t(HERO_CTA)}
-                    <ArrowRight className="h-4 w-4" />
-                  </a>
-                </FadeIn>
-              </div>
+          {/* hero — same layout as the homepage Hero: left-aligned heading,
+              subheading, CTA, then the page's own image full-bleed below
+              with the same diagonal-clip white wash panel behind it. */}
+          <section className="relative flex min-h-[70svh] flex-col items-start overflow-hidden bg-black px-6 pt-40 text-left md:min-h-[100svh] md:pt-32">
+            <SplitText
+              as="h1"
+              delay={0.15}
+              animate
+              className="heading-hero relative z-10 max-w-[14ch] text-balance md:max-w-[22ch]"
+            >
+              {t(HEADING)}
+            </SplitText>
 
-              <div className="relative max-md:-mx-6 max-md:-mt-16">
-                <ClipRevealImage
+            <p className="subheading-hero relative z-10 mt-6 max-w-xs text-left md:mt-7">
+              {t(SUBHEADING)}
+            </p>
+
+            <div className="relative z-10 mt-7 mb-8 flex items-center justify-start gap-3 md:mt-8 md:mb-16">
+              <a
+                href="/portfolio"
+                data-cursor
+                className="pointer-events-auto btn-primary"
+              >
+                {t(HERO_CTA)}
+                <ArrowRight className="h-3.5 w-3.5" />
+              </a>
+            </div>
+
+            <div className="relative z-10 mx-[calc(50%-50vw)] w-screen px-6 pt-8 md:mt-auto md:pt-12">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 bottom-0 top-20 bg-white/[0.04] md:top-32"
+                style={{ clipPath: 'polygon(0 5rem, 100% 0, 100% 100%, 0 100%)' }}
+              />
+              <div className="relative mx-auto flex max-w-3xl justify-center">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src="/images/AVENUM-MOCKUP%20(1).webp"
                   alt="Avenum website mockup"
-                  className="max-md:aspect-[4/5] max-md:[clip-path:polygon(0_28%,100%_0,100%_100%,0_100%)] md:rounded-none md:[clip-path:polygon(0_0,100%_8%,100%_100%,0_100%)]"
-                  imgClassName="max-md:h-full md:h-auto"
+                  className="w-full rounded-t-2xl object-cover"
                 />
-
-                {/* stats, moved onto the image for mobile — sit outside the clipped/scaled
-                    image box so the curved top/bottom cuts and zoom never touch them */}
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-1/3 md:hidden"
-                  style={{ background: 'linear-gradient(to top, rgba(15,8,36,0.85), transparent)' }}
-                />
-                <div className="absolute inset-x-0 bottom-0 z-10 grid grid-cols-3 gap-3 p-5 md:hidden">
-                  {STATS.map(([value, label]) => (
-                    <div key={value}>
-                      <p className="font-display text-4xl font-semibold text-white">
-                        <CountUpValue value={value} />
-                      </p>
-                      <p className="subtext mt-1 text-[10px] leading-tight tracking-normal">{t(label)}</p>
-                    </div>
-                  ))}
-                </div>
               </div>
             </div>
           </section>
 
-          {/* stats — count-up counters, desktop only (moved onto the image on mobile) */}
-          <section className="relative hidden px-6 py-16 md:block md:px-12 md:py-24">
+          {/* stats — count-up counters */}
+          <section className="relative px-6 py-16 md:px-12 md:py-24">
             <div className="mx-auto w-full max-w-4xl">
-              <div className="rounded-3xl border-2 border-black bg-[#F3F4F4] p-6 shadow-[6px_6px_0_0_#000] md:p-10">
+              <div className="rounded-3xl border-2 border-white/20 bg-white/[0.04] p-6 shadow-[6px_6px_0_0_rgba(255,255,255,0.14)] md:p-10">
                 <div className="grid grid-cols-3 gap-8">
                   {STATS.map(([value, label], i) => (
                     <FadeIn key={value} delay={i * 0.08}>
-                      <p className="font-display text-4xl font-semibold text-black md:text-5xl">
+                      <p className="font-display text-4xl font-extralight text-white md:text-5xl">
                         <CountUpValue value={value} />
                       </p>
-                      <p className="mt-2 text-xs tracking-normal text-black/60">{t(label)}</p>
+                      <p className="mt-2 text-xs tracking-normal text-white/60">{t(label)}</p>
                     </FadeIn>
                   ))}
                 </div>
@@ -263,7 +250,7 @@ export default function AboutPage() {
           <div className="mx-auto grid w-full max-w-6xl items-center gap-10 md:grid-cols-2 md:gap-16">
             <ScrollRevealText
               as="p"
-              className="font-display text-3xl font-medium leading-tight text-black md:text-4xl md:leading-tight"
+              className="font-display text-3xl font-medium leading-tight text-white md:text-4xl md:leading-tight"
             >
               {t(MISSION_TEXT)}
             </ScrollRevealText>
@@ -283,7 +270,7 @@ export default function AboutPage() {
             <div className="mb-10 max-w-2xl md:mb-14">
               <SplitText
                 as="h2"
-                className="font-display text-[clamp(1.9rem,4.5vw,3.2rem)] font-semibold leading-[1.05]"
+                className="heading-lg"
               >
                 {t(VALUES_HEADING)}
               </SplitText>
@@ -292,12 +279,12 @@ export default function AboutPage() {
             <div className="grid gap-5 md:grid-cols-2 md:gap-6">
               {VALUES.map((v, i) => (
                 <FadeIn key={i} delay={i * 0.08}>
-                  <div className="h-full rounded-3xl border-2 border-black bg-[#F3F4F4] p-6">
-                    <span className="font-display text-lg font-semibold tracking-normal text-[#6367FF]">
+                  <div className="h-full rounded-3xl border-2 border-white/20 bg-white/[0.04] p-6">
+                    <span className="font-display text-lg font-extralight tracking-normal text-[#6367FF]">
                       ({String(i + 1).padStart(2, '0')})
                     </span>
-                    <h3 className="font-display mt-2 text-lg font-semibold text-black">{t(v.title)}</h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-black/70">{t(v.body)}</p>
+                    <h3 className="heading-sm mt-2">{t(v.title)}</h3>
+                    <p className="subtext mt-1.5">{t(v.body)}</p>
                   </div>
                 </FadeIn>
               ))}
@@ -311,7 +298,7 @@ export default function AboutPage() {
             <div className="mb-10 text-center md:mb-14">
               <SplitText
                 as="h2"
-                className="font-display text-[clamp(1.9rem,4.5vw,3.4rem)] font-semibold leading-[0.98]"
+                className="heading-lg"
               >
                 {t(PARTNERS_HEADING)}
               </SplitText>
@@ -320,7 +307,7 @@ export default function AboutPage() {
             <ul className="grid items-stretch gap-6 md:grid-cols-3">
               {PARTNERS.map((partner) => (
                 <li key={partner.name} className="min-w-0">
-                  <div className="flex h-full flex-col overflow-hidden rounded-3xl bg-white">
+                  <div className="flex h-full flex-col overflow-hidden rounded-3xl bg-white/[0.04]">
                     <div className="p-4">
                       <div className="flex items-center justify-center gap-4 rounded-2xl bg-black px-6 py-12">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -329,18 +316,18 @@ export default function AboutPage() {
                           alt=""
                           className={cn('h-14 w-auto object-contain', partner.logoFilter)}
                         />
-                        <p className="font-display text-4xl font-semibold text-white">{partner.name}</p>
+                        <p className="font-display text-4xl font-extralight text-white">{partner.name}</p>
                       </div>
                     </div>
 
                     <div className="flex flex-1 flex-col items-center justify-center gap-4 p-6 text-center">
-                      <p className="font-display text-lg font-medium text-black/70">{t(partner.category)}</p>
+                      <p className="font-display text-lg font-medium text-white/70">{t(partner.category)}</p>
                       <a
                         href={partner.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         data-cursor
-                        className="inline-flex items-center gap-1.5 font-display text-base font-medium tracking-normal text-black underline underline-offset-4 transition-colors duration-300 hover:text-black/70"
+                        className="inline-flex items-center gap-1.5 font-display text-base font-medium tracking-normal text-white underline underline-offset-4 transition-colors duration-300 hover:text-white/70"
                       >
                         {t(VIEW_SITE_LABEL)}
                         <ArrowRight className="h-3.5 w-3.5 -rotate-45" />
@@ -356,7 +343,7 @@ export default function AboutPage() {
         {/* CTA — identical to the homepage's Contact banner */}
         <section className="relative min-h-[65vh] md:min-h-[80vh]">
           <div className="flex min-h-[65vh] p-3 md:min-h-[80vh] md:p-6">
-            <div className="relative mx-auto flex w-full max-w-[90rem] flex-1 flex-col items-center justify-center overflow-hidden rounded-[20px] bg-[#6367FF] px-6 py-16 text-center md:max-w-6xl md:px-12">
+            <div className="relative mx-auto flex w-full max-w-[90rem] flex-1 flex-col items-center justify-center overflow-hidden rounded-[20px] bg-white/[0.04] px-6 py-16 text-center md:max-w-6xl md:px-12">
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-0"
@@ -371,23 +358,23 @@ export default function AboutPage() {
               <div className="relative">
                 <SplitText
                   as="h2"
-                  className="font-display text-[clamp(2.4rem,7vw,5.5rem)] font-semibold leading-[0.95] text-white md:text-[clamp(2.4rem,4vw,3.8rem)]"
+                  className="heading-lg"
                 >
                   {t(CTA_HEADING)}
                 </SplitText>
 
                 <FadeIn delay={0.15}>
-                  <p className="subtext mx-auto mt-5 max-w-xl text-base leading-relaxed">{t(CTA_BODY)}</p>
+                  <p className="subtext mx-auto mt-5 max-w-xl">{t(CTA_BODY)}</p>
                 </FadeIn>
 
                 <FadeIn delay={0.3} className="mt-12 flex justify-center">
                   <a
                     href={whatsappHref(WA_MESSAGE)}
                     data-cursor
-                    className="pointer-events-auto inline-flex items-center gap-0.5 rounded-full bg-white px-6 py-2.5 font-display text-base font-medium tracking-normal text-[#6367FF] transition-colors duration-300 hover:bg-gray-100"
+                    className="pointer-events-auto btn-primary"
                   >
                     {t(CTA_LABEL)}
-                    <ArrowRight className="h-4 w-4" />
+                    <ArrowRight className="h-3.5 w-3.5" />
                   </a>
                 </FadeIn>
               </div>

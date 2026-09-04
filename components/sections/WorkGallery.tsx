@@ -98,12 +98,12 @@ export default function WorkGallery({
             <div className="max-w-2xl">
               <SplitText
                 as="h2"
-                className="font-display text-[clamp(2.8rem,7.2vw,6.4rem)] font-semibold leading-[0.95] text-white md:text-[clamp(2.8rem,4.5vw,4.4rem)]"
+                className="heading-lg"
               >
                 {t(HEADING)}
               </SplitText>
               <FadeIn delay={0.15}>
-                <p className="mt-4 max-w-xl text-base font-medium text-white">{t(SUBHEADING)}</p>
+                <p className="subtext mt-5 max-w-md">{t(SUBHEADING)}</p>
               </FadeIn>
             </div>
 
@@ -113,18 +113,18 @@ export default function WorkGallery({
                 data-cursor
                 aria-label="Previous"
                 onClick={() => scrollByCards(-1)}
-                className="pointer-events-auto flex h-10 w-14 items-center justify-center rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-300 hover:bg-gray-300"
+                className="pointer-events-auto flex h-10 w-14 items-center justify-center rounded-full border-2 border-transparent bg-white/10 transition-colors duration-300 hover:bg-white/20"
               >
-                <ArrowRight className="h-4 w-4 rotate-180 text-black" />
+                <ArrowRight className="h-4 w-4 rotate-180 text-white" />
               </button>
               <button
                 type="button"
                 data-cursor
                 aria-label="Next"
                 onClick={() => scrollByCards(1)}
-                className="pointer-events-auto flex h-10 w-14 items-center justify-center rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-300 hover:bg-gray-300"
+                className="pointer-events-auto flex h-10 w-14 items-center justify-center rounded-full border-2 border-transparent bg-white/10 transition-colors duration-300 hover:bg-white/20"
               >
-                <ArrowRight className="h-4 w-4 text-black" />
+                <ArrowRight className="h-4 w-4 text-white" />
               </button>
             </div>
           </div>
@@ -173,7 +173,7 @@ export default function WorkGallery({
                   <div className="order-2 mx-auto mt-6 aspect-[1101/1200] w-[85%] rounded-t-2xl md:order-none md:mx-0 md:mt-0 md:aspect-[512/585] md:w-[22rem] md:flex-shrink-0">
                     {project.image ? (
                       <div className="flex h-full items-center justify-center pt-6 md:items-end md:pt-0">
-                        <div className="h-full w-full overflow-hidden rounded-t-2xl border-x-4 border-t-4 border-white shadow-[0_35px_70px_-10px_rgba(55,65,81,0.9)] md:rounded-t-xl md:shadow-[0_25px_50px_-10px_rgba(55,65,81,0.6)]">
+                        <div className="h-full w-full overflow-hidden rounded-t-2xl border-x border-t border-white/10 shadow-[0_35px_70px_-10px_rgba(55,65,81,0.9)] md:rounded-t-xl md:shadow-[0_25px_50px_-10px_rgba(55,65,81,0.6)]">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={project.image}
@@ -191,17 +191,17 @@ export default function WorkGallery({
 
                   {/* eyebrow, title, description, button */}
                   <div className="order-1 flex flex-col items-center text-center md:order-none md:items-start md:text-left">
-                    <span className="inline-block w-fit rounded-full bg-[#EEF0FF] px-3 py-1 text-[0.8rem] font-medium text-[#6367FF]">
+                    <span className="inline-block w-fit rounded-full bg-black/5 px-3 py-1 text-[0.7rem] font-medium text-black/60">
                       {t(project.category)}
                     </span>
-                    <h3 className="mt-2 font-display text-3xl font-semibold text-[#333D6D] md:text-4xl">
+                    <h3 className="mt-2 font-display text-3xl font-medium text-black md:text-4xl">
                       {project.name}
                       {project.isPrototype && (
                         <span className="text-sm font-normal opacity-30 md:text-base"> (Prototype)</span>
                       )}
                     </h3>
                     {project.description && (
-                      <p className="mt-3 hidden max-w-md text-xs text-[#0A2947] md:block md:text-sm">
+                      <p className="subtext mt-3 hidden max-w-md text-xs text-black/60 md:block md:text-sm">
                         {t(project.description)}
                       </p>
                     )}
@@ -213,11 +213,11 @@ export default function WorkGallery({
                         if (dragRef.current.moved) return;
                         pageNavigate(`/portfolio/${project.slug}`, { accent: project.tagColor, bg: '#0b0a16' });
                       }}
-                      className="pointer-events-auto mt-5 flex h-12 w-fit items-center gap-2 rounded-full bg-[#6367FF] px-6 font-display text-base font-medium text-white transition-colors duration-300 hover:bg-[#4f52e0]"
+                      className="pointer-events-auto mt-5 inline-flex w-fit items-center justify-center gap-2 rounded-full bg-black px-4 py-2 font-display text-sm font-medium tracking-normal text-white transition-colors duration-300 hover:bg-black/80"
                     >
                       <span className="md:hidden">{t(EXPLORE_WORK_LABEL)}</span>
                       <span className="hidden md:inline">{t(VIEW_MORE_LABEL)}</span>
-                      <ArrowRight className="h-4 w-4 text-white" />
+                      <ArrowRight className="h-3.5 w-3.5" />
                     </button>
                   </div>
                 </div>
@@ -235,10 +235,10 @@ export default function WorkGallery({
                     }}
                   >
                     <div className="flex flex-col items-center text-center">
-                      <span className="inline-block w-fit rounded-full bg-[#EEF0FF] px-3 py-1 text-[0.8rem] font-medium text-[#6367FF]">
+                      <span className="inline-block w-fit rounded-full bg-black/5 px-3 py-1 text-[0.7rem] font-medium text-black/60">
                         {t(project.category)}
                       </span>
-                      <h3 className="mt-2 font-display text-3xl font-semibold text-[#333D6D] md:text-2xl">
+                      <h3 className="mt-2 font-display text-3xl font-medium text-black md:text-2xl">
                         {project.name}
                         {project.isPrototype && (
                           <span className="text-sm font-normal opacity-30 md:text-sm"> (Prototype)</span>
@@ -252,17 +252,17 @@ export default function WorkGallery({
                           if (dragRef.current.moved) return;
                           pageNavigate(`/portfolio/${project.slug}`, { accent: project.tagColor, bg: '#0b0a16' });
                         }}
-                        className="pointer-events-auto mt-5 flex h-12 items-center gap-2 rounded-full bg-[#6367FF] px-6 font-display text-base font-medium text-white transition-colors duration-300 hover:bg-[#4f52e0] md:h-10 md:px-5 md:text-sm"
+                        className="pointer-events-auto mt-5 inline-flex items-center justify-center gap-2 rounded-full bg-black px-4 py-2 font-display text-sm font-medium tracking-normal text-white transition-colors duration-300 hover:bg-black/80"
                       >
                         {t(EXPLORE_WORK_LABEL)}
-                        <ArrowRight className="h-4 w-4 text-white" />
+                        <ArrowRight className="h-3.5 w-3.5" />
                       </button>
                     </div>
 
-                    <div className="mx-auto mt-6 aspect-[1101/1200] w-[85%] rounded-t-2xl md:aspect-auto md:h-80 md:w-[55%] md:overflow-hidden md:rounded-t-2xl md:border-x-4 md:border-t-4 md:border-white md:shadow-[0_35px_70px_-10px_rgba(55,65,81,0.9)]">
+                    <div className="mx-auto mt-6 aspect-[1101/1200] w-[85%] rounded-t-2xl md:aspect-auto md:h-80 md:w-[55%] md:overflow-hidden md:rounded-t-2xl md:border-x md:border-t md:border-white/10 md:shadow-[0_35px_70px_-10px_rgba(55,65,81,0.9)]">
                       {project.image ? (
                         <div className="flex h-full items-center justify-center pt-6 md:h-full md:w-full md:items-stretch md:justify-stretch md:p-0">
-                          <div className="h-full w-full overflow-hidden rounded-t-2xl border-x-4 border-t-4 border-white shadow-[0_35px_70px_-10px_rgba(55,65,81,0.9)] md:h-full md:w-full md:rounded-none md:border-0 md:shadow-none">
+                          <div className="h-full w-full overflow-hidden rounded-t-2xl border-x border-t border-white/10 shadow-[0_35px_70px_-10px_rgba(55,65,81,0.9)] md:h-full md:w-full md:rounded-none md:border-0 md:shadow-none">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                               src={project.image}

@@ -35,14 +35,14 @@ export default function LangToggle({
 
   const activeClasses = light ? 'text-white' : 'text-black';
   const inactiveClasses = light
-    ? 'text-black/50 hover:text-black'
+    ? 'text-white/50 hover:text-black'
     : 'text-white/60 hover:text-white';
 
   return (
     <div
       className={cn(
         'pointer-events-auto relative inline-flex items-center rounded-full border p-0.5 text-[11px] font-medium tracking-normal',
-        light ? 'border-black/15 bg-white' : 'border-white/15 bg-black',
+        light ? 'border-white/15 bg-white' : 'border-white/15 bg-black',
         className
       )}
     >

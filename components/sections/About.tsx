@@ -102,10 +102,10 @@ export default function About() {
       ref={sectionRef}
       id="about"
       data-scene-section
-      className="relative h-[250vh] bg-white"
+      className="relative h-[250vh] bg-black"
     >
       <div className="sticky top-0 h-screen p-3 md:p-6">
-        <div className="flex h-full items-center justify-center rounded-[20px] bg-[#6367FF] pt-24 md:pt-20">
+        <div className="flex h-full items-center justify-center rounded-[20px] bg-white/[0.04] pt-24 md:pt-20">
           <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 text-left md:flex-row md:items-center md:justify-between md:gap-16 md:px-12">
             <div className="md:max-w-xl">
               <p
@@ -123,10 +123,10 @@ export default function About() {
                 <a
                   href={whatsappHref(WA_MESSAGE)}
                   data-cursor
-                  className="pointer-events-auto inline-flex items-center gap-0.5 rounded-full bg-white px-6 py-2.5 font-display text-base font-medium tracking-normal text-[#6367FF] transition-colors duration-300 hover:bg-gray-100"
+                  className="pointer-events-auto btn-primary"
                 >
                   {t(CONTACT_LABEL)}
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRight className="h-3.5 w-3.5" />
                 </a>
               </FadeIn>
             </div>
@@ -134,7 +134,7 @@ export default function About() {
             <div className="grid shrink-0 grid-cols-2 gap-x-8 gap-y-6 md:gap-x-10 md:gap-y-8">
               {STATS.map(([value, label], i) => (
                 <FadeIn key={value} delay={i * 0.08}>
-                  <p className="font-display text-4xl font-semibold text-white md:text-5xl">
+                  <p className="font-display text-4xl font-extralight text-white md:text-5xl">
                     <CountUpValue value={value} />
                   </p>
                   <p className="subtext mt-2 text-xs tracking-normal">

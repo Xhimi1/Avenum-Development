@@ -123,7 +123,7 @@ export default function HospitalityPage() {
   }, []);
 
   return (
-    <div className={`${generalSans.variable} relative min-h-screen bg-white text-black`}>
+    <div className={`${generalSans.variable} relative min-h-screen bg-black text-white`}>
       <HospitalityNav />
 
       <main>
@@ -140,10 +140,10 @@ export default function HospitalityPage() {
           </div>
 
           <div className="order-2 flex flex-col items-center justify-center px-6 py-12 text-center md:order-1 md:w-1/2 md:items-start md:px-12 md:py-24 md:text-left">
-            <Heading as="h1" delay={0.15} className="max-w-xl text-[clamp(2rem,4.5vw,3.4rem)] text-black">
+            <Heading as="h1" delay={0.15} className="max-w-xl text-[clamp(2rem,4.5vw,3.4rem)] text-white">
               {t(HERO_HEADING)}
             </Heading>
-            <p ref={heroSubRef} className="mx-auto mt-6 max-w-md text-sm font-light text-black md:mx-0 md:text-base">
+            <p ref={heroSubRef} className="mx-auto mt-6 max-w-md text-sm font-light text-white md:mx-0 md:text-base">
               {t(HERO_SUB)}
             </p>
             <a
@@ -174,10 +174,10 @@ export default function HospitalityPage() {
         {/* what we build — menus & booking, two-up image grid */}
         <section id="menu" className="px-6 py-32 md:px-12 md:py-48">
           <div className="mx-auto w-full max-w-6xl">
-            <Heading className="max-w-2xl text-[clamp(1.8rem,4.5vw,3.2rem)] text-black">
+            <Heading className="max-w-2xl text-[clamp(1.8rem,4.5vw,3.2rem)] text-white">
               {t(MENU_HEADING)}
             </Heading>
-            <p className="mt-6 max-w-md text-sm font-light text-black md:text-base">{t(MENU_BODY)}</p>
+            <p className="mt-6 max-w-md text-sm font-light text-white md:text-base">{t(MENU_BODY)}</p>
 
             <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
               <img
@@ -212,7 +212,7 @@ export default function HospitalityPage() {
         {/* gallery strip — three real places, minimal framing */}
         <section id="work" className="px-6 py-32 md:px-12 md:py-48">
           <div className="mx-auto w-full max-w-6xl">
-            <Heading className="text-[clamp(1.8rem,4.5vw,3.2rem)] text-black">
+            <Heading className="text-[clamp(1.8rem,4.5vw,3.2rem)] text-white">
               {t(GALLERY_HEADING)}
             </Heading>
 
@@ -256,8 +256,8 @@ export default function HospitalityPage() {
         {/* final CTA — text only */}
         <section id="contact" className="px-6 py-32 text-center md:px-12 md:py-48">
           <div className="mx-auto w-full max-w-2xl">
-            <Heading className="text-[clamp(2.2rem,6vw,4.4rem)] text-black">{t(CTA_HEADING)}</Heading>
-            <p className="mx-auto mt-6 max-w-sm text-sm font-light text-black md:text-base">{t(CTA_BODY)}</p>
+            <Heading className="text-[clamp(2.2rem,6vw,4.4rem)] text-white">{t(CTA_HEADING)}</Heading>
+            <p className="mx-auto mt-6 max-w-sm text-sm font-light text-white md:text-base">{t(CTA_BODY)}</p>
             <a
               href={waLink}
               data-cursor

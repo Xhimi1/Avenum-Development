@@ -96,7 +96,7 @@ export default function ServicesSlider() {
                 className="h-full w-full select-none object-cover"
               />
             </div>
-            <p className="mt-4 text-center font-[family-name:var(--font-general-sans)] text-[clamp(1.8rem,4.5vw,3.2rem)] font-normal leading-[1.05] tracking-[-0.035em] text-black">
+            <p className="mt-4 text-center font-[family-name:var(--font-general-sans)] text-[clamp(1.8rem,4.5vw,3.2rem)] font-normal leading-[1.05] tracking-[-0.035em] text-white">
               {t(s.title)}
             </p>
           </li>

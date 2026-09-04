@@ -16,16 +16,16 @@ const CTA_LABEL = { en: 'Start your project', sq: 'Nis projektin tënd' };
 export default function Contact() {
   const t = useT();
   return (
-    <section id="contact" data-scene-section className="relative min-h-[65vh] bg-white md:min-h-[80vh]">
+    <section id="contact" data-scene-section className="relative min-h-[65vh] bg-black md:min-h-[80vh]">
       <div className="flex min-h-[65vh] p-3 md:min-h-[80vh] md:p-6">
-        <div className="relative mx-auto flex w-full max-w-[90rem] flex-1 flex-col items-center justify-center overflow-hidden rounded-[20px] bg-[#6367FF] px-6 py-16 text-center md:max-w-6xl md:px-12">
+        <div className="relative mx-auto flex w-full max-w-[90rem] flex-1 flex-col items-center justify-center overflow-hidden rounded-[20px] bg-white/[0.04] px-6 py-16 text-center md:max-w-6xl md:px-12">
           {/* Darker wedge below a diagonal, matching the services grid's
               stat card. */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0"
             style={{
-              backgroundImage: 'linear-gradient(115deg, transparent 62%, #4B4FE0 62%, #4B4FE0 100%)',
+              backgroundImage: 'linear-gradient(115deg, transparent 62%, rgba(255,255,255,0.03) 62%, rgba(255,255,255,0.03) 100%)',
             }}
           />
 
@@ -50,23 +50,23 @@ export default function Contact() {
           <div className="relative">
             <SplitText
               as="h2"
-              className="font-display text-[clamp(2.4rem,7vw,5.5rem)] font-semibold leading-[0.95] md:text-[clamp(2.4rem,4vw,3.8rem)]"
+              className="heading-lg"
             >
               {t(HEADING)}
             </SplitText>
 
             <FadeIn delay={0.15}>
-              <p className="subtext mx-auto mt-5 max-w-xl text-base leading-relaxed">{t(SUBHEADING)}</p>
+              <p className="subtext mx-auto mt-5 max-w-xl">{t(SUBHEADING)}</p>
             </FadeIn>
 
             <FadeIn delay={0.3} className="mt-12 flex justify-center">
               <a
                 href={whatsappHref(WA_MESSAGE)}
                 data-cursor
-                className="pointer-events-auto inline-flex items-center gap-0.5 rounded-full bg-white px-6 py-2.5 font-display text-base font-medium tracking-normal text-[#6367FF] transition-colors duration-300 hover:bg-gray-100"
+                className="pointer-events-auto btn-primary"
               >
                 {t(CTA_LABEL)}
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-3.5 w-3.5" />
               </a>
             </FadeIn>
           </div>

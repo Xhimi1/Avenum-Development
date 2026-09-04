@@ -10,8 +10,8 @@ import { HOME_SECTIONS } from '@/lib/palette';
 import { whatsappHref, WA_MESSAGE } from '@/lib/contact';
 
 const HEADING: Bi = {
-  en: "Don't get tired. We will.",
-  sq: 'Mos u lodh, lodhemi ne.',
+  en: 'We make sure your business never gets ignored.',
+  sq: 'Ne bëjmë që biznesi juaj të mos injorohet kurrë.',
 };
 
 const SUBHEADING: Bi = {
@@ -38,39 +38,39 @@ export default function Hero() {
     <section
       id="hero"
       data-scene-section
-      className="relative flex min-h-[70svh] flex-col items-center overflow-hidden bg-white px-6 pt-40 text-center md:min-h-[100svh] md:pt-32"
+      className="relative flex min-h-[70svh] flex-col items-start overflow-hidden bg-black px-6 pt-40 text-left md:min-h-[100svh] md:pt-32"
     >
       <SplitText
         as="h1"
-        className="font-display relative z-10 mx-auto max-w-[14ch] text-[clamp(3.4rem,14.5vw,5.8rem)] font-bold leading-[0.92] text-[#091413] md:max-w-[13ch] md:text-balance md:text-[clamp(4.2rem,7.5vw,7rem)]"
+        className="heading-hero relative z-10 max-w-[14ch] text-balance md:max-w-[22ch]"
       >
         {t(HEADING)}
       </SplitText>
 
-      <p className="relative z-10 mx-auto mt-6 max-w-xl text-base leading-relaxed text-black md:mt-7 md:text-lg">
+      <p className="subheading-hero relative z-10 mt-6 max-w-xs text-left md:mt-7">
         {t(SUBHEADING)}
       </p>
 
       {/* data-hero-cta: <Nav> measures this row to decide when to reveal its
           own "Call Us" label — once the visitor has scrolled past these. */}
-      <div data-hero-cta className="relative z-10 mt-7 mb-2 flex items-center justify-center gap-3 md:mt-8 md:mb-12">
+      <div data-hero-cta className="relative z-10 mt-7 mb-8 flex items-center justify-start gap-3 md:mt-8 md:mb-16">
         <a
           href={whatsappHref(WA_MESSAGE)}
           data-cursor
-          className="pointer-events-auto inline-flex items-center justify-center gap-0.5 rounded-full bg-[#6367FF] px-6 py-2.5 font-display text-base font-medium tracking-normal text-white transition-colors duration-300 hover:bg-[#4f52e0]"
+          className="pointer-events-auto btn-primary"
         >
           {t(PRIMARY_LABEL)}
-          <ArrowRight className="h-4 w-4" />
+          <ArrowRight className="h-3.5 w-3.5" />
         </a>
 
         <button
           type="button"
           data-cursor
           onClick={() => navigate(WORK_INDEX)}
-          className="pointer-events-auto inline-flex items-center justify-center gap-0.5 rounded-full bg-[#EEF0FF] px-6 py-2.5 font-display text-base font-medium tracking-normal text-[#6367FF] transition-colors duration-300 hover:bg-[#e2e4ff]"
+          className="pointer-events-auto btn-secondary"
         >
           {t(SECONDARY_LABEL)}
-          <ArrowRight className="h-4 w-4" />
+          <ArrowRight className="h-3.5 w-3.5" />
         </button>
       </div>
 
@@ -84,7 +84,7 @@ export default function Hero() {
             corner low and rises to the right. */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 top-20 bg-[#D6D0FF]/80 md:top-32"
+          className="pointer-events-none absolute inset-x-0 bottom-0 top-20 bg-white/[0.04] md:top-32"
           style={{ clipPath: 'polygon(0 5rem, 100% 0, 100% 100%, 0 100%)' }}
         />
         <PhotoCardStack className="relative -mb-[10%] justify-center md:-mb-[5%]" />

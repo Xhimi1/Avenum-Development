@@ -84,50 +84,46 @@ export default function ChatbotsPage() {
   }, []);
 
   return (
-    <div className="isolate min-h-screen overflow-x-clip bg-white text-[#061E29]">
+    <div className="isolate min-h-screen overflow-x-clip bg-black text-white">
       <Nav />
 
       <main>
-        {/* hero — pitch on the left, the live demo standing in for the old
-            3D orb on the right; stacks with the demo below on mobile. */}
-        <section className="relative overflow-hidden pt-32 md:pt-28">
-          <div className="relative mx-auto w-full max-w-[90rem] px-6 md:px-12">
-            <div className="grid items-center justify-items-center gap-12 text-center">
-              <div className="flex flex-col items-center">
-                <SplitText
-                  as="h1"
-                  delay={0.2}
-                  animate
-                  className="font-display text-[clamp(2.4rem,6vw,4.4rem)] font-semibold leading-[0.98]"
-                >
-                  {t(HERO_HEADING)}
-                </SplitText>
-                <SplitText
-                  as="p"
-                  type="words"
-                  delay={0.5}
-                  className="mx-auto mt-6 max-w-xl text-sm font-normal text-black md:text-lg"
-                >
-                  {t(HERO_SUB)}
-                </SplitText>
+        {/* hero — same layout as the homepage Hero: left-aligned heading,
+            subheading, CTA, then the page's own asset full-bleed below (the
+            live chat demo standing in for Hero.tsx's product shots). */}
+        <section className="relative flex min-h-[70svh] flex-col items-start overflow-hidden bg-black px-6 pt-40 text-left md:min-h-[100svh] md:pt-32">
+          <SplitText
+            as="h1"
+            delay={0.2}
+            animate
+            className="heading-hero relative z-10 max-w-[14ch] text-balance md:max-w-[22ch]"
+          >
+            {t(HERO_HEADING)}
+          </SplitText>
 
-                <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-                  <a
-                    href={waLink}
-                    data-cursor
-                    className="inline-flex items-center gap-0.5 rounded-full bg-[#6367FF] px-6 py-2.5 font-display text-base font-medium tracking-normal text-white transition-colors duration-300 hover:bg-[#4f52e0]"
-                  >
-                    {t(CTA_PRIMARY)}
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </a>
-                </div>
-              </div>
+          <SplitText
+            as="p"
+            type="words"
+            delay={0.5}
+            className="subheading-hero relative z-10 mt-6 max-w-xs text-left md:mt-7"
+          >
+            {t(HERO_SUB)}
+          </SplitText>
 
-              <FadeIn delay={0.3}>
-                <ChatDemo />
-              </FadeIn>
-            </div>
+          <div className="relative z-10 mt-7 mb-8 flex items-center justify-start gap-3 md:mt-8 md:mb-16">
+            <a
+              href={waLink}
+              data-cursor
+              className="pointer-events-auto btn-primary"
+            >
+              {t(CTA_PRIMARY)}
+              <ArrowRight className="h-3.5 w-3.5" />
+            </a>
           </div>
+
+          <FadeIn delay={0.3} className="relative z-10 mx-auto w-full max-w-md pt-8 md:mt-auto md:pt-12">
+            <ChatDemo />
+          </FadeIn>
         </section>
 
         {/* how it works — 2D flow */}
@@ -136,27 +132,27 @@ export default function ChatbotsPage() {
             <div className="mb-12 md:mb-20">
               <SplitText
                 as="h2"
-                className="font-display text-[clamp(2rem,5vw,4rem)] font-semibold leading-[0.98]"
+                className="heading-lg"
               >
                 {t(HOW_HEADING)}
               </SplitText>
             </div>
 
-            <div className="relative grid grid-cols-1 border border-black/10 md:grid-cols-4">
+            <div className="relative grid grid-cols-1 border border-white/10 md:grid-cols-4">
               {HOW_IT_WORKS.map((step, i) => (
                 <FadeIn
                   key={i}
                   delay={i * 0.12}
                   className={cn(
-                    'relative bg-[#F3F4F4] p-8',
-                    i < HOW_IT_WORKS.length - 1 && 'border-b border-black/10 md:border-b-0 md:border-r'
+                    'relative bg-white/[0.04] p-8',
+                    i < HOW_IT_WORKS.length - 1 && 'border-b border-white/10 md:border-b-0 md:border-r'
                   )}
                 >
-                  <p className="mb-2 font-display text-lg font-semibold text-[#6367FF]">
+                  <p className="mb-2 font-display text-lg font-extralight text-[#6367FF]">
                     ({String(i + 1).padStart(2, '0')})
                   </p>
-                  <h3 className="font-display text-xl font-semibold text-black md:text-2xl">{t(step.title)}</h3>
-                  <p className="mt-4 text-base leading-relaxed text-black/60">{t(step.desc)}</p>
+                  <h3 className="heading-sm">{t(step.title)}</h3>
+                  <p className="subtext mt-4">{t(step.desc)}</p>
                 </FadeIn>
               ))}
             </div>
@@ -168,7 +164,7 @@ export default function ChatbotsPage() {
           <div className="mx-auto w-full max-w-4xl">
             <ScrollRevealText
               as="p"
-              className="font-display text-3xl font-medium leading-tight text-black md:text-4xl md:leading-tight"
+              className="font-display text-3xl font-medium leading-tight text-white md:text-4xl md:leading-tight"
             >
               {t(CHATBOT_TEXT)}
             </ScrollRevealText>
@@ -178,7 +174,7 @@ export default function ChatbotsPage() {
         {/* CTA — identical to the homepage's Contact banner */}
         <section className="relative min-h-[65vh] md:min-h-[80vh]">
           <div className="flex min-h-[65vh] p-3 md:min-h-[80vh] md:p-6">
-            <div className="relative mx-auto flex w-full max-w-[90rem] flex-1 flex-col items-center justify-center overflow-hidden rounded-[20px] bg-[#6367FF] px-6 py-16 text-center md:max-w-6xl md:px-12">
+            <div className="relative mx-auto flex w-full max-w-[90rem] flex-1 flex-col items-center justify-center overflow-hidden rounded-[20px] bg-white/[0.04] px-6 py-16 text-center md:max-w-6xl md:px-12">
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-0"
@@ -193,23 +189,23 @@ export default function ChatbotsPage() {
               <div className="relative">
                 <SplitText
                   as="h2"
-                  className="font-display text-[clamp(2.4rem,7vw,5.5rem)] font-semibold leading-[0.95] text-white md:text-[clamp(2.4rem,4vw,3.8rem)]"
+                  className="heading-lg"
                 >
                   {t(CTA_HEADING)}
                 </SplitText>
 
                 <FadeIn delay={0.15}>
-                  <p className="subtext mx-auto mt-5 max-w-xl text-base leading-relaxed">{t(CTA_SUB)}</p>
+                  <p className="subtext mx-auto mt-5 max-w-xl">{t(CTA_SUB)}</p>
                 </FadeIn>
 
                 <FadeIn delay={0.3} className="mt-12 flex justify-center">
                   <a
                     href={waLink}
                     data-cursor
-                    className="pointer-events-auto inline-flex items-center gap-0.5 rounded-full bg-white px-6 py-2.5 font-display text-base font-medium tracking-normal text-[#6367FF] transition-colors duration-300 hover:bg-gray-100"
+                    className="pointer-events-auto btn-primary"
                   >
                     {t(CTA_FINAL)}
-                    <ArrowRight className="h-4 w-4" />
+                    <ArrowRight className="h-3.5 w-3.5" />
                   </a>
                 </FadeIn>
               </div>

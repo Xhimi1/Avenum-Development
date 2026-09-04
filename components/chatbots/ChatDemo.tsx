@@ -221,15 +221,15 @@ export default function ChatDemo() {
         className="rounded-2xl bg-cover bg-center p-3 shadow-2xl md:p-4"
         style={{ backgroundImage: "url('/images/chatbotBg.webp')" }}
       >
-        <div className="w-full rounded-2xl border border-black/10 bg-white p-4 text-black shadow-2xl md:mx-auto md:max-w-xl">
-          <div className="flex items-center gap-3 border-b border-black/10 pb-3">
+        <div className="w-full rounded-2xl border border-white/10 bg-white p-4 text-black shadow-2xl md:mx-auto md:max-w-xl">
+          <div className="flex items-center gap-3 border-b border-white/10 pb-3">
             <span className="relative flex h-9 w-9 items-center justify-center rounded-full">
               <BotAvatar className="h-9 w-9" />
               <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-white bg-emerald-500" />
             </span>
             <div>
               <p className="text-sm font-medium text-black">Nova — {SCENARIO.business}</p>
-              <p className="text-[10px] text-black/50">{t(ONLINE_STATUS)}</p>
+              <p className="text-[10px] text-white/50">{t(ONLINE_STATUS)}</p>
             </div>
           </div>
 
@@ -296,7 +296,7 @@ export default function ChatDemo() {
         </div>
       </div>
 
-      <p className="mt-4 text-center text-xs text-black/40">
+      <p className="mt-4 text-center text-xs text-white/40">
         {t(FOOTER_NOTE)}
       </p>
     </div>

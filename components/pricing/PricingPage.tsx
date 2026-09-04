@@ -305,12 +305,12 @@ const PARTNERS: Partner[] = [
 function TierMetaFeatures({ tier, t }: { tier: Tier; t: (bi: Bi) => string }) {
   const isPlanTier = tier.id === 'starter' || tier.id === 'signature' || tier.id === 'partner';
   const checkColor = tier.id === 'starter' ? '#4B5563' : isPlanTier ? '#6439FF' : '#000000';
-  const checkColorClass = tier.id === 'starter' ? 'text-[#4B5563]' : isPlanTier ? 'text-[#6439FF]' : 'text-black';
+  const checkColorClass = tier.id === 'starter' ? 'text-[#4B5563]' : isPlanTier ? 'text-[#6439FF]' : 'text-white';
   return (
     <>
       <ul className="space-y-3">
         {tier.meta.map((m, mi) => (
-          <li key={mi} className="flex items-center gap-3 text-sm text-[#0A2947]">
+          <li key={mi} className="flex items-center gap-3 text-sm text-white/70">
             <m.icon className={cn('h-[18px] w-[18px]', checkColorClass)} />
             {t(m.label)}
           </li>
@@ -319,7 +319,7 @@ function TierMetaFeatures({ tier, t }: { tier: Tier; t: (bi: Bi) => string }) {
 
       <ul className="mt-5 space-y-3">
         {tier.features.map((f, fi) => (
-          <li key={fi} className="flex items-start gap-3 text-sm text-[#0A2947]">
+          <li key={fi} className="flex items-start gap-3 text-sm text-white/70">
             <span
               className="mt-0.5 flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full"
               style={{ background: `color-mix(in srgb, ${checkColor} 25%, white)` }}
@@ -352,9 +352,9 @@ interface CardAccent {
 }
 
 const ACCENT_BLACK: CardAccent = {
-  border: 'border-black',
-  shadow: 'shadow-[6px_6px_0_0_#000]',
-  button: 'bg-black hover:bg-black/85',
+  border: 'border-white',
+  shadow: 'shadow-[6px_6px_0_0_rgba(255,255,255,1)]',
+  button: 'bg-white/10 hover:bg-white/20',
 };
 const ACCENT_PURPLE: CardAccent = {
   border: 'border-[#6367FF]',
@@ -365,9 +365,9 @@ const ACCENT_PURPLE: CardAccent = {
  *  Used for the "other services" add-ons, which sit a step below the main
  *  plans and shouldn't compete with their 3D-pill treatment. */
 const ACCENT_BLACK_FLAT: CardAccent = {
-  border: 'border-black',
+  border: 'border-white/20',
   shadow: '',
-  button: 'bg-black hover:bg-black/85',
+  button: 'bg-white/10 hover:bg-white/20',
 };
 
 /** One pricing/service card — title pill, price (with an optional
@@ -381,7 +381,7 @@ function TierCard({
   accent,
   raised,
   simple,
-  bgClassName = 'bg-[#F3F4F4]',
+  bgClassName = 'bg-white/[0.04]',
   badge,
 }: {
   tier: Tier;
@@ -402,20 +402,20 @@ function TierCard({
       <div className="h-full">
         <div className="relative h-full">
           {badge && (
-            <span className="absolute left-6 top-0 z-10 -translate-y-1/2 rounded-full bg-[#6367FF] px-5 py-2.5 font-display text-sm font-semibold tracking-normal text-white md:px-4 md:py-2 md:text-xs">
+            <span className="absolute left-6 top-0 z-10 -translate-y-1/2 rounded-full bg-[#6367FF] px-5 py-2.5 font-display text-sm font-extralight tracking-normal text-white md:px-4 md:py-2 md:text-xs">
               {t(badge)}
             </span>
           )}
           <div className={cn('relative flex h-full flex-col overflow-hidden rounded-3xl border-2', bgClassName, accent.border, accent.shadow)}>
             <div className={cn('flex flex-1 flex-col p-6 md:p-7', simple && 'min-h-[380px] md:min-h-[440px]')}>
               <div className="flex w-full items-center justify-center">
-                <h2 className="inline-flex w-fit items-center rounded-full px-4 py-1.5 text-center font-display text-2xl font-semibold text-black md:text-3xl">
+                <h2 className="heading-sm inline-flex w-fit items-center rounded-full px-4 py-1.5 text-center">
                   {tier.name}
                 </h2>
               </div>
 
               <div className="mt-3 flex items-baseline justify-center gap-2">
-                <p className="font-display text-5xl font-bold text-black md:text-6xl">{t(tier.price)}</p>
+                <p className="font-display text-5xl font-semibold text-white md:text-6xl">{t(tier.price)}</p>
                 {tier.originalPrice && (
                   <p className="relative inline-block font-display text-2xl text-[#6B7280] before:absolute before:left-0 before:top-1/2 before:h-[2px] before:w-full before:-translate-y-1/2 before:-rotate-[14deg] before:bg-[#6B7280] before:content-[''] md:text-3xl">
                     {t(tier.originalPrice)}
@@ -424,7 +424,7 @@ function TierCard({
               </div>
 
               {simple && (
-                <p className="mt-auto text-center text-base leading-relaxed text-black md:text-lg">
+                <p className="mt-auto text-center text-base leading-relaxed text-white md:text-lg">
                   {t(tier.desc)}
                   {tier.learnMoreHref && (
                     <>
@@ -470,19 +470,19 @@ export default function PricingPage() {
   const t = useT();
 
   return (
-    <div className="isolate min-h-screen overflow-x-clip bg-white text-[#061E29]">
+    <div className="isolate min-h-screen overflow-x-clip bg-black text-white">
       <Nav />
 
       <main>
         {/* hero */}
-        <section className="relative px-6 pt-40 text-left md:px-12 md:pt-28">
+        <section className="relative px-6 pt-40 text-left md:px-12 md:pt-32">
           <div className="mx-auto w-full max-w-6xl">
             <div className="max-w-3xl">
               <SplitText
                 as="h1"
                 delay={0.15}
                 animate
-                className="font-display text-[clamp(3.2rem,9vw,4.8rem)] font-semibold leading-[0.98] [text-wrap:balance]"
+                className="heading-hero [text-wrap:balance]"
               >
                 {t({
                   en: 'Try it free for 7 days, then tell us what you think.',
@@ -504,14 +504,14 @@ export default function PricingPage() {
                   t={t}
                   raised={tier.featured}
                   accent={tier.id === 'signature' || tier.id === 'partner' ? ACCENT_PURPLE : ACCENT_BLACK}
-                  bgClassName={tier.id === 'signature' ? 'bg-[#EEF0FF]' : undefined}
+                  bgClassName={tier.id === 'signature' ? 'bg-white/10' : undefined}
                   badge={tier.id === 'signature' ? { en: 'WOW choice!!', sq: 'Zgjedhja WOW!!' } : undefined}
                 />
               ))}
             </ul>
 
             <FadeIn delay={0.2}>
-              <p className="mt-10 text-center text-xs text-black/40">
+              <p className="mt-10 text-center text-xs text-white/40">
                 {t({
                   en: 'Prices in EUR for the Albanian market · pay in euro or lekë · installments available · VAT not included',
                   sq: 'Çmimet në EUR për tregun shqiptar · paguaj në euro ose lekë · me këste · TVSH-ja nuk përfshihet',
@@ -528,7 +528,7 @@ export default function PricingPage() {
             <div className="mb-10 text-center md:mb-14">
               <SplitText
                 as="h2"
-                className="font-display text-[clamp(1.9rem,4.5vw,3.4rem)] font-semibold leading-[0.98]"
+                className="heading-lg"
               >
                 {t(SERVICES_HEADING)}
               </SplitText>
@@ -548,7 +548,7 @@ export default function PricingPage() {
             <div className="mb-10 text-center md:mb-14">
               <SplitText
                 as="h2"
-                className="font-display text-[clamp(1.9rem,4.5vw,3.4rem)] font-semibold leading-[0.98]"
+                className="heading-lg"
               >
                 {t(PARTNERS_HEADING)}
               </SplitText>
@@ -557,7 +557,7 @@ export default function PricingPage() {
             <ul className="grid items-stretch gap-6 md:grid-cols-3">
               {PARTNERS.map((partner) => (
                 <li key={partner.name} className="min-w-0">
-                  <div className="flex h-full flex-col overflow-hidden rounded-3xl bg-white">
+                  <div className="flex h-full flex-col overflow-hidden rounded-3xl bg-white/[0.04]">
                     <div className="p-4">
                       <div className="flex items-center justify-center gap-4 rounded-2xl bg-black px-6 py-12">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -566,18 +566,18 @@ export default function PricingPage() {
                           alt=""
                           className={cn('h-14 w-auto object-contain', partner.logoFilter)}
                         />
-                        <p className="font-display text-4xl font-semibold text-white">{partner.name}</p>
+                        <p className="font-display text-4xl font-extralight text-white">{partner.name}</p>
                       </div>
                     </div>
 
                     <div className="flex flex-1 flex-col items-center justify-center gap-4 p-6 text-center">
-                      <p className="font-display text-lg font-medium text-black/70">{t(partner.category)}</p>
+                      <p className="font-display text-lg font-medium text-white/70">{t(partner.category)}</p>
                       <a
                         href={partner.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         data-cursor
-                        className="inline-flex items-center gap-1.5 font-display text-base font-medium tracking-normal text-black underline underline-offset-4 transition-colors duration-300 hover:text-black/70"
+                        className="inline-flex items-center gap-1.5 font-display text-base font-medium tracking-normal text-white underline underline-offset-4 transition-colors duration-300 hover:text-white/70"
                       >
                         {t(VIEW_SITE_LABEL)}
                         <ArrowRight className="h-3.5 w-3.5 -rotate-45" />
@@ -596,7 +596,7 @@ export default function PricingPage() {
             <div className="mb-10 text-center md:mb-14">
               <SplitText
                 as="h2"
-                className="font-display text-[clamp(1.9rem,4.5vw,3.4rem)] font-semibold leading-[0.98]"
+                className="heading-lg"
               >
                 {t({ en: 'Why this investment is the best choice.', sq: 'Pse ky investim është zgjedhja më e mirë.' })}
               </SplitText>
@@ -604,56 +604,56 @@ export default function PricingPage() {
 
             <FadeIn delay={0.2}>
               <div className="relative">
-                <div className="overflow-hidden border border-black/10">
+                <div className="overflow-hidden border border-white/10">
                   <div className="grid grid-cols-1 md:grid-cols-3">
                     {/* card 1 */}
-                    <div className="border-b border-black/10 bg-[#F3F4F4] p-8 md:border-r md:p-10">
-                      <h3 className="font-display text-2xl font-semibold leading-tight text-[#061E29] md:text-3xl">
+                    <div className="border-b border-white/10 bg-white/[0.04] p-8 md:border-r md:p-10">
+                      <h3 className="heading-sm">
                         {t(AGENCY_COMPARISON[0].title)}
                       </h3>
-                      <p className="mt-4 text-base leading-relaxed text-black/60 md:text-lg">
+                      <p className="subtext mt-4">
                         {t(AGENCY_COMPARISON[0].body)}
                       </p>
                     </div>
 
                     {/* image */}
-                    <div className="min-h-[220px] overflow-hidden border-b border-black/10 md:border-r">
+                    <div className="min-h-[220px] overflow-hidden border-b border-white/10 md:border-r">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src="/images/pricing-image.webp" alt="" className="h-full w-full object-cover" />
                     </div>
 
                     {/* card 2 */}
-                    <div className="border-b border-black/10 bg-[#F3F4F4] p-8 md:p-10">
-                      <h3 className="font-display text-2xl font-semibold leading-tight text-[#061E29] md:text-3xl">
+                    <div className="border-b border-white/10 bg-white/[0.04] p-8 md:p-10">
+                      <h3 className="heading-sm">
                         {t(AGENCY_COMPARISON[1].title)}
                       </h3>
-                      <p className="mt-4 text-base leading-relaxed text-black/60 md:text-lg">
+                      <p className="subtext mt-4">
                         {t(AGENCY_COMPARISON[1].body)}
                       </p>
                     </div>
 
                     {/* card 3 — wide */}
-                    <div className="border-b border-black/10 bg-[#F3F4F4] p-8 md:col-span-2 md:border-b-0 md:border-r md:p-10">
-                      <h3 className="font-display text-2xl font-semibold leading-tight text-[#061E29] md:text-3xl">
+                    <div className="border-b border-white/10 bg-white/[0.04] p-8 md:col-span-2 md:border-b-0 md:border-r md:p-10">
+                      <h3 className="heading-sm">
                         {t(AGENCY_COMPARISON[2].title)}
                       </h3>
-                      <p className="mt-4 max-w-lg text-base leading-relaxed text-black/60 md:text-lg">
+                      <p className="subtext mt-4 max-w-lg">
                         {t(AGENCY_COMPARISON[2].body)}
                       </p>
                     </div>
 
                     {/* card 4 — highlighted */}
                     <div
-                      className="bg-[#F3F4F4] p-8 md:p-10"
+                      className="bg-white/[0.04] p-8 md:p-10"
                       style={{
                         backgroundImage:
                           'radial-gradient(130% 130% at 100% 100%, rgba(99,103,255,0.18), transparent 60%)',
                       }}
                     >
-                      <h3 className="font-display text-2xl font-semibold leading-tight text-[#061E29] md:text-3xl">
+                      <h3 className="heading-sm">
                         {t(AGENCY_COMPARISON[3].title)}
                       </h3>
-                      <p className="mt-4 text-base leading-relaxed text-black/70 md:text-lg">
+                      <p className="subtext mt-4">
                         {t(AGENCY_COMPARISON[3].body)}
                       </p>
                     </div>
@@ -671,12 +671,12 @@ export default function PricingPage() {
             <div className="order-2 md:order-1">
               <SplitText
                 as="h2"
-                className="font-display text-[clamp(2.2rem,6.5vw,5rem)] font-semibold leading-[0.98]"
+                className="heading-lg"
               >
                 {t({ en: 'Get a clear answer before you commit.', sq: 'Merr një përgjigje të qartë para se të vendosësh.' })}
               </SplitText>
               <FadeIn delay={0.15}>
-                <p className="mx-auto mt-5 max-w-md text-sm text-black/70 md:mx-0 md:text-base">
+                <p className="subtext mx-auto mt-5 max-w-md md:mx-0">
                   {t({
                     en: "Tell us what you're building — we'll tell you exactly what it costs and how long it takes, for free.",
                     sq: 'Na trego çfarë po ndërton — do të të themi saktësisht sa kushton dhe sa kohë merr, falas.',
@@ -687,10 +687,10 @@ export default function PricingPage() {
                 <a
                   href={whatsappHref(WA_MESSAGE)}
                   data-cursor
-                  className="inline-flex items-center gap-0.5 rounded-full bg-[#6367FF] px-6 py-2.5 font-display text-base font-medium tracking-normal text-white transition-colors duration-300 hover:bg-[#4f52e0]"
+                  className="btn-primary"
                 >
                   {t({ en: 'Get a free quote', sq: 'Merr një ofertë falas' })}
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRight className="h-3.5 w-3.5" />
                 </a>
               </FadeIn>
             </div>

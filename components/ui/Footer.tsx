@@ -35,7 +35,7 @@ const contactSection = SECTIONS.find((s) => s.id === 'contact')!;
  *  with a full-bleed wordmark. `theme="dark"` for the site's dark pages
  *  (home, pricing, chatbots); default "light" for the white ones. */
 export default function Footer({
-  theme = 'light',
+  theme = 'dark',
   bgClassName,
 }: {
   theme?: 'light' | 'dark';
@@ -52,26 +52,26 @@ export default function Footer({
 
   const linkClass = cn(
     'text-xs transition-colors duration-300',
-    dark ? 'text-white/60 hover:text-white' : 'text-black/70 hover:text-black'
+    dark ? 'text-white/60 hover:text-white' : 'text-white/70 hover:text-black'
   );
 
   return (
     <footer
       className={cn(
         'relative overflow-hidden border-t',
-        dark ? cn('border-white/10 text-white', bgClassName ?? 'bg-black') : 'border-black/10 bg-white text-black'
+        dark ? cn('border-white/10 text-white', bgClassName ?? 'bg-black') : 'border-white/10 bg-white text-black'
       )}
     >
       <div className="mx-auto grid w-full max-w-[90rem] gap-10 px-6 pt-16 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:gap-6 md:px-12">
         <div className="max-w-xs">
           <Logo className={cn('text-3xl', dark && 'text-white')} />
-          <p className={cn('mt-4 text-sm leading-relaxed', dark ? 'text-white/55' : 'text-[#333D6D]/55')}>
+          <p className={cn('mt-4 text-sm leading-relaxed', dark ? 'text-white/55' : 'text-white/55')}>
             {t(TAGLINE)}
           </p>
         </div>
 
         <div>
-          <h3 className={cn('text-xs font-semibold uppercase tracking-wide', dark ? 'text-white/40' : 'text-black/40')}>
+          <h3 className={cn('text-xs font-semibold uppercase tracking-wide', dark ? 'text-white/40' : 'text-white/40')}>
             {t(SERVICES_LABEL)}
           </h3>
           <ul className="mt-4 flex flex-col gap-3">
@@ -94,7 +94,7 @@ export default function Footer({
         </div>
 
         <div>
-          <h3 className={cn('text-xs font-semibold uppercase tracking-wide', dark ? 'text-white/40' : 'text-black/40')}>
+          <h3 className={cn('text-xs font-semibold uppercase tracking-wide', dark ? 'text-white/40' : 'text-white/40')}>
             {t(EXPLORE_LABEL)}
           </h3>
           <ul className="mt-4 flex flex-col gap-3">
@@ -156,7 +156,7 @@ export default function Footer({
         </div>
 
         <div>
-          <h3 className={cn('text-xs font-semibold uppercase tracking-wide', dark ? 'text-white/40' : 'text-black/40')}>
+          <h3 className={cn('text-xs font-semibold uppercase tracking-wide', dark ? 'text-white/40' : 'text-white/40')}>
             {t(LEGAL_LABEL)}
           </h3>
           <ul className="mt-4 flex flex-col gap-3">
@@ -179,8 +179,8 @@ export default function Footer({
         </div>
       </div>
 
-      <div className={cn('mt-12 border-t px-6 py-6 md:px-12', dark ? 'border-white/10' : 'border-black/10')}>
-        <p className={cn('mx-auto w-full max-w-[90rem] text-xs tracking-normal', dark ? 'text-white/50' : 'text-[#333D6D]/50')}>
+      <div className={cn('mt-12 border-t px-6 py-6 md:px-12', dark ? 'border-white/10' : 'border-white/10')}>
+        <p className={cn('mx-auto w-full max-w-[90rem] text-xs tracking-normal', dark ? 'text-white/50' : 'text-white/50')}>
           {t(COPYRIGHT)}
         </p>
       </div>

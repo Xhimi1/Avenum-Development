@@ -52,7 +52,7 @@ function MiniPhotoStack() {
 function PhoneMockup() {
   return (
     <div className="absolute inset-0 flex items-end justify-center">
-      <div className="relative flex h-[78%] w-[70%] flex-col items-center justify-end gap-2.5 overflow-hidden rounded-t-[2.25rem] border-x-8 border-t-8 border-black bg-white px-6 pb-4 md:w-[65%] md:px-2">
+      <div className="relative flex h-[78%] w-[70%] flex-col items-center justify-end gap-2.5 overflow-hidden rounded-t-[2.25rem] border-x-8 border-t-8 border-white/20 bg-white px-6 pb-4 md:w-[65%] md:px-2">
         <div className="absolute left-1/2 top-3 h-4 w-16 -translate-x-1/2 rounded-full bg-black" />
         <span className="font-body text-lg font-semibold text-black">Log in</span>
         <div className="flex w-full flex-col gap-1.5">
@@ -271,12 +271,12 @@ export default function WorkServices() {
     <div className="mt-28 md:mt-36">
       <div className="mx-auto w-full max-w-6xl px-4 md:px-12">
         <div className="mx-auto max-w-2xl text-center md:mx-0 md:max-w-none md:text-left">
-          <span className="inline-block rounded-full bg-[#EEF0FF] px-3 py-1 text-[0.8rem] font-medium text-[#6367FF]">
+          <span className="inline-block rounded-full bg-white/10 px-3 py-1 text-[0.8rem] font-medium text-white/70">
             {t(EYEBROW)}
           </span>
           <SplitText
             as="h2"
-            className="mt-3 font-display text-[clamp(2.8rem,6vw,4.6rem)] font-semibold leading-[0.95] text-[#333D6D] [text-wrap:balance] md:[text-wrap:normal]"
+            className="heading-lg mt-3 [text-wrap:balance] md:[text-wrap:normal]"
           >
             {t(HEADING)}
           </SplitText>
@@ -285,7 +285,7 @@ export default function WorkServices() {
         <ul className="mt-10 grid grid-cols-1 gap-12 md:mt-14 md:gap-x-12 md:gap-y-16 md:grid-cols-3">
           {SERVICES.map((s, i) => (
             <li key={s.id} className="flex flex-col">
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl bg-[#F2F2F3] p-8">
+              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl bg-white/[0.04] p-8">
                 {i === 0 && <MiniPhotoStack />}
                 {i === 1 && <PhoneMockup />}
                 {i === 2 && <SeoRankingGraphic />}
@@ -297,7 +297,7 @@ export default function WorkServices() {
                 )}
               </div>
               <h3 className="mt-4 font-body text-xl leading-tight">
-                <span className="font-normal text-black">{t(s.title)} </span>
+                <span className="font-normal text-white">{t(s.title)} </span>
                 <span className="font-normal text-gray-400">{t(s.desc)}</span>
               </h3>
             </li>

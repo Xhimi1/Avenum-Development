@@ -59,14 +59,14 @@ export default function LaunchPopup() {
       <div
         ref={cardRef}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-sm overflow-hidden rounded-[8px] bg-white shadow-2xl"
+        className="relative w-full max-w-sm overflow-hidden rounded-[8px] border border-white/10 bg-[#0b0b0b] shadow-2xl"
       >
         <button
           type="button"
           data-cursor
           onClick={dismiss}
           aria-label="Close"
-          className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#6367FF] transition-colors duration-300 hover:bg-gray-100"
+          className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#6367FF] transition-colors duration-300 hover:bg-white/80"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden className="h-4 w-4">
             <line x1="6" y1="6" x2="18" y2="18" />
@@ -94,19 +94,19 @@ export default function LaunchPopup() {
         </div>
 
         <div className="p-6 text-center">
-          <span className="inline-block rounded-full bg-[#EEF0FF] px-3 py-1 text-[0.8rem] font-medium text-[#6367FF]">
+          <span className="inline-block rounded-full bg-white/10 px-3 py-1 text-[0.8rem] font-medium text-white/70">
             {project.name}
           </span>
-          <p className="mt-2 font-display text-3xl font-semibold text-[#333D6D]">{t(HEADING)}</p>
+          <p className="mt-2 font-display text-3xl font-extralight text-white">{t(HEADING)}</p>
 
           <button
             type="button"
             data-cursor
             onClick={viewProject}
-            className="pointer-events-auto mt-6 flex w-full items-center justify-center gap-0.5 rounded-full bg-[#6367FF] px-6 py-2.5 font-display text-base font-medium tracking-normal text-white transition-colors duration-300 hover:bg-[#4f52e0]"
+            className="pointer-events-auto btn-primary mt-6 w-full"
           >
             {t(VIEW_PROJECT_LABEL)}
-            <ArrowRight className="h-4 w-4" />
+            <ArrowRight className="h-3.5 w-3.5" />
           </button>
         </div>
       </div>

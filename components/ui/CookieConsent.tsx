@@ -53,7 +53,7 @@ export default function CookieConsent() {
         <div
           role="dialog"
           aria-label="Cookie consent"
-          className={`fixed inset-x-0 bottom-0 z-[70] w-full rounded-t-2xl border-t border-white/10 bg-[#0a0a0d] px-6 py-5 shadow-2xl ease-out md:px-12 ${
+          className={`fixed inset-x-0 bottom-0 z-[70] w-full rounded-t-2xl border-t border-white/10 bg-black px-6 py-5 shadow-2xl ease-out md:px-12 ${
             phase === 'closing'
               ? 'pointer-events-none translate-y-full transition-transform duration-500 ease-in'
               : phase === 'visible'

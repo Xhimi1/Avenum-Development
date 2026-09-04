@@ -36,14 +36,14 @@ export default function HospitalityNav() {
   return (
     <header className="absolute inset-x-0 top-4 z-50 flex justify-center px-4 md:top-6">
       <div
-        className={`w-full max-w-[26rem] overflow-hidden rounded-[2rem] border border-black/5 bg-white/70 shadow-sm backdrop-blur-xl transition-[max-height] duration-500 ease-in-out ${
+        className={`w-full max-w-[26rem] overflow-hidden rounded-[2rem] border border-white/10 bg-white/10 shadow-sm backdrop-blur-xl transition-[max-height] duration-500 ease-in-out ${
           open ? 'max-h-[28rem]' : 'max-h-[3.5rem]'
         }`}
       >
         <div className="flex items-center justify-between px-6 py-2.5 md:px-7">
-          <span className="font-[family-name:var(--font-general-sans)] text-black">
+          <span className="font-[family-name:var(--font-general-sans)] text-white">
             <span className="text-base font-normal tracking-[-0.035em] md:text-lg">AVENUM</span>
-            <span className="ml-2 text-[0.65rem] font-extralight tracking-normal text-black/50 md:text-xs">for hospitality</span>
+            <span className="ml-2 text-[0.65rem] font-extralight tracking-normal text-white/50 md:text-xs">for hospitality</span>
           </span>
 
           <button
@@ -55,10 +55,10 @@ export default function HospitalityNav() {
             className="flex h-8 w-8 shrink-0 flex-col items-center justify-center gap-[5px]"
           >
             <span
-              className={`h-px w-5 bg-black transition-transform duration-300 ${open ? 'translate-y-[3px] rotate-45' : ''}`}
+              className={`h-px w-5 bg-white transition-transform duration-300 ${open ? 'translate-y-[3px] rotate-45' : ''}`}
             />
             <span
-              className={`h-px w-5 bg-black transition-transform duration-300 ${open ? '-translate-y-[3px] -rotate-45' : ''}`}
+              className={`h-px w-5 bg-white transition-transform duration-300 ${open ? '-translate-y-[3px] -rotate-45' : ''}`}
             />
           </button>
         </div>
@@ -70,7 +70,7 @@ export default function HospitalityNav() {
               type="button"
               data-cursor
               onClick={() => goTo(l.id)}
-              className="py-2 text-left font-[family-name:var(--font-general-sans)] text-lg font-light tracking-[-0.02em] text-black transition-colors duration-300 hover:text-[#12544F]"
+              className="py-2 text-left font-[family-name:var(--font-general-sans)] text-lg font-light tracking-[-0.02em] text-white transition-colors duration-300 hover:text-[#12544F]"
             >
               {t(l.label)}
             </button>
