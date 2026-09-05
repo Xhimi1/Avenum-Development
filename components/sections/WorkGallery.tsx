@@ -22,6 +22,7 @@ const CASE_STUDY_LABEL: Bi = { en: 'See the project', sq: 'Shiko projektin' };
 const EXPLORE_WORK_LABEL: Bi = { en: 'Explore work', sq: 'Eksploro projektin' };
 const VIEW_MORE_LABEL: Bi = { en: 'View more', sq: 'Shiko më shumë' };
 const ALL_FILTER_LABEL: Bi = { en: 'All', sq: 'Të gjitha' };
+const FILTER_BY_LABEL: Bi = { en: 'Filter by :', sq: 'Filtro sipas :' };
 
 /**
  * The project gallery/slider from the homepage Work section, extracted so it
@@ -162,7 +163,9 @@ export default function WorkGallery({
       )}
 
       {grid && (
-        <div className="mb-8 flex gap-2 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] md:mb-10 [&::-webkit-scrollbar]:hidden">
+        <>
+          <p className="mb-3 text-xs font-light text-white">{t(FILTER_BY_LABEL)}</p>
+          <div className="mb-8 flex gap-2 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] md:mb-10 [&::-webkit-scrollbar]:hidden">
           <button
             type="button"
             data-cursor
@@ -214,7 +217,8 @@ export default function WorkGallery({
               </button>
             );
           })}
-        </div>
+          </div>
+        </>
       )}
 
       <div className={grid ? 'w-full' : mobileSlider ? 'w-full md:px-12' : 'w-full px-1.5 md:px-12'}>

@@ -293,12 +293,12 @@ export default function AboutPage() {
         </section>
 
         {/* our partners — real, live client sites */}
-        <section className="relative bg-[#DEDFE1] px-6 py-16 md:px-12 md:py-24">
+        <section className="relative bg-white px-6 py-16 md:px-12 md:py-24">
           <div className="mx-auto w-full max-w-6xl">
             <div className="mb-10 text-center md:mb-14">
               <SplitText
                 as="h2"
-                className="heading-lg"
+                className="heading-lg text-black"
               >
                 {t(PARTNERS_HEADING)}
               </SplitText>
@@ -307,7 +307,7 @@ export default function AboutPage() {
             <ul className="grid items-stretch gap-6 md:grid-cols-3">
               {PARTNERS.map((partner) => (
                 <li key={partner.name} className="min-w-0">
-                  <div className="flex h-full flex-col overflow-hidden rounded-3xl bg-white/[0.04]">
+                  <div className="flex h-full flex-col overflow-hidden rounded-3xl bg-black/[0.03]">
                     <div className="p-4">
                       <div className="flex items-center justify-center gap-4 rounded-2xl bg-black px-6 py-12">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -321,13 +321,13 @@ export default function AboutPage() {
                     </div>
 
                     <div className="flex flex-1 flex-col items-center justify-center gap-4 p-6 text-center">
-                      <p className="font-display text-lg font-medium text-white/70">{t(partner.category)}</p>
+                      <p className="font-display text-lg font-medium text-black/70">{t(partner.category)}</p>
                       <a
                         href={partner.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         data-cursor
-                        className="inline-flex items-center gap-1.5 font-display text-base font-medium tracking-normal text-white underline underline-offset-4 transition-colors duration-300 hover:text-white/70"
+                        className="inline-flex items-center gap-1.5 font-display text-base font-medium tracking-normal text-black underline underline-offset-4 transition-colors duration-300 hover:text-black/70"
                       >
                         {t(VIEW_SITE_LABEL)}
                         <ArrowRight className="h-3.5 w-3.5 -rotate-45" />

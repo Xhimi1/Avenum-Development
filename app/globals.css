@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hero work marquee (WorkHeroMarquee): scrolls a doubled image list up by
+   exactly one copy's height, so the wrap-around is invisible. */
+@keyframes work-marquee-y {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+@keyframes work-marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 /* ---- design system -------------------------------------------------
    Pure black ground, one ink colour at three strengths, one hairline, one
    accent. Everything on the site draws from these six values — if a colour
