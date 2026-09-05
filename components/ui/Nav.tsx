@@ -15,6 +15,7 @@ import ArrowRight from '@/components/ui/ArrowRight';
 
 const PRICING_LABEL = { en: 'Pricing', sq: 'Paketat' };
 const CONTACT_LABEL = { en: 'Contact', sq: 'Kontakto' };
+const CALL_US_LABEL = { en: 'Call', sq: 'Call' };
 const MENU_LABEL = { en: 'Menu', sq: 'Menu' };
 const CLOSE_LABEL = { en: 'Close', sq: 'Mbyll' };
 const ANNOUNCE_LABEL = {
@@ -33,6 +34,7 @@ export default function Nav() {
   const router = useRouter();
   const onHomePage = pathname === '/';
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const linksRef = useRef<HTMLElement>(null);
   const burgerRef = useRef<HTMLButtonElement>(null);
   const burgerLabelRef = useRef<HTMLSpanElement>(null);
@@ -75,9 +77,10 @@ export default function Nav() {
       // to its full-width shape.
       const p = Math.min(1, Math.max(0, window.scrollY / 100));
       const desktop = isDesktop();
+      setScrolled((prev) => (prev === p > 0 ? prev : p > 0));
       const maxWidth = 1440 - p * (1440 - (desktop ? 768 : 400));
-      const padX = desktop ? 48 - p * 32 : 24 - p * 8;
-      const padY = desktop ? 8 - p * 2 : 12 - p * 4;
+      const padX = desktop ? 30 - p * 18 : 20 - p * 7;
+      const padY = desktop ? 12 - p * 3 : 16 - p * 6;
       el.style.maxWidth = `${maxWidth}px`;
       el.style.marginTop = `${(desktop ? 16 : 12) * p}px`;
       el.style.paddingLeft = `${padX}px`;
@@ -279,7 +282,7 @@ export default function Nav() {
             header shorter, with no offset to keep in sync. The dismiss X is
             a sibling of the link, not nested inside it. */}
         {announceOpen && !open && (
-          <div className="relative border-b border-[var(--line)] bg-black text-white">
+          <div className="relative border-b border-[var(--line)] bg-[#8b5cf6] text-white">
             <button
               type="button"
               data-cursor
@@ -332,8 +335,8 @@ export default function Nav() {
             onClick={() => setOpen(false)}
             aria-label={t(CONTACT_LABEL)}
             className={cn(
-              'col-start-1 flex h-9 w-9 flex-shrink-0 items-center justify-self-start justify-center rounded-full transition-colors duration-300 md:hidden',
-              open ? 'text-black' : 'text-white'
+              'col-start-1 flex h-7 flex-shrink-0 items-center justify-self-start justify-center gap-1.5 rounded-full px-3 transition-colors duration-300 md:hidden',
+              open ? 'bg-black/10 text-black' : scrolled ? 'bg-black/10 text-white' : 'text-white'
             )}
           >
             <svg
@@ -348,6 +351,7 @@ export default function Nav() {
             >
               <path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 2 6a2 2 0 0 1 2-2Z" />
             </svg>
+            <span className="whitespace-nowrap text-sm">{t(CALL_US_LABEL)}</span>
           </a>
 
           <button
@@ -421,7 +425,7 @@ export default function Nav() {
               aria-controls="mobile-menu"
               className={cn(
                 'flex h-7 flex-shrink-0 items-center justify-center overflow-hidden rounded-full px-3.5 text-sm transition-colors duration-300 md:hidden',
-                open ? 'bg-neutral-100 text-black' : 'text-white'
+                open ? 'bg-black/10 text-black' : scrolled ? 'bg-black/10 text-white' : 'text-white'
               )}
             >
               {/* Text is set once here for the server-rendered first paint,

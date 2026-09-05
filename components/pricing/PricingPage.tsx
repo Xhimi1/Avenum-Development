@@ -445,7 +445,7 @@ function TierCard({
                 href={whatsappHref(WA_MESSAGE)}
                 data-cursor
                 className={cn(
-                  'flex items-center justify-center gap-0.5 rounded-full py-2.5 text-center font-display text-base font-medium tracking-normal text-white transition-colors duration-300',
+                  'flex items-center justify-center gap-0.5 rounded-full py-2.5 text-center font-body text-base font-medium tracking-normal text-white transition-colors duration-300',
                   simple ? 'mt-4' : 'mt-6',
                   accent.button
                 )}

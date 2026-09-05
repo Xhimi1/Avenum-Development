@@ -1,12 +1,13 @@
 'use client';
 
-import { useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import ArrowRight from '@/components/ui/ArrowRight';
 import FadeIn from '@/components/ui/FadeIn';
 import SplitText from '@/components/ui/SplitText';
 import { PROJECTS } from '@/lib/projects';
 import { useStore } from '@/lib/store';
 import { useT } from '@/lib/i18n';
+import { cn } from '@/lib/utils';
 import type { Bi } from '@/lib/i18n';
 
 const HEADING: Bi = {
@@ -20,6 +21,7 @@ const SUBHEADING: Bi = {
 const CASE_STUDY_LABEL: Bi = { en: 'See the project', sq: 'Shiko projektin' };
 const EXPLORE_WORK_LABEL: Bi = { en: 'Explore work', sq: 'Eksploro projektin' };
 const VIEW_MORE_LABEL: Bi = { en: 'View more', sq: 'Shiko më shumë' };
+const ALL_FILTER_LABEL: Bi = { en: 'All', sq: 'Të gjitha' };
 
 /**
  * The project gallery/slider from the homepage Work section, extracted so it
@@ -41,6 +43,34 @@ export default function WorkGallery({
   const pageNavigate = useStore((s) => s.pageNavigate);
   const scrollerRef = useRef<HTMLUListElement>(null);
   const dragRef = useRef({ isDown: false, startX: 0, scrollLeft: 0, moved: false });
+
+  // Filter tabs (grid mode only): one per distinct project category, in the
+  // order it first appears in PROJECTS, plus an "All" tab. Multiple category
+  // tabs can be active at once — a project shows if its category is in the
+  // active set (or if the set is empty, meaning "All").
+  const [activeCategories, setActiveCategories] = useState<Set<string>>(new Set());
+  const toggleCategory = (categoryEn: string) => {
+    setActiveCategories((prev) => {
+      const next = new Set(prev);
+      if (next.has(categoryEn)) next.delete(categoryEn);
+      else next.add(categoryEn);
+      return next;
+    });
+  };
+
+  const baseProjects = PROJECTS.filter((project) => grid || !project.hideFromHome);
+  const categories = useMemo(() => {
+    const seen = new Map<string, Bi>();
+    baseProjects.forEach((project) => {
+      if (!seen.has(project.category.en)) seen.set(project.category.en, project.category);
+    });
+    return Array.from(seen.values());
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- PROJECTS/grid are static per render
+  }, [grid]);
+  const visibleProjects =
+    activeCategories.size === 0
+      ? baseProjects
+      : baseProjects.filter((project) => activeCategories.has(project.category.en));
 
   const scrollByCards = (dir: 1 | -1) => {
     const el = scrollerRef.current;
@@ -131,6 +161,62 @@ export default function WorkGallery({
         </div>
       )}
 
+      {grid && (
+        <div className="mb-8 flex gap-2 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] md:mb-10 [&::-webkit-scrollbar]:hidden">
+          <button
+            type="button"
+            data-cursor
+            onClick={() => setActiveCategories(new Set())}
+            className={cn(
+              'flex-shrink-0 rounded-full px-3.5 py-1.5 text-xs font-normal transition-colors duration-300',
+              activeCategories.size === 0 ? 'bg-[#6367FF] text-white' : 'bg-white/10 text-white'
+            )}
+          >
+            {t(ALL_FILTER_LABEL)}
+          </button>
+          {categories.map((category) => {
+            const active = activeCategories.has(category.en);
+            return (
+              <button
+                key={category.en}
+                type="button"
+                data-cursor
+                onClick={() => toggleCategory(category.en)}
+                className={cn(
+                  'flex flex-shrink-0 items-center overflow-hidden rounded-full px-3.5 py-1.5 text-xs font-normal transition-colors duration-300',
+                  active ? 'bg-[#6367FF] text-white' : 'bg-white/10 text-white'
+                )}
+              >
+                {t(category)}
+                {/* X to clear this filter — slides/fades in only when active,
+                    same accordion-reveal trick as the nav burger's X. */}
+                <span
+                  aria-hidden
+                  className="overflow-hidden transition-[max-width,margin,opacity] duration-300 ease-out"
+                  style={{
+                    maxWidth: active ? '14px' : '0px',
+                    marginLeft: active ? '6px' : '0px',
+                    opacity: active ? 1 : 0,
+                  }}
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                    strokeLinecap="round"
+                    className="h-2.5 w-2.5 flex-shrink-0"
+                  >
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                  </svg>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+
       <div className={grid ? 'w-full' : mobileSlider ? 'w-full md:px-12' : 'w-full px-1.5 md:px-12'}>
         <ul
           ref={scrollerRef}
@@ -149,7 +235,7 @@ export default function WorkGallery({
               : 'pointer-events-auto mt-14 flex flex-col gap-y-8 md:mt-20 md:flex-row md:gap-8 md:overflow-x-auto md:pb-4 md:snap-x md:snap-mandatory md:cursor-grab md:active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] md:[&::-webkit-scrollbar]:hidden'
           }
         >
-          {PROJECTS.filter((project) => grid || !project.hideFromHome).map((project) => (
+          {visibleProjects.map((project) => (
             <li
               key={project.name}
               data-work-card
@@ -213,7 +299,7 @@ export default function WorkGallery({
                         if (dragRef.current.moved) return;
                         pageNavigate(`/portfolio/${project.slug}`, { accent: project.tagColor, bg: '#0b0a16' });
                       }}
-                      className="pointer-events-auto mt-5 inline-flex w-fit items-center justify-center gap-2 rounded-full bg-black px-4 py-2 font-display text-sm font-medium tracking-normal text-white transition-colors duration-300 hover:bg-black/80"
+                      className="pointer-events-auto mt-5 inline-flex w-fit items-center justify-center gap-2 rounded-full bg-black px-4 py-2 font-body text-sm font-medium tracking-normal text-white transition-colors duration-300 hover:bg-black/80"
                     >
                       <span className="md:hidden">{t(EXPLORE_WORK_LABEL)}</span>
                       <span className="hidden md:inline">{t(VIEW_MORE_LABEL)}</span>
@@ -252,7 +338,7 @@ export default function WorkGallery({
                           if (dragRef.current.moved) return;
                           pageNavigate(`/portfolio/${project.slug}`, { accent: project.tagColor, bg: '#0b0a16' });
                         }}
-                        className="pointer-events-auto mt-5 inline-flex items-center justify-center gap-2 rounded-full bg-black px-4 py-2 font-display text-sm font-medium tracking-normal text-white transition-colors duration-300 hover:bg-black/80"
+                        className="pointer-events-auto mt-5 inline-flex items-center justify-center gap-2 rounded-full bg-black px-4 py-2 font-body text-sm font-medium tracking-normal text-white transition-colors duration-300 hover:bg-black/80"
                       >
                         {t(EXPLORE_WORK_LABEL)}
                         <ArrowRight className="h-3.5 w-3.5" />

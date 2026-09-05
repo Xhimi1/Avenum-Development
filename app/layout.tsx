@@ -1,17 +1,21 @@
 import type { Metadata, Viewport } from 'next';
-import { Plus_Jakarta_Sans, Inter } from 'next/font/google';
+import { Inter } from 'next/font/google';
+import localFont from 'next/font/local';
 import PageWash from '@/components/ui/PageWash';
 import BookCallPill from '@/components/ui/BookCallPill';
 import CookieConsent from '@/components/ui/CookieConsent';
 import './globals.css';
 
-/** Display: Plus Jakarta Sans. Headings run extralight (200) — the hero
- *  sits at 300; 500 is kept only for small display-font UI like buttons and
- *  pills, which go illegible if set as thin as the headlines. Body: Inter,
- *  which holds up at small sizes. */
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ['latin', 'latin-ext'],
-  weight: ['200', '300', '500'],
+/** Display: Opening Hours Sans (self-hosted, SIL OFL — see
+ *  app/fonts/opening-hours-sans/LICENSE.md), a single Regular weight; the
+ *  site's font-medium/font-semibold heading classes fall back to the
+ *  browser's synthetic bold since no separate bold weight file exists.
+ *  Body: Inter, which holds up at small sizes. */
+const openingHoursSans = localFont({
+  src: [
+    { path: './fonts/opening-hours-sans/OpeningHoursSans-Regular.woff2', weight: '400', style: 'normal' },
+    { path: './fonts/opening-hours-sans/OpeningHoursSans-Regular.woff', weight: '400', style: 'normal' },
+  ],
   variable: '--font-display',
   display: 'swap',
 });
@@ -45,7 +49,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="sq" className={`${plusJakartaSans.variable} ${inter.variable}`}>
+    <html lang="sq" className={`${openingHoursSans.variable} ${inter.variable}`}>
       <body className="bg-black font-body text-white antialiased">
         <PageWash />
         {children}

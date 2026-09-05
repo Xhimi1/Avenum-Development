@@ -42,7 +42,7 @@ export default function Hero() {
     >
       <SplitText
         as="h1"
-        className="heading-hero relative z-10 max-w-[14ch] text-balance md:max-w-[22ch]"
+        className="relative z-10 max-w-[14ch] text-balance font-display text-[clamp(2.6rem,11vw,4rem)] font-normal leading-[1.05] text-white md:max-w-[22ch] md:text-[clamp(2.6rem,4.4vw,4rem)]"
       >
         {t(HEADING)}
       </SplitText>

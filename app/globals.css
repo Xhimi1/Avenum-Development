@@ -20,7 +20,7 @@
 }
 
 /* Display type is set thin and large, so it needs tighter tracking than
-   Plus Jakarta Sans' default to hold together as a shape. Weight is left to
+   Opening Hours Sans' default to hold together as a shape. Weight is left to
    the utilities: headings carry `font-extralight`, small display-font UI
    keeps `font-medium` so it stays legible. */
 .font-display {
@@ -84,6 +84,15 @@ html.lenis body {
   color: var(--bg);
 }
 
+/* Mobile browsers paint their own translucent gray/white flash over a
+   button on tap (-webkit-tap-highlight-color) regardless of any hover/active
+   classes we set — most visible on filled pill buttons, which is why
+   clicking a filter tab's own X looked like it left a lighter bg behind. */
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 4px;
@@ -140,13 +149,13 @@ html.lenis body {
      .heading-hero); only <h3>-level component/card titles step down so
      document hierarchy still reads correctly. */
   .heading-hero {
-    @apply font-display text-[clamp(2.1rem,8.5vw,3.4rem)] font-medium leading-[1.05] text-white md:text-[clamp(2.6rem,4.4vw,4rem)];
+    @apply font-display text-[clamp(2.1rem,8.5vw,3.4rem)] font-normal leading-[1.05] text-white md:text-[clamp(2.6rem,4.4vw,4rem)];
   }
   .heading-lg {
-    @apply font-display text-[clamp(2.1rem,8.5vw,3.4rem)] font-medium leading-[1.05] text-white md:text-[clamp(2.6rem,4.4vw,4rem)];
+    @apply font-display text-[clamp(2.1rem,8.5vw,3.4rem)] font-normal leading-[1.05] text-white md:text-[clamp(2.6rem,4.4vw,4rem)];
   }
   .heading-sm {
-    @apply font-display text-[clamp(1.15rem,3.2vw,1.375rem)] font-medium leading-[1.15] text-white md:text-[clamp(1.25rem,1.6vw,1.5rem)];
+    @apply font-display text-[clamp(1.15rem,3.2vw,1.375rem)] font-normal leading-[1.15] text-white md:text-[clamp(1.25rem,1.6vw,1.5rem)];
   }
   .subheading-hero {
     @apply text-sm leading-relaxed text-white;
@@ -155,10 +164,10 @@ html.lenis body {
   /* The site's two CTA pill buttons — solid white (primary action) and
      translucent white (secondary, next to a primary). */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-0.5 rounded-full bg-white px-4 py-2 font-display text-sm font-medium tracking-normal text-black transition-colors duration-300 hover:bg-white/85;
+    @apply inline-flex items-center justify-center gap-0.5 rounded-full bg-white px-4 py-2 font-body text-sm font-medium tracking-normal text-black transition-colors duration-300 hover:bg-white/85;
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-0.5 rounded-full bg-white/10 px-4 py-2 font-display text-sm font-medium tracking-normal text-white transition-colors duration-300 hover:bg-white/20;
+    @apply inline-flex items-center justify-center gap-0.5 rounded-full bg-white/10 px-4 py-2 font-body text-sm font-medium tracking-normal text-white transition-colors duration-300 hover:bg-white/20;
   }
 }
 
